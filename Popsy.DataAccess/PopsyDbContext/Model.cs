@@ -26,5 +26,9 @@ namespace Popsy
         public DbSet<TblProductosEntity> TblProductos { get; set; }
         public DbSet<VistaProductoFactoresConversionEntity> VistaProductoFactoresConversion { get; set; }
         public DbSet<TblPuntosVentasEntity> TblPuntosVentas { get; set; }
+        public DbSet<TblOrdenDeCompraEntity> TblOrdenesDeCompra { get; set; }
+        public DbSet<TblDetalleOrdenDeCompraEntity> TblDetalleOrdenesDeCompra { get; set; }
+        public DbSet<TblProveedorRecepcionEntity> TblProveedoresRecepcion { get; set; }
+        public DbSet<TblRecepcionDeCompraEntity> TblRecepcionesDeCompras { get; set; }
     }
 }

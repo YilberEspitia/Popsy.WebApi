@@ -12,7 +12,7 @@ using Popsy;
 namespace Popsy.DataAccess.Migrations
 {
     [DbContext(typeof(PopsyDbContext))]
-    [Migration("20230510023202_CreateDb")]
+    [Migration("20230510025825_CreateDb")]
     partial class CreateDb
     {
         /// <inheritdoc />
@@ -24,6 +24,30 @@ namespace Popsy.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Popsy.Entities.TblDetalleOrdenDeCompraEntity", b =>
+                {
+                    b.Property<Guid>("id_recepcion_productos")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("cantidad_solicitada")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("id_orden_compra")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("id_producto")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("unidad_presentacion_solicitada")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id_recepcion_productos");
+
+                    b.ToTable("detalle_oden_compra");
+                });
 
             modelBuilder.Entity("Popsy.Entities.TblDeterminarComprasTrasladosEntity", b =>
                 {
@@ -106,6 +130,30 @@ namespace Popsy.DataAccess.Migrations
                     b.HasKey("inventario_id");
 
                     b.ToTable("inventarios", "SIPOP");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblOrdenDeCompraEntity", b =>
+                {
+                    b.Property<Guid>("id_orden_compra")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("fecha_orden_compra")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("id_proveedor")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("id_punto_venta")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("orden_compra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id_orden_compra");
+
+                    b.ToTable("orden_compra");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblProductosEntity", b =>
@@ -209,6 +257,35 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("productos_puntos_venta");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblProveedorRecepcionEntity", b =>
+                {
+                    b.Property<Guid>("id_proveedor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("codigo_sap_producto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("codigo_sap_proveedor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("id_producto")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("id_punto_de_venta")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id_proveedor");
+
+                    b.ToTable("proveedor_recepcion");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblPuntosVentasEntity", b =>
                 {
                     b.Property<Guid>("punto_venta_id")
@@ -226,6 +303,36 @@ namespace Popsy.DataAccess.Migrations
                     b.HasKey("punto_venta_id");
 
                     b.ToTable("puntos_ventas");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraEntity", b =>
+                {
+                    b.Property<Guid>("id_proveedor")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Unidad_presentacion_recibida")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("cantidad_recibida")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("id_detalle_orden_compra")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("numero_factura")
+                        .HasColumnType("int");
+
+                    b.HasKey("id_proveedor");
+
+                    b.ToTable("recepcion_compra");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblTipoInventarioEntity", b =>
