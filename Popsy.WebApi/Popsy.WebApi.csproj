@@ -4,9 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+	<RootNamespace>$(MSBuildProjectName.Replace(" ", "_").Replace(".WebApi", ""))</RootNamespace>
+	<IsTrimmable>true</IsTrimmable>
+	<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <DocumentationFile>.\$(AssemblyName).xml</DocumentationFile>
+    <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +25,10 @@
     <ProjectReference Include="..\Popsy.Application\Popsy.Application.csproj" />
     <ProjectReference Include="..\Popsy.DataAccess\Popsy.DataAccess.csproj" />
     <ProjectReference Include="..\Popsy.Integration\Popsy.Integration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Popsy.Integration.Abstractions\Popsy.Integration.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
