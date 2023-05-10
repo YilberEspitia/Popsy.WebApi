@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Popsy.Application.Abstractions\Popsy.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Popsy.DataAccess.Abstractions\Popsy.DataAccess.Abstractions.csproj" />
+    <ProjectReference Include="..\Popsy.Integration.Abstractions\Popsy.Integration.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

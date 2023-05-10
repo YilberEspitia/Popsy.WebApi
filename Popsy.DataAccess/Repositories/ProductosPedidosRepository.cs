@@ -1,0 +1,23 @@
+using Microsoft.EntityFrameworkCore;
+
+using Popsy.Entities;
+using Popsy.Interfaces;
+
+namespace Popsy.Repositories
+{
+    public class ProductosPedidosRepository : IProductosPedidosRepository
+    {
+        private readonly PopsyDbContext _context;
+
+        public ProductosPedidosRepository(PopsyDbContext context)
+        {
+            _context = context;
+        }
+
+        async Task<List<TblProductosPedidosEntity>> IProductosPedidosRepository.GetProductoPedidoId(Guid pedido_id)
+        {
+            List<TblProductosPedidosEntity> vista = await _context.TblProductosPedidos.Where(l => l.pedido_id == pedido_id).ToListAsync();
+            return vista;
+        }
+    }
+}
