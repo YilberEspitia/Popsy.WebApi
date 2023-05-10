@@ -1,33 +1,49 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
+using Popsy;
+using Popsy.Common;
+
 #region Variables
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+String WebApiAssemblyName = typeof(Program).Assembly.GetName().Name!;
+String XmlCommentsFilePath = Path.Combine(PopsyConstants.BasePath, $"{WebApiAssemblyName}.xml");
+ConfigurationManager configuration = builder.Configuration;
+String productVersion = configuration.GetSection("ProductVersion").Value!;
 #endregion
 
 #region Services
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddDbContext<CustomerDbContext>(
-        options => options.UseSqlServer(configuration.GetConnectionString("CustommerConnection")))
+builder.Services.AddDbContext<PopsyDbContext>(
+        options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
+    .AddAutoMapper(typeof(ApplicationServiceExtensions))
+    .AddPopsyApplication()
+    .AddPopsyRepositories()
+    .AddPopsyIntegrations();
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc(productVersion, new OpenApiInfo { Title = $"{WebApiAssemblyName}", Version = productVersion });
+    c.IncludeXmlComments(XmlCommentsFilePath);
+});
 #endregion
 
 #region HTTP
 WebApplication app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
+    c.SwaggerEndpoint($"/swagger/{productVersion}/swagger.json", $"{WebApiAssemblyName} {productVersion}");
+});
 app.UseRouting();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
 #endregion
