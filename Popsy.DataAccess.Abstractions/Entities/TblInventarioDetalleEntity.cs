@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Popsy.Entities
 {
     [Table("inventariodetalle", Schema = "SIPOP")]
-    public class TblInventarioDetalleEntity
+    public class TblInventarioDetalleEntity : TblCreatableEntity
     {
         [Key]
         public Guid inventario_detalle_id { get; set; }

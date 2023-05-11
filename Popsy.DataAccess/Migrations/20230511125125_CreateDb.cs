@@ -22,7 +22,9 @@ namespace Popsy.DataAccess.Migrations
                     cantidad_solicitada = table.Column<int>(type: "int", nullable: false),
                     id_producto = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     id_orden_compra = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    unidad_presentacion_solicitada = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    unidad_presentacion_solicitada = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +57,9 @@ namespace Popsy.DataAccess.Migrations
                     producto_punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     bodega_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     minima_unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false)
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,7 +77,9 @@ namespace Popsy.DataAccess.Migrations
                     tipo_inventario_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     codigo_inventario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fecha_toma_fisica = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    fecha_registro = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    fecha_registro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,18 +87,20 @@ namespace Popsy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "orden_compra",
+                name: "ordenes_compras",
                 columns: table => new
                 {
                     id_orden_compra = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     id_punto_venta = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    orden_compra = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    id_proveedor = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    fecha_orden_compra = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    orden_compra = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    id_proveedor_recepcion = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    fecha_orden_compra = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orden_compra", x => x.id_orden_compra);
+                    table.PrimaryKey("PK_ordenes_compras", x => x.id_orden_compra);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +111,9 @@ namespace Popsy.DataAccess.Migrations
                     nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Categoria_Producto2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Categoria_Producto1 = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Categoria_Producto1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,19 +160,18 @@ namespace Popsy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "proveedor_recepcion",
+                name: "proveedores_recepcion",
                 columns: table => new
                 {
                     id_proveedor = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    codigo_sap_proveedor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    id_producto = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    id_punto_de_venta = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    codigo_sap_producto = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    codigo_sap_proveedor = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_proveedor_recepcion", x => x.id_proveedor);
+                    table.PrimaryKey("PK_proveedores_recepcion", x => x.id_proveedor);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,7 +180,9 @@ namespace Popsy.DataAccess.Migrations
                 {
                     punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    codigo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,20 +190,20 @@ namespace Popsy.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "recepcion_compra",
+                name: "recepciones_compras",
                 columns: table => new
                 {
                     id_proveedor = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     id_detalle_orden_compra = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     cantidad_recibida = table.Column<int>(type: "int", nullable: false),
-                    numero_factura = table.Column<int>(type: "int", nullable: false),
-                    Unidad_presentacion_recibida = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    numero_factura = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Unidad_presentacion_recibida = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Fecha_de_creacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Fecha_de_modificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_recepcion_compra", x => x.id_proveedor);
+                    table.PrimaryKey("PK_recepciones_compras", x => x.id_proveedor);
                 });
 
             migrationBuilder.CreateTable(
@@ -396,7 +407,7 @@ namespace Popsy.DataAccess.Migrations
                 schema: "SIPOP");
 
             migrationBuilder.DropTable(
-                name: "orden_compra");
+                name: "ordenes_compras");
 
             migrationBuilder.DropTable(
                 name: "productos");
@@ -408,13 +419,13 @@ namespace Popsy.DataAccess.Migrations
                 name: "productos_puntos_venta");
 
             migrationBuilder.DropTable(
-                name: "proveedor_recepcion");
+                name: "proveedores_recepcion");
 
             migrationBuilder.DropTable(
                 name: "puntos_ventas");
 
             migrationBuilder.DropTable(
-                name: "recepcion_compra");
+                name: "recepciones_compras");
 
             migrationBuilder.DropTable(
                 name: "tipoinventario",

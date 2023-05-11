@@ -22,11 +22,17 @@ namespace Popsy.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Popsy.Entities.TblDetalleOrdenDeCompraEntity", b =>
+            modelBuilder.Entity("Popsy.Entities.TblDetalleOrdenesDeCompraEntity", b =>
                 {
                     b.Property<Guid>("id_recepcion_productos")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("cantidad_solicitada")
                         .HasColumnType("int");
@@ -39,7 +45,8 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<string>("unidad_presentacion_solicitada")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("id_recepcion_productos");
 
@@ -78,6 +85,12 @@ namespace Popsy.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("bodega_id")
                         .HasColumnType("uniqueidentifier");
 
@@ -105,6 +118,12 @@ namespace Popsy.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("codigo_inventario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,16 +148,22 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("inventarios", "SIPOP");
                 });
 
-            modelBuilder.Entity("Popsy.Entities.TblOrdenDeCompraEntity", b =>
+            modelBuilder.Entity("Popsy.Entities.TblOrdenesDeCompraEntity", b =>
                 {
                     b.Property<Guid>("id_orden_compra")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("fecha_orden_compra")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("id_proveedor")
+                    b.Property<Guid>("id_proveedor_recepcion")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("id_punto_venta")
@@ -146,11 +171,12 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<string>("orden_compra")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("id_orden_compra");
 
-                    b.ToTable("orden_compra");
+                    b.ToTable("ordenes_compras");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblProductosEntity", b =>
@@ -166,6 +192,12 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<string>("Categoria_Producto2")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("codigo")
                         .IsRequired()
@@ -254,33 +286,31 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("productos_puntos_venta");
                 });
 
-            modelBuilder.Entity("Popsy.Entities.TblProveedorRecepcionEntity", b =>
+            modelBuilder.Entity("Popsy.Entities.TblProveedoresRecepcionEntity", b =>
                 {
                     b.Property<Guid>("id_proveedor")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("codigo_sap_producto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("codigo_sap_proveedor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("id_producto")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("id_punto_de_venta")
-                        .HasColumnType("uniqueidentifier");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("id_proveedor");
 
-                    b.ToTable("proveedor_recepcion");
+                    b.ToTable("proveedores_recepcion");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblPuntosVentasEntity", b =>
@@ -288,6 +318,12 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("punto_venta_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Fecha_de_creacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Fecha_de_modificacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("codigo")
                         .IsRequired()
@@ -316,7 +352,8 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<string>("Unidad_presentacion_recibida")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("cantidad_recibida")
                         .HasColumnType("int");
@@ -324,12 +361,14 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("id_detalle_orden_compra")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("numero_factura")
-                        .HasColumnType("int");
+                    b.Property<string>("numero_factura")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("id_proveedor");
 
-                    b.ToTable("recepcion_compra");
+                    b.ToTable("recepciones_compras");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblTipoInventarioEntity", b =>

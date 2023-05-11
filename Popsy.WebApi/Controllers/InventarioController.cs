@@ -150,7 +150,18 @@ namespace WebApiIntegracion.Controllers
                 if (ultimoInventario != null)
                     fecha = ultimoInventario.fecha_toma_fisica;
                 ReadPuntoVenta puntoVentaFila = new ReadPuntoVenta();
-                puntoVentaFila.bodegas = listaBodegas;
+                puntoVentaFila.bodegas = listaBodegas.Select(t => new VistaPuntosVentaBodegasObject()
+                {
+                    bodegas_punto_venta_id = t.bodegas_punto_venta_id,
+                    bodega_id = t.bodega_id,
+                    nombre_bodega = t.nombre_bodega
+                });
+                if (listaBodegas.Any())
+                {
+                    puntoVentaFila.nombre_punto_venta = listaBodegas.Select(t => t.nombre_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.codigo_punto_venta = listaBodegas.Select(t => t.codigo_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.punto_venta_id = listaBodegas.Select(t => t.punto_venta_id).FirstOrDefault()!;
+                }
                 puntoVentaFila.fecha_ultimo_inventario = fecha;
                 puntoVentaInfo.Add(puntoVentaFila);
             }
@@ -182,8 +193,9 @@ namespace WebApiIntegracion.Controllers
                 ReadPuntoVentaDetalleEntity puntoVentaFila = new ReadPuntoVentaDetalleEntity();
                 if (listaBodegas.Count() > 0)
                 {
-                    puntoVentaFila.punto_venta_nombre = listaBodegas.FirstOrDefault().nombre_punto_venta;
-                    puntoVentaFila.punto_venta_id = listaBodegas.FirstOrDefault().punto_venta_id;
+                    puntoVentaFila.punto_venta_nombre = listaBodegas.Select(t => t.nombre_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.punto_venta_id = listaBodegas.Select(t => t.punto_venta_id).FirstOrDefault();
+                    puntoVentaFila.codigo_punto_venta = listaBodegas.Select(t => t.codigo_punto_venta).FirstOrDefault()!;
                 }
                 else
                 {
@@ -191,7 +203,12 @@ namespace WebApiIntegracion.Controllers
                     puntoVentaFila.punto_venta_nombre = puntos.nombre;
                     puntoVentaFila.punto_venta_id = puntos.punto_venta_id;
                 }
-                puntoVentaFila.bodegas = listaBodegas;
+                puntoVentaFila.bodegas = listaBodegas.Select(t => new VistaPuntosVentaBodegasObject()
+                {
+                    bodegas_punto_venta_id = t.bodegas_punto_venta_id,
+                    bodega_id = t.bodega_id,
+                    nombre_bodega = t.nombre_bodega
+                });
                 puntoVentaInfo.Add(puntoVentaFila);
             }
             return Ok(puntoVentaInfo);
