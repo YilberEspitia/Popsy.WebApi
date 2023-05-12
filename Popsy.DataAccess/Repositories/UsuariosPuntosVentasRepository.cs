@@ -13,9 +13,9 @@ namespace Popsy.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<TblUsuariosPuntosVentasEntity>> GetUsuariosPuntosVentas(Guid usuario_id)
+        public async Task<IEnumerable<TblUsuarioPuntoVentaEntity>> GetUsuariosPuntosVentas(Guid usuario_id)
         {
-            IEnumerable<TblUsuariosPuntosVentasEntity> vista = await _context.TblUsuariosPuntosVentas.Where(l => l.usuario_id == usuario_id).ToListAsync();
+            IEnumerable<TblUsuarioPuntoVentaEntity> vista = await _context.UsuariosPuntoDeVenta.Where(l => l.usuario_id == usuario_id).ToListAsync();
             return vista;
         }
     }

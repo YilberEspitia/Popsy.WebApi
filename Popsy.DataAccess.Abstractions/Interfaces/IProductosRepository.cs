@@ -4,7 +4,7 @@ namespace Popsy.Interfaces
 {
     public interface IProductosRepository
     {
-        Task<TblProductosEntity> GetProductosByCodigo(string codigo);
-        Task<TblProductosEntity> GetProductosById(Guid producto_id);
+        Task<TblProductoEntity> GetProductosByCodigo(string codigo);
+        Task<TblProductoEntity> GetProductosById(Guid producto_id);
     }
 }

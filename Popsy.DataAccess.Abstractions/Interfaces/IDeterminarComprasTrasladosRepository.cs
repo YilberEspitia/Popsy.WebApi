@@ -4,6 +4,6 @@ namespace Popsy.Interfaces
 {
     public interface IDeterminarComprasTrasladosRepository
     {
-        Task<List<TblDeterminarComprasTrasladosEntity>> GetDeterminarComprasTraslados();
+        Task<List<TblDeterminarCompraTrasladoEntity>> GetDeterminarComprasTraslados();
     }
 }

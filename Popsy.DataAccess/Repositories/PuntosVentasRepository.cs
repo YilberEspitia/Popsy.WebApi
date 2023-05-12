@@ -14,9 +14,9 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        public async Task<TblPuntosVentasEntity> GetPuntoVentasId(Guid punto_venta_id)
+        public async Task<TblPuntoVentaEntity> GetPuntoVentasId(Guid punto_venta_id)
         {
-            TblPuntosVentasEntity vista = await _context.TblPuntosVentas.FirstOrDefaultAsync(l => l.punto_venta_id == punto_venta_id);
+            TblPuntoVentaEntity vista = await _context.PuntosDeVenta.FirstOrDefaultAsync(l => l.punto_venta_id == punto_venta_id);
             return vista;
         }
     }

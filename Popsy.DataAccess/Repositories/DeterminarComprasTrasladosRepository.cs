@@ -15,9 +15,9 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        async Task<List<TblDeterminarComprasTrasladosEntity>> IDeterminarComprasTrasladosRepository.GetDeterminarComprasTraslados()
+        async Task<List<TblDeterminarCompraTrasladoEntity>> IDeterminarComprasTrasladosRepository.GetDeterminarComprasTraslados()
         {
-            List<TblDeterminarComprasTrasladosEntity> vista = await _context.TblDeterminarComprasTraslados.ToListAsync();
+            List<TblDeterminarCompraTrasladoEntity> vista = await _context.DeterminarCompraTraslados.ToListAsync();
             return vista;
         }
     }

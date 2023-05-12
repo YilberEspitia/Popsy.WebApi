@@ -21,7 +21,7 @@ namespace Popsy.Helpers
             _repoProductos = repoProductos;
         }
 
-        public async Task<ZMF_PUNTO_VENTA> CargarInfoXML(List<TblProductosPedidosEntity> infoList, string TipoDocumento, Guid pedido_id)
+        public async Task<ZMF_PUNTO_VENTA> CargarInfoXML(List<TblProductoPedidoEntity> infoList, string TipoDocumento, Guid pedido_id)
         {
             VistaPedidosPuntoVentaEntity puntoVentaInfo = await _repoPedidosPuntoVenta.GetVistaPedidosPuntoVenta(pedido_id);
 
@@ -39,11 +39,11 @@ namespace Popsy.Helpers
             resultado.SOLPED = "";
             resultado.TIPODOC_PT = Doc_CS;
 
-            foreach (TblProductosPedidosEntity item in infoList)
+            foreach (TblProductoPedidoEntity item in infoList)
             {
                 //Validar obligatoriedad de todos los campos
 
-                TblProductosEntity producto = await _repoProductos.GetProductosById(item.producto_id);
+                TblProductoEntity producto = await _repoProductos.GetProductosById(item.producto_id);
                 VistaProductoFactoresConversionEntity factor = await _repoProductoFactores.GetProductoFactoresConversion(item.producto_id);
 
                 string Categoria2 = producto.Categoria_Producto2; //Productos.Categoria_Producto2

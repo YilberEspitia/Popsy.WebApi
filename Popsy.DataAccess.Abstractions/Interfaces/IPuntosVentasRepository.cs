@@ -5,7 +5,7 @@ namespace Popsy.Interfaces
     public interface IPuntosVentasRepository
     {
 
-        Task<TblPuntosVentasEntity> GetPuntoVentasId(Guid punto_venta_id);
+        Task<TblPuntoVentaEntity> GetPuntoVentasId(Guid punto_venta_id);
 
     }
 }

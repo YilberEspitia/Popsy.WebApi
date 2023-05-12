@@ -4,6 +4,6 @@ namespace Popsy.Interfaces
 {
     public interface IUsuariosPuntosVentasRepository
     {
-        Task<IEnumerable<TblUsuariosPuntosVentasEntity>> GetUsuariosPuntosVentas(Guid usuario_id);
+        Task<IEnumerable<TblUsuarioPuntoVentaEntity>> GetUsuariosPuntosVentas(Guid usuario_id);
     }
 }
