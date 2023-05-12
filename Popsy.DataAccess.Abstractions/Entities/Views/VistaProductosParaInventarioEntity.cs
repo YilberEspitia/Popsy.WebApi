@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Popsy.Entities
 {
-    [Table("vistaproductosparainventario", Schema = "SIPOP")]
     public class VistaProductosParaInventarioEntity
     {
         [Key]

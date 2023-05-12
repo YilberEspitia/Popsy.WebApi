@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Popsy.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class CreateDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -207,158 +207,6 @@ namespace Popsy.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tipos_transacciones", x => x.tipo_transaccion_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistacategoriasproductos",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    categoria_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    categoria_nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistacategoriasproductos", x => x.categoria_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistamonitorInventario",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    inventario_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    codigo_inventario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    tipo_inventario_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nombre_tipo_inventario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fecha_toma_fisica = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    fecha_registro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    usuario_inventario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistamonitorInventario", x => x.inventario_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistapedidospuntoventa",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    pedido_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    codigo_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    centro_cs = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    almacen_cs = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    doc_cs = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    organizacion = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistapedidospuntoventa", x => x.pedido_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistaproductofactoresconversion",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    producto_factor_conversion_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    producto_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    factor_conversion_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    unidad_base = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    contador = table.Column<int>(type: "int", nullable: false),
-                    unidad_medida_alter = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistaproductofactoresconversion", x => x.producto_factor_conversion_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistaproductosconstock",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    producto_punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    producto_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nombre_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cantidad_producto_maxima = table.Column<int>(type: "int", nullable: false),
-                    stock_actual = table.Column<int>(type: "int", nullable: false),
-                    presentacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    minima_unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    categoria_producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    factor_conversion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    categoria_id = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistaproductosconstock", x => x.producto_punto_venta_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistaproductosparainventario",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    producto_punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    producto_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nombre_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cantidad_producto_maxima = table.Column<int>(type: "int", nullable: false),
-                    stock_actual = table.Column<int>(type: "int", nullable: false),
-                    presentacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    minima_unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    categoria_producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    factor_conversion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    categoria_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    nombre_producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    contador = table.Column<int>(type: "int", nullable: false),
-                    unidad_base = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    unidad_medida_alter = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistaproductosparainventario", x => x.producto_punto_venta_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistapuntosventabodegas",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    bodegas_punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    bodega_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    nombre_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    codigo_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    nombre_bodega = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistapuntosventabodegas", x => x.bodegas_punto_venta_id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "vistaresumeninventario",
-                schema: "SIPOP",
-                columns: table => new
-                {
-                    inventario_detalle_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    inventario_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    producto_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    usuario_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    punto_venta_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    nombre_punto_venta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    nombre_producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vistaresumeninventario", x => x.inventario_detalle_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1058,38 +906,6 @@ namespace Popsy.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "usuarios_puntos_ventas");
-
-            migrationBuilder.DropTable(
-                name: "vistacategoriasproductos",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistamonitorInventario",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistapedidospuntoventa",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistaproductofactoresconversion",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistaproductosconstock",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistaproductosparainventario",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistapuntosventabodegas",
-                schema: "SIPOP");
-
-            migrationBuilder.DropTable(
-                name: "vistaresumeninventario",
-                schema: "SIPOP");
 
             migrationBuilder.DropTable(
                 name: "Transacciones");

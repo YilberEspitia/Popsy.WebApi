@@ -1061,23 +1061,19 @@ namespace Popsy.DataAccess.Migrations
             modelBuilder.Entity("Popsy.Entities.VistaCategoriasProductosEntity", b =>
                 {
                     b.Property<string>("categoria_id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("categoria_nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("categoria_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistacategoriasproductos", "SIPOP");
+                    b.ToView("vistacategoriasproductos", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaMonitorInventarioEntity", b =>
                 {
-                    b.Property<Guid>("inventario_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("codigo_inventario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1087,6 +1083,9 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<DateTime>("fecha_toma_fisica")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("inventario_id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("nombre_tipo_inventario")
                         .IsRequired()
@@ -1102,17 +1101,13 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("inventario_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistamonitorInventario", "SIPOP");
+                    b.ToView("vistamonitorInventario", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaPedidosPuntoVentaEntity", b =>
                 {
-                    b.Property<Guid>("pedido_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("almacen_cs")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1133,24 +1128,26 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("pedido_id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("pedido_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistapedidospuntoventa", "SIPOP");
+                    b.ToView("vistapedidospuntoventa", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaProductoFactoresConversionEntity", b =>
                 {
-                    b.Property<Guid>("producto_factor_conversion_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("contador")
                         .HasColumnType("int");
 
                     b.Property<Guid>("factor_conversion_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("producto_factor_conversion_id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("producto_id")
@@ -1164,17 +1161,13 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("producto_factor_conversion_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistaproductofactoresconversion", "SIPOP");
+                    b.ToView("vistaproductofactoresconversion", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaProductosConStockEntity", b =>
                 {
-                    b.Property<Guid>("producto_punto_venta_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("cantidad_producto_maxima")
                         .HasColumnType("int");
 
@@ -1205,23 +1198,22 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("producto_punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("stock_actual")
                         .HasColumnType("int");
 
-                    b.HasKey("producto_punto_venta_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistaproductosconstock", "SIPOP");
+                    b.ToView("vistaproductosconstock", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaProductosParaInventarioEntity", b =>
                 {
-                    b.Property<Guid>("producto_punto_venta_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("cantidad_producto_maxima")
                         .HasColumnType("int");
 
@@ -1259,6 +1251,9 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("producto_punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
 
@@ -1273,18 +1268,17 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("producto_punto_venta_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistaproductosparainventario", "SIPOP");
+                    b.ToView("vistaproductosparainventario", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaPuntosVentaBodegasEntity", b =>
                 {
-                    b.Property<Guid>("bodegas_punto_venta_id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("bodega_id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("bodega_id")
+                    b.Property<Guid>("bodegas_punto_venta_id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("codigo_punto_venta")
@@ -1302,19 +1296,18 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("bodegas_punto_venta_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistapuntosventabodegas", "SIPOP");
+                    b.ToView("vistapuntosventabodegas", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaResumenInventarioEntity", b =>
                 {
-                    b.Property<Guid>("inventario_detalle_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("cantidad")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("inventario_detalle_id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("inventario_id")
                         .HasColumnType("uniqueidentifier");
@@ -1340,9 +1333,9 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("usuario_id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("inventario_detalle_id");
+                    b.ToTable((string)null);
 
-                    b.ToTable("vistaresumeninventario", "SIPOP");
+                    b.ToView("vistaresumeninventario", "SIPOP");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblBodegaPuntoVentaEntity", b =>

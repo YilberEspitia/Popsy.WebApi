@@ -50,6 +50,7 @@ namespace Popsy
         public DbSet<TblErrorTransaccionEntity> ErroresTransaccion { get; set; }
         public DbSet<TblRecepcionDeCompraEntity> RecepcionesDeCompra { get; set; }
         #endregion
+        #region Vistas
         public DbSet<VistaCategoriasProductosEntity> VistaCategoriasProductos { get; set; }
         public DbSet<VistaProductosConStockEntity> VistaProductosConStock { get; set; }
         public DbSet<VistaProductosParaInventarioEntity> VistaProductosParaInventario { get; set; }
@@ -58,5 +59,6 @@ namespace Popsy
         public DbSet<VistaResumenInventarioEntity> VistaResumenInventario { get; set; }
         public DbSet<VistaPedidosPuntoVentaEntity> VistaPedidosPuntoVenta { get; set; }
         public DbSet<VistaProductoFactoresConversionEntity> VistaProductoFactoresConversion { get; set; }
+        #endregion
     }
 }

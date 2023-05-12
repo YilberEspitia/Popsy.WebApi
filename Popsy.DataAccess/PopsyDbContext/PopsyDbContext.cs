@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using Popsy.Entities;
+
 namespace Popsy
 {
     /// <summary>
@@ -18,6 +20,46 @@ namespace Popsy
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VistaCategoriasProductosEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistacategoriasproductos", "SIPOP");
+            });
+            modelBuilder.Entity<VistaMonitorInventarioEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistamonitorInventario", "SIPOP");
+            });
+            modelBuilder.Entity<VistaPedidosPuntoVentaEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistapedidospuntoventa", "SIPOP");
+            });
+            modelBuilder.Entity<VistaProductoFactoresConversionEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistaproductofactoresconversion", "SIPOP");
+            });
+            modelBuilder.Entity<VistaProductosConStockEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistaproductosconstock", "SIPOP");
+            });
+            modelBuilder.Entity<VistaProductosParaInventarioEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistaproductosparainventario", "SIPOP");
+            });
+            modelBuilder.Entity<VistaPuntosVentaBodegasEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistapuntosventabodegas", "SIPOP");
+            });
+            modelBuilder.Entity<VistaResumenInventarioEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("vistaresumeninventario", "SIPOP");
+            });
             base.OnModelCreating(modelBuilder);
         }
     }
