@@ -20,7 +20,9 @@ namespace Popsy.Business
         {
             Boolean response;
             TblProveedorRecepcionEntity proveedor = _mapper.Map<TblProveedorRecepcionEntity>(proveedorSave);
-            TblProveedorRecepcionEntity? proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
+            TblProveedorRecepcionEntity? proveedorDb = default;
+            if (proveedor.proveedor_recepcion_id != default)
+                proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
             if (proveedorDb is null)
             {
                 await _repository.CreateAsync(proveedor);

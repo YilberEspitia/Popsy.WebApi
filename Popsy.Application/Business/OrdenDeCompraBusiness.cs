@@ -33,7 +33,9 @@ namespace Popsy.Business
             if (!await _ordenRepository.ExistePuntoDeVentaAsync(ordenDeCompraSave.punto_venta_id))
                 throw new PopsyException(ErrorType.PuntoDeVentaNoEncontrado);
             TblOrdenDeCompraEntity ordenDeCompra = _mapper.Map<TblOrdenDeCompraEntity>(ordenDeCompraSave);
-            TblOrdenDeCompraEntity? ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraAsync(ordenDeCompra.orden_compra_id);
+            TblOrdenDeCompraEntity? ordenDeCompraDb = default;
+            if (ordenDeCompra.orden_compra_id != default)
+                ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraAsync(ordenDeCompra.orden_compra_id);
             if (ordenDeCompraDb is null)
             {
                 await _ordenRepository.CreateAsync(ordenDeCompra);
@@ -84,7 +86,9 @@ namespace Popsy.Business
             if (!await _detalleOrdenRepository.ExisteProductoAsync(detalleOrdenDeCompraSave.producto_id))
                 throw new PopsyException(ErrorType.ProveedorNoEncontrado);
             TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = _mapper.Map<TblDetalleOrdenDeCompraEntity>(detalleOrdenDeCompraSave);
-            TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);
+            TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = default;
+            if (detalleOrdenDeCompra.detalle_orden_compra_id != default)
+                detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);
             if (detalleOrdenDeCompraDb is null)
             {
                 await _detalleOrdenRepository.CreateAsync(detalleOrdenDeCompra);
@@ -135,7 +139,9 @@ namespace Popsy.Business
             if (!await _detalleOrdenRepository.ExisteAsync(recepcionDeCompraSave.detalle_orden_compra_id))
                 throw new PopsyException(ErrorType.DetalleDeVentaNoEncontrado);
             TblRecepcionDeCompraEntity recepcionDeCompra = _mapper.Map<TblRecepcionDeCompraEntity>(recepcionDeCompraSave);
-            TblRecepcionDeCompraEntity? recepcionDeCompraDb = await _recepcionRepository.GetRecepcionDeCompraAsync(recepcionDeCompra.recepcion_compra_id);
+            TblRecepcionDeCompraEntity? recepcionDeCompraDb = default;
+            if (recepcionDeCompra.recepcion_compra_id != default)
+                recepcionDeCompraDb = await _recepcionRepository.GetRecepcionDeCompraAsync(recepcionDeCompra.recepcion_compra_id);
             if (recepcionDeCompraDb is null)
             {
                 recepcionDeCompra.codigo_recepcion_compra = this.GetConsecutivo(await _recepcionRepository.GetConstante());
@@ -188,7 +194,9 @@ namespace Popsy.Business
             if (await _ordenRepository.ExisteAsync(detalle.orden_compra_id) && await _detalleOrdenRepository.ExisteProductoAsync(detalle.producto_id))
             {
                 TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = _mapper.Map<TblDetalleOrdenDeCompraEntity>(detalle);
-                TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);
+                TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = default;
+                if (detalleOrdenDeCompra.detalle_orden_compra_id != default)
+                    detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);
                 if (detalleOrdenDeCompraDb is null)
                     await _detalleOrdenRepository.CreateAsync(detalleOrdenDeCompra);
                 else
