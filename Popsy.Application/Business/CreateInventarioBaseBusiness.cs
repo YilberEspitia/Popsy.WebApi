@@ -26,9 +26,9 @@ namespace Popsy.Business
         async Task<RespuestaServicioEntity> ICreateInventarioBaseBusiness.CreateInventarioBase(CreateInventarioBaseEntity inventario_base)
         {
             RespuestaServicioEntity respuesta = new RespuestaServicioEntity();
-            TblInventariosEntity inventarioBase = new TblInventariosEntity();
-            IEnumerable<TblUsuariosPuntosVentasEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(inventario_base.usuario_id);
-            TblUsuariosPuntosVentasEntity puntoVenta = new TblUsuariosPuntosVentasEntity();
+            TblInventarioEntity inventarioBase = new TblInventarioEntity();
+            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(inventario_base.usuario_id);
+            TblUsuarioPuntoVentaEntity puntoVenta = new TblUsuarioPuntoVentaEntity();
             if (puntoVentaList.Count() > 0)
             {
                 puntoVenta = puntoVentaList.FirstOrDefault();
@@ -42,7 +42,7 @@ namespace Popsy.Business
             _repoInventarios.Add(inventarioBase);
             foreach (CreateInventarioBaseDetalleEntity detalle in inventario_base.inventario_detalle)
             {
-                TblProductosPuntosVentaEntity productoPuntoVentaList = await _repoProductosPuntosVentas.GetProductoPuntoVentaId(detalle.producto_id, puntoVenta.punto_venta_id);
+                TblProductoPuntoVentaEntity productoPuntoVentaList = await _repoProductosPuntosVentas.GetProductoPuntoVentaId(detalle.producto_id, puntoVenta.punto_venta_id);
                 TblInventarioDetalleEntity inventarioDetalle = new TblInventarioDetalleEntity();
                 inventarioDetalle.inventario_id = inventarioBase.inventario_id;
                 inventarioDetalle.producto_punto_venta_id = productoPuntoVentaList.producto_punto_venta_id;
@@ -58,8 +58,8 @@ namespace Popsy.Business
         public async Task<UpdateInventarioBaseEntity> UpdateInventarioBase(UpdateInventarioBaseEntity inventario_base)
         {
             IEnumerable<VistaResumenInventarioEntity> infoDetalle = await _repoVistaInventarioDetalle.GetVistaResumenInventarioById(inventario_base.inventario_id);
-            IEnumerable<TblUsuariosPuntosVentasEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(inventario_base.usuario_id);
-            TblUsuariosPuntosVentasEntity puntoVenta = new TblUsuariosPuntosVentasEntity();
+            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(inventario_base.usuario_id);
+            TblUsuarioPuntoVentaEntity puntoVenta = new TblUsuarioPuntoVentaEntity();
             if (puntoVentaList.Count() > 0)
             {
                 puntoVenta = puntoVentaList.FirstOrDefault();
@@ -72,7 +72,7 @@ namespace Popsy.Business
 
             foreach (CreateInventarioBaseDetalleEntity detalleCrear in inventario_base.inventario_detalle)
             {
-                TblProductosPuntosVentaEntity productoPuntoVentaList = await _repoProductosPuntosVentas.GetProductoPuntoVentaId(detalleCrear.producto_id, puntoVenta.punto_venta_id);
+                TblProductoPuntoVentaEntity productoPuntoVentaList = await _repoProductosPuntosVentas.GetProductoPuntoVentaId(detalleCrear.producto_id, puntoVenta.punto_venta_id);
                 TblInventarioDetalleEntity inventarioDetalle = new TblInventarioDetalleEntity();
                 inventarioDetalle.inventario_id = inventario_base.inventario_id;
                 inventarioDetalle.producto_punto_venta_id = productoPuntoVentaList.producto_punto_venta_id;

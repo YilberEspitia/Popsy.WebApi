@@ -93,8 +93,8 @@ namespace WebApiIntegracion.Controllers
         [Route("GetInventarioMonitor")]
         public async Task<IActionResult> GetInventarioMonitor(Guid usuario)
         {
-            IEnumerable<TblUsuariosPuntosVentasEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
-            TblUsuariosPuntosVentasEntity puntoVenta = new TblUsuariosPuntosVentasEntity();
+            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
+            TblUsuarioPuntoVentaEntity puntoVenta = new TblUsuarioPuntoVentaEntity();
             if (puntoVentaList.Count() > 0)
             {
                 puntoVenta = puntoVentaList.FirstOrDefault();
@@ -139,9 +139,9 @@ namespace WebApiIntegracion.Controllers
         public async Task<IActionResult> GetEncabezadoInventario(Guid usuario)
         {
             IEnumerable<TblTipoInventarioEntity> lista = await _repoTipoInventarios.GetTipoInventario();
-            IEnumerable<TblUsuariosPuntosVentasEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
+            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
             List<ReadPuntoVenta> puntoVentaInfo = new List<ReadPuntoVenta>();
-            foreach (TblUsuariosPuntosVentasEntity puntoVenta in puntoVentaList)
+            foreach (TblUsuarioPuntoVentaEntity puntoVenta in puntoVentaList)
             {
                 IEnumerable<VistaPuntosVentaBodegasEntity> listaBodegas = await _repoPuntosVentaBodegas.GetVistaPuntosVentaBodegasByPuntoVenta(puntoVenta.punto_venta_id);
                 IEnumerable<VistaMonitorInventarioEntity> inventarioList = await _repoReadInventarioMonitor.GetInventarioMonitor(puntoVenta.punto_venta_id);
@@ -150,7 +150,18 @@ namespace WebApiIntegracion.Controllers
                 if (ultimoInventario != null)
                     fecha = ultimoInventario.fecha_toma_fisica;
                 ReadPuntoVenta puntoVentaFila = new ReadPuntoVenta();
-                puntoVentaFila.bodegas = listaBodegas;
+                puntoVentaFila.bodegas = listaBodegas.Select(t => new VistaPuntosVentaBodegasObject()
+                {
+                    bodegas_punto_venta_id = t.bodegas_punto_venta_id,
+                    bodega_id = t.bodega_id,
+                    nombre_bodega = t.nombre_bodega
+                });
+                if (listaBodegas.Any())
+                {
+                    puntoVentaFila.nombre_punto_venta = listaBodegas.Select(t => t.nombre_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.codigo_punto_venta = listaBodegas.Select(t => t.codigo_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.punto_venta_id = listaBodegas.Select(t => t.punto_venta_id).FirstOrDefault()!;
+                }
                 puntoVentaFila.fecha_ultimo_inventario = fecha;
                 puntoVentaInfo.Add(puntoVentaFila);
             }
@@ -158,7 +169,12 @@ namespace WebApiIntegracion.Controllers
             ReadEncabezadoInventario encabezado = new ReadEncabezadoInventario();
             encabezado.usuario_id = usuario;
             encabezado.puntos_venta = puntoVentaInfo;
-            encabezado.tipo_inventario = lista;
+            encabezado.tipo_inventario = lista.Select(t => new TipoInventarioEntity()
+            {
+                tipo_inventario_id = t.tipo_inventario_id,
+                nombre_tipo_inventario = t.nombre_tipo_inventario,
+                abreviatura_inventario = t.abreviatura_inventario
+            });
             return Ok(encabezado);
         }
 
@@ -174,24 +190,30 @@ namespace WebApiIntegracion.Controllers
         [Route("GetPuntoVentaDetalle")]
         public async Task<IActionResult> GetPuntoVentaDetalle(Guid usuario)
         {
-            IEnumerable<TblUsuariosPuntosVentasEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
+            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
             List<ReadPuntoVentaDetalleEntity> puntoVentaInfo = new List<ReadPuntoVentaDetalleEntity>();
-            foreach (TblUsuariosPuntosVentasEntity puntoVenta in puntoVentaList)
+            foreach (TblUsuarioPuntoVentaEntity puntoVenta in puntoVentaList)
             {
                 IEnumerable<VistaPuntosVentaBodegasEntity> listaBodegas = await _repoPuntosVentaBodegas.GetVistaPuntosVentaBodegasByPuntoVenta(puntoVenta.punto_venta_id);
                 ReadPuntoVentaDetalleEntity puntoVentaFila = new ReadPuntoVentaDetalleEntity();
                 if (listaBodegas.Count() > 0)
                 {
-                    puntoVentaFila.punto_venta_nombre = listaBodegas.FirstOrDefault().nombre_punto_venta;
-                    puntoVentaFila.punto_venta_id = listaBodegas.FirstOrDefault().punto_venta_id;
+                    puntoVentaFila.punto_venta_nombre = listaBodegas.Select(t => t.nombre_punto_venta).FirstOrDefault()!;
+                    puntoVentaFila.punto_venta_id = listaBodegas.Select(t => t.punto_venta_id).FirstOrDefault();
+                    puntoVentaFila.codigo_punto_venta = listaBodegas.Select(t => t.codigo_punto_venta).FirstOrDefault()!;
                 }
                 else
                 {
-                    TblPuntosVentasEntity puntos = await _repoPuntosVenta.GetPuntoVentasId(puntoVenta.punto_venta_id);
+                    TblPuntoVentaEntity puntos = await _repoPuntosVenta.GetPuntoVentasId(puntoVenta.punto_venta_id);
                     puntoVentaFila.punto_venta_nombre = puntos.nombre;
                     puntoVentaFila.punto_venta_id = puntos.punto_venta_id;
                 }
-                puntoVentaFila.bodegas = listaBodegas;
+                puntoVentaFila.bodegas = listaBodegas.Select(t => new VistaPuntosVentaBodegasObject()
+                {
+                    bodegas_punto_venta_id = t.bodegas_punto_venta_id,
+                    bodega_id = t.bodega_id,
+                    nombre_bodega = t.nombre_bodega
+                });
                 puntoVentaInfo.Add(puntoVentaFila);
             }
             return Ok(puntoVentaInfo);

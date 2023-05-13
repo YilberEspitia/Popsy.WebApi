@@ -26,15 +26,15 @@ namespace Popsy.Integrations
         public async Task<RespuestaServicioEntity> GetRespuestaPedidoSAPIntegracion(Guid pedido_id)
         {
             RespuestaServicioEntity respuesta = new RespuestaServicioEntity();
-            List<TblProductosPedidosEntity> productosPedido = await _repoProductosPedido.GetProductoPedidoId(pedido_id);
-            List<TblDeterminarComprasTrasladosEntity> determinarComprasTraslados = await _repoDeterminarComprasTraslados.GetDeterminarComprasTraslados();
+            List<TblProductoPedidoEntity> productosPedido = await _repoProductosPedido.GetProductoPedidoId(pedido_id);
+            List<TblDeterminarCompraTrasladoEntity> determinarComprasTraslados = await _repoDeterminarComprasTraslados.GetDeterminarComprasTraslados();
 
-            List<TblProductosPedidosEntity> productosOrdenTraslado = new List<TblProductosPedidosEntity>();
-            List<TblProductosPedidosEntity> productosOrdenCompra = new List<TblProductosPedidosEntity>();
+            List<TblProductoPedidoEntity> productosOrdenTraslado = new List<TblProductoPedidoEntity>();
+            List<TblProductoPedidoEntity> productosOrdenCompra = new List<TblProductoPedidoEntity>();
 
-            foreach (TblProductosPedidosEntity productosPedidoFila in productosPedido)
+            foreach (TblProductoPedidoEntity productosPedidoFila in productosPedido)
             {
-                TblDeterminarComprasTrasladosEntity validarDeterminar = determinarComprasTraslados.FirstOrDefault(l => l.producto_id == productosPedidoFila.producto_id);
+                TblDeterminarCompraTrasladoEntity validarDeterminar = determinarComprasTraslados.FirstOrDefault(l => l.producto_id == productosPedidoFila.producto_id);
                 if (validarDeterminar == null)
                 {
                     productosOrdenTraslado.Add(productosPedidoFila);
@@ -52,11 +52,11 @@ namespace Popsy.Integrations
                 }
             }
 
-            List<List<TblProductosPedidosEntity>> proveedoresProductosPedidoOC = new List<List<TblProductosPedidosEntity>>();
+            List<List<TblProductoPedidoEntity>> proveedoresProductosPedidoOC = new List<List<TblProductoPedidoEntity>>();
             //Ludwig: Recorrer listas y separar por proveedores
             //ZTRA Traslado
             //NB Orden Compra
-            foreach (List<TblProductosPedidosEntity> proveedorSeparadoOC in proveedoresProductosPedidoOC)
+            foreach (List<TblProductoPedidoEntity> proveedorSeparadoOC in proveedoresProductosPedidoOC)
             {
                 string TipoDocumento = "NB";
                 ZMF_PUNTO_VENTA infoXML = await _XMLPedido.CargarInfoXML(proveedorSeparadoOC, TipoDocumento, pedido_id);

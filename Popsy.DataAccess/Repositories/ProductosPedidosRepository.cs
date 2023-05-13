@@ -14,9 +14,9 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        async Task<List<TblProductosPedidosEntity>> IProductosPedidosRepository.GetProductoPedidoId(Guid pedido_id)
+        async Task<List<TblProductoPedidoEntity>> IProductosPedidosRepository.GetProductoPedidoId(Guid pedido_id)
         {
-            List<TblProductosPedidosEntity> vista = await _context.TblProductosPedidos.Where(l => l.pedido_id == pedido_id).ToListAsync();
+            List<TblProductoPedidoEntity> vista = await _context.PropuctosPorPedido.Where(l => l.pedido_id == pedido_id).ToListAsync();
             return vista;
         }
     }

@@ -6,7 +6,8 @@ namespace Popsy.Objects
     {
         public Guid punto_venta_id { get; set; }
         public string punto_venta_nombre { get; set; }
-        public IEnumerable<VistaPuntosVentaBodegasEntity> bodegas { get; set; }
+        public string codigo_punto_venta { get; set; }
+        public IEnumerable<VistaPuntosVentaBodegasObject> bodegas { get; set; }
 
     }
 }
