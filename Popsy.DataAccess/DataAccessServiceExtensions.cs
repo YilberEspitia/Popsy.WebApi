@@ -34,6 +34,9 @@ namespace Popsy
             .AddScoped<IVistaProductosConStockRepository, VistaProductosConStockRepository>()
             .AddScoped<IVistaProductosParaInventarioRepository, VistaProductosParaInventarioRepository>()
             .AddScoped<IVistaPuntosVentaBodegasRepository, VistaPuntosVentaBodegasRepository>()
-            .AddScoped<IVistaResumenInventarioRepository, VistaResumenInventarioRepository>();
+            .AddScoped<IVistaResumenInventarioRepository, VistaResumenInventarioRepository>()
+            .AddScoped<IProveedorRecepcionRepository, ProveedorRecepcionRepository>()
+            .AddScoped<IOrdenDeCompraRepository, OrdenDeCompraRepository>()
+            .AddScoped<IDetalleOrdenDeCompraRepository, DetalleOrdenDeCompraRepository>();
     }
 }

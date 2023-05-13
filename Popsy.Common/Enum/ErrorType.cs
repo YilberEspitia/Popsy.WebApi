@@ -8,5 +8,6 @@ namespace Popsy.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ErrorType : Int16
     {
+        ProveedorNoEncontrado = 0,
     }
 }

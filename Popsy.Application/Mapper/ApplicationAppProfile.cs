@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 
+using Popsy.Entities;
+using Popsy.Objects;
+
 namespace Popsy
 {
     /// <summary>
@@ -12,6 +15,12 @@ namespace Popsy
         /// </summary>
         public ApplicationAppProfile()
         {
+            this.MapProveedorRecepcion();
+        }
+
+        public void MapProveedorRecepcion()
+        {
+            CreateMap<ProveedorRecepcionObject, TblProveedorRecepcionEntity>().ReverseMap();
         }
     }
 }

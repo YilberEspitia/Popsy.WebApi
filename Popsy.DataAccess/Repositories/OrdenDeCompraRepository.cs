@@ -16,6 +16,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IOrdenDeCompraRepository.CreateAsync(TblOrdenDeCompraEntity ordenDeCompra)
         {
+            ordenDeCompra.fecha_modificacion = DateTime.UtcNow;
             await _context.AddAsync(ordenDeCompra);
             await _context.SaveChangesAsync();
             return true;
@@ -23,6 +24,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IOrdenDeCompraRepository.UpdateAsync(TblOrdenDeCompraEntity ordenDeCompra)
         {
+            ordenDeCompra.fecha_modificacion = DateTime.UtcNow;
             TblOrdenDeCompraEntity ordenDeCompraDb = await this._context.OrdenesDeCompra.SingleAsync(r => r.orden_compra_id.Equals(ordenDeCompra.orden_compra_id));
             this._context.Entry(ordenDeCompraDb).CurrentValues.SetValues(ordenDeCompra);
             await this._context.SaveChangesAsync();
