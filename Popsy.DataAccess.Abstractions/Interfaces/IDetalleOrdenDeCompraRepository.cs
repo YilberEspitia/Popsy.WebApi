@@ -5,7 +5,6 @@ namespace Popsy.Interfaces
     public interface IDetalleOrdenDeCompraRepository
     {
         Task<bool> CreateAsync(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra);
-        Task<bool> CreateManyAsync(IEnumerable<TblDetalleOrdenDeCompraEntity> detalleOrdenDeCompra);
         Task<bool> UpdateAsync(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra);
         Task<TblDetalleOrdenDeCompraEntity?> GetDetalleOrdenDeCompraAsync(Guid id);
         Task<IEnumerable<TblDetalleOrdenDeCompraEntity>> GetDetallesDeOrdenesDeCompraAsync();

@@ -22,13 +22,6 @@ namespace Popsy.Repositories
             return true;
         }
 
-        async Task<bool> IDetalleOrdenDeCompraRepository.CreateManyAsync(IEnumerable<TblDetalleOrdenDeCompraEntity> detallesOrdenesDeCompra)
-        {
-            await _context.AddRangeAsync(detallesOrdenesDeCompra);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
         async Task<bool> IDetalleOrdenDeCompraRepository.UpdateAsync(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra)
         {
             detalleOrdenDeCompra.fecha_modificacion = DateTime.UtcNow;

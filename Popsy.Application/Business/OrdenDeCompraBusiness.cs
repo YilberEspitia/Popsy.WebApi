@@ -99,7 +99,16 @@ namespace Popsy.Business
         }
 
         async Task<bool> IOrdenDeCompraBusiness.CreateManyAsync(IEnumerable<DetalleOrdenDeCompraSave> detalleOrdenDeCompra)
-            => await _detalleOrdenRepository.CreateManyAsync(_mapper.Map<IEnumerable<TblDetalleOrdenDeCompraEntity>>(detalleOrdenDeCompra));
+        {
+            bool response = false;
+            IEnumerable<TblDetalleOrdenDeCompraEntity> detalles = _mapper.Map<IEnumerable<TblDetalleOrdenDeCompraEntity>>(detalleOrdenDeCompra);
+            foreach (TblDetalleOrdenDeCompraEntity detalle in detalles)
+            {
+                await this.CrearDetalleAsync(detalle);
+                response = true;
+            }
+            return response;
+        }
 
         async Task<DetalleOrdenDeCompraRead> IOrdenDeCompraBusiness.GetDetalleOrdenDeCompraAsync(Guid id)
         {
@@ -172,6 +181,19 @@ namespace Popsy.Business
             string numeroFormateado = (constante + 1).ToString("D6");
 
             return $"{PopsyConstants.AbrevOrdenDeCompra}-{año}{mes}{dia}{numeroFormateado}"; ;
+        }
+
+        private async Task CrearDetalleAsync(TblDetalleOrdenDeCompraEntity detalle)
+        {
+            if (await _ordenRepository.ExisteAsync(detalle.orden_compra_id) && await _detalleOrdenRepository.ExisteProductoAsync(detalle.producto_id))
+            {
+                TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = _mapper.Map<TblDetalleOrdenDeCompraEntity>(detalle);
+                TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);
+                if (detalleOrdenDeCompraDb is null)
+                    await _detalleOrdenRepository.CreateAsync(detalleOrdenDeCompra);
+                else
+                    await _detalleOrdenRepository.UpdateAsync(detalleOrdenDeCompra);
+            }
         }
         #endregion
     }

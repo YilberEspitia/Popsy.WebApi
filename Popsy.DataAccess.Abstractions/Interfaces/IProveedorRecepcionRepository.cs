@@ -9,5 +9,6 @@ namespace Popsy.Interfaces
         Task<TblProveedorRecepcionEntity?> GetProveedorRecepcionAsync(String codigoSap);
         Task<TblProveedorRecepcionEntity?> GetProveedorRecepcionAsync(Guid id);
         Task<IEnumerable<TblProveedorRecepcionEntity>> GetProveedoresRecepcionAsync();
+        Task<bool> ExisteAsync(Guid id);
     }
 }
