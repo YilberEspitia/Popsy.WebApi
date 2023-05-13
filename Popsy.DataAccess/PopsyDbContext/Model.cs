@@ -9,6 +9,14 @@ namespace Popsy
     /// </summary>
     public sealed partial class PopsyDbContext
     {
+        #region Auth
+        public DbSet<TblUsuarioEntity> Usuarios { get; set; }
+        public DbSet<TblPermisoEntity> Permisos { get; set; }
+        public DbSet<TblRolEntity> Roles { get; set; }
+        public DbSet<TblHistorialUsuarioEntity> HistorialUsuarios { get; set; }
+        public DbSet<TblRolPermisoEntity> RolesPorPermiso { get; set; }
+        public DbSet<TblUsuarioRolEntity> RolesDeUsuarios { get; set; }
+        #endregion
         #region Nivel0
         public DbSet<TblBodegaEntity> Bodegas { get; set; }
         public DbSet<TblCentroLogisticoEntity> CentrosLogisticos { get; set; }
@@ -22,7 +30,6 @@ namespace Popsy
         public DbSet<TblTipoPedidoCompraTrasladoEntity> TipoPedidoCompraTraslados { get; set; }
         public DbSet<TblTipoPedidoEntity> TiposDePedidos { get; set; }
         public DbSet<TblTipoTransaccionEntity> TiposDeTransacciones { get; set; }
-        public DbSet<TblUsuarioEntity> Usuarios { get; set; }
         #endregion
         #region Nivel1
         public DbSet<TblDistritoEntity> Distritos { get; set; }

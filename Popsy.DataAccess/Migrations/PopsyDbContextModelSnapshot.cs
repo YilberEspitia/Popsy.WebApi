@@ -289,6 +289,32 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("factores_conversion");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblHistorialUsuarioEntity", b =>
+                {
+                    b.Property<Guid>("historial_usuario_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("autor_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("fecha_eliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("observacion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("usuario_modificado_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("historial_usuario_id");
+
+                    b.HasIndex("autor_id");
+
+                    b.ToTable("historial_usuarios");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblInventarioDetalleEntity", b =>
                 {
                     b.Property<Guid>("inventario_detalle_id")
@@ -300,12 +326,6 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<int>("cantidad")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("inventario_id")
                         .HasColumnType("uniqueidentifier");
@@ -335,12 +355,6 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<string>("codigo_inventario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("fecha_registro")
                         .HasColumnType("datetime2");
@@ -475,6 +489,28 @@ namespace Popsy.DataAccess.Migrations
                     b.HasIndex("usuario_id");
 
                     b.ToTable("pedidos");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblPermisoEntity", b =>
+                {
+                    b.Property<Guid>("permiso_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("codigo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fecha_eliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("permiso_id");
+
+                    b.ToTable("permisos");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblProductoEntity", b =>
@@ -859,6 +895,52 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("recepciones_compras");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblRolEntity", b =>
+                {
+                    b.Property<Guid>("rol_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fecha_eliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("rol_id");
+
+                    b.ToTable("roles");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblRolPermisoEntity", b =>
+                {
+                    b.Property<Guid>("rol_permiso_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("fecha_eliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("permiso_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("rol_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("rol_permiso_id");
+
+                    b.HasIndex("permiso_id");
+
+                    b.HasIndex("rol_id");
+
+                    b.ToTable("roles_permisos");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblTipoInventarioEntity", b =>
                 {
                     b.Property<Guid>("tipo_inventario_id")
@@ -868,12 +950,6 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<string>("abreviatura_inventario")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("nombre_tipo_inventario")
                         .IsRequired()
@@ -1100,6 +1176,30 @@ namespace Popsy.DataAccess.Migrations
                     b.HasIndex("usuario_id");
 
                     b.ToTable("usuarios_puntos_ventas");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblUsuarioRolEntity", b =>
+                {
+                    b.Property<Guid>("usuario_rol_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("fecha_eliminacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("rol_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("usuario_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("usuario_rol_id");
+
+                    b.HasIndex("rol_id");
+
+                    b.HasIndex("usuario_id");
+
+                    b.ToTable("usuarios_roles");
                 });
 
             modelBuilder.Entity("Popsy.Entities.VistaCategoriasProductosEntity", b =>
@@ -1461,6 +1561,17 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("transaccion");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblHistorialUsuarioEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblUsuarioEntity", "autor")
+                        .WithMany("historial")
+                        .HasForeignKey("autor_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("autor");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblInventarioDetalleEntity", b =>
                 {
                     b.HasOne("Popsy.Entities.TblBodegaEntity", "bodega")
@@ -1516,7 +1627,7 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("Popsy.Entities.TblPuntoVentaEntity", "punto_de_venta")
-                        .WithMany()
+                        .WithMany("ordenes_de_compra")
                         .HasForeignKey("punto_venta_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1640,6 +1751,25 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("detalle_orden_de_compra");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblRolPermisoEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblPermisoEntity", "permiso")
+                        .WithMany("roles")
+                        .HasForeignKey("permiso_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblRolEntity", "rol")
+                        .WithMany("permisos")
+                        .HasForeignKey("rol_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("permiso");
+
+                    b.Navigation("rol");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblTipoPedidoPorAlmacenEntity", b =>
                 {
                     b.HasOne("Popsy.Entities.TblCentroLogisticoEntity", "centro_logistico")
@@ -1705,6 +1835,25 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("usuario");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblUsuarioRolEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblRolEntity", "rol")
+                        .WithMany("usuarios")
+                        .HasForeignKey("rol_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblUsuarioEntity", "usuario")
+                        .WithMany("roles")
+                        .HasForeignKey("usuario_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("rol");
+
+                    b.Navigation("usuario");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblBodegaEntity", b =>
                 {
                     b.Navigation("inventario_detalles");
@@ -1754,6 +1903,11 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("transacciones");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblPermisoEntity", b =>
+                {
+                    b.Navigation("roles");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblProductoEntity", b =>
                 {
                     b.Navigation("detalles_ordenes_de_compra");
@@ -1780,11 +1934,20 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Navigation("inventarios");
 
+                    b.Navigation("ordenes_de_compra");
+
                     b.Navigation("pedidos");
 
                     b.Navigation("productos");
 
                     b.Navigation("tipos_de_pedido_por_almacen");
+
+                    b.Navigation("usuarios");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblRolEntity", b =>
+                {
+                    b.Navigation("permisos");
 
                     b.Navigation("usuarios");
                 });
@@ -1816,11 +1979,15 @@ namespace Popsy.DataAccess.Migrations
 
             modelBuilder.Entity("Popsy.Entities.TblUsuarioEntity", b =>
                 {
+                    b.Navigation("historial");
+
                     b.Navigation("inventarios");
 
                     b.Navigation("pedidos");
 
                     b.Navigation("puntos_de_venta");
+
+                    b.Navigation("roles");
                 });
 #pragma warning restore 612, 618
         }
