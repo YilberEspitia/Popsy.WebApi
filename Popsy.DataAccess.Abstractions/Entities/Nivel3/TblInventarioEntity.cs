@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Popsy.Entities
 {
     [Table("inventarios", Schema = "SIPOP")]
-    public class TblInventarioEntity : TblCreableEntity
+    public class TblInventarioEntity
     {
         #region Atributos
         [Key]

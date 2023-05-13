@@ -171,8 +171,6 @@ namespace WebApiIntegracion.Controllers
             encabezado.puntos_venta = puntoVentaInfo;
             encabezado.tipo_inventario = lista.Select(t => new TipoInventarioEntity()
             {
-                fecha_creacion = t.fecha_creacion,
-                fecha_modificacion = t.fecha_modificacion,
                 tipo_inventario_id = t.tipo_inventario_id,
                 nombre_tipo_inventario = t.nombre_tipo_inventario,
                 abreviatura_inventario = t.abreviatura_inventario
