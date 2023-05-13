@@ -38,7 +38,7 @@ namespace Popsy.Repositories
             => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).Where(x => x.proveedor_recepcion_id.Equals(id)).FirstOrDefaultAsync();
 
         async Task<IEnumerable<TblProveedorRecepcionEntity>> IProveedorRecepcionRepository.GetProveedoresRecepcionAsync()
-            => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).ToListAsync(); 
+            => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).ToListAsync();
 
         async Task<bool> IProveedorRecepcionRepository.ExisteAsync(Guid id)
             => await _context.ProveedoresRecepcion.Where(x => x.proveedor_recepcion_id.Equals(id)).AnyAsync();
