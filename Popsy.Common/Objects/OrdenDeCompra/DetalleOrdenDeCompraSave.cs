@@ -9,6 +9,7 @@ namespace Popsy.Objects
         #endregion
 
         #region Relaciones
+        public Guid orden_compra_id { get; set; }
         public Guid producto_id { get; set; }
         #endregion
     }

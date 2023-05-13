@@ -9,5 +9,10 @@ namespace Popsy.Enums
     public enum ErrorType : Int16
     {
         ProveedorNoEncontrado = 0,
+        PuntoDeVentaNoEncontrado = 1,
+        DetalleDeVentaNoEncontrado = 2,
+        OrdenDeCompraNoEncontrada = 3,
+        RecepcionDeCompraNoEncontrada = 4,
+        ProductoNoEncontrado = 5,
     }
 }

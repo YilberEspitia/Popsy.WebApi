@@ -874,6 +874,17 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<int>("cantidad_recibida")
                         .HasColumnType("int");
 
+                    b.Property<string>("codigo_recepcion_compra")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("constante")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:Identity:Seed", "1");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("constante"));
+
                     b.Property<Guid>("detalle_orden_compra_id")
                         .HasColumnType("uniqueidentifier");
 

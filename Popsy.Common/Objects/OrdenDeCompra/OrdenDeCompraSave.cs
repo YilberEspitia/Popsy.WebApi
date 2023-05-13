@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Popsy.Objects
 {
     public class OrdenDeCompraSave
@@ -9,7 +11,11 @@ namespace Popsy.Objects
         #endregion
 
         #region Relaciones
-        public virtual ISet<DetalleOrdenDeCompraSave> detalles_ordenes_de_compra { get; protected set; } = new HashSet<DetalleOrdenDeCompraSave>();
+        [Required]
+        public Guid punto_venta_id { get; set; }
+        [Required]
+        public Guid proveedor_recepcion_id { get; set; }
+        public IEnumerable<DetalleOrdenDeCompraSave> detalles_ordenes_de_compra { get; set; } = new HashSet<DetalleOrdenDeCompraSave>();
         #endregion
     }
 }

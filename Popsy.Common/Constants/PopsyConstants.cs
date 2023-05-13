@@ -9,5 +9,6 @@
         /// Directorio base.
         /// </summary>
         public static readonly String BasePath = AppContext.BaseDirectory;
+        public static readonly String AbrevOrdenDeCompra = "REC";
     }
 }

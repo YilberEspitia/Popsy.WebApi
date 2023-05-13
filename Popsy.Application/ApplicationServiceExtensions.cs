@@ -17,6 +17,7 @@ namespace Popsy
         /// <returns>Referencia de <see cref="IServiceCollection"/> después de la inyección de dependencias.</returns>
         public static IServiceCollection AddPopsyApplication(this IServiceCollection services)
             => services.AddScoped<ICreateInventarioBaseBusiness, CreateInventarioBaseBusiness>()
-            .AddScoped<IProveedorRecepcionBusiness, ProveedorRecepcionBusiness>();
+            .AddScoped<IProveedorRecepcionBusiness, ProveedorRecepcionBusiness>()
+            .AddScoped<IOrdenDeCompraBusiness, OrdenDeCompraBusiness>();
     }
 }

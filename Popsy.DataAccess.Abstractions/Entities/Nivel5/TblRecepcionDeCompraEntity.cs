@@ -11,9 +11,12 @@ namespace Popsy.Entities
         public Guid recepcion_compra_id { get; set; }
         public int cantidad_recibida { get; set; }
         [MaxLength(50)]
-        public String numero_factura { get; set; } = default!;
+        public string numero_factura { get; set; } = default!;
         [MaxLength(50)]
-        public String Unidad_presentacion_recibida { get; set; } = default!;
+        public string Unidad_presentacion_recibida { get; set; } = default!;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int constante { get; set; }
+        public string codigo_recepcion_compra { get; set; } = default!;
         #endregion
 
         #region Relaciones

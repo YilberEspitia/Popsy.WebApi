@@ -20,6 +20,11 @@ namespace Popsy
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TblRecepcionDeCompraEntity>()
+                .Property(e => e.constante)
+                .ValueGeneratedOnAdd()
+                .HasAnnotation("SqlServer:Identity:Seed", "1");
+
             modelBuilder.Entity<VistaCategoriasProductosEntity>(entity =>
             {
                 entity.HasNoKey();

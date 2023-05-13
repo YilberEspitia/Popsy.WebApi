@@ -16,11 +16,11 @@ namespace Popsy.Business
             _repository = repository;
         }
 
-        async Task<bool> IProveedorRecepcionBusiness.CreateAsync(ProveedorRecepcionObject ordenDeCompra)
+        async Task<bool> IProveedorRecepcionBusiness.CreateAsync(ProveedorRecepcionObject proveedorSave)
         {
             Boolean response;
-            TblProveedorRecepcionEntity proveedor = _mapper.Map<TblProveedorRecepcionEntity>(ordenDeCompra);
-            TblProveedorRecepcionEntity? proveedorDb = await _repository.GetProveedorRecepcionAsync(ordenDeCompra.proveedor_recepcion_id);
+            TblProveedorRecepcionEntity proveedor = _mapper.Map<TblProveedorRecepcionEntity>(proveedorSave);
+            TblProveedorRecepcionEntity? proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
             if (proveedorDb is null)
             {
                 await _repository.CreateAsync(proveedor);

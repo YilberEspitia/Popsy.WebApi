@@ -39,15 +39,21 @@ namespace Popsy.Repositories
         }
 
         async Task<TblDetalleOrdenDeCompraEntity?> IDetalleOrdenDeCompraRepository.GetDetalleOrdenDeCompraAsync(Guid id)
-            => await _context.DetallesOrdenesDeCompra.Include(x => x.orden_de_compra).Where(x => x.detalle_orden_compra_id.Equals(id)).FirstOrDefaultAsync();
+            => await _context.DetallesOrdenesDeCompra.Include(x => x.producto).Include(x => x.orden_de_compra).Where(x => x.detalle_orden_compra_id.Equals(id)).FirstOrDefaultAsync();
 
         async Task<IEnumerable<TblDetalleOrdenDeCompraEntity>> IDetalleOrdenDeCompraRepository.GetDetallesDeOrdenesDeCompraAsync()
-            => await _context.DetallesOrdenesDeCompra.Include(x => x.orden_de_compra).ToListAsync();
+            => await _context.DetallesOrdenesDeCompra.Include(x => x.producto).Include(x => x.orden_de_compra).ToListAsync();
 
         async Task<IEnumerable<TblDetalleOrdenDeCompraEntity>> IDetalleOrdenDeCompraRepository.GetDetallesDeOrdenesDeCompraPorOrdenAsync(Guid orden_compra_id)
-            => await _context.DetallesOrdenesDeCompra.Include(x => x.orden_de_compra).Where(x => x.orden_compra_id.Equals(orden_compra_id)).ToListAsync();
+            => await _context.DetallesOrdenesDeCompra.Include(x => x.producto).Include(x => x.orden_de_compra).Where(x => x.orden_compra_id.Equals(orden_compra_id)).ToListAsync();
 
         async Task<IEnumerable<TblDetalleOrdenDeCompraEntity>> IDetalleOrdenDeCompraRepository.GetDetallesDeOrdenesDeCompraPorProductoAsync(Guid producto_id)
-            => await _context.DetallesOrdenesDeCompra.Include(x => x.orden_de_compra).Where(x => x.producto_id.Equals(producto_id)).ToListAsync();
+            => await _context.DetallesOrdenesDeCompra.Include(x => x.producto).Include(x => x.orden_de_compra).Where(x => x.producto_id.Equals(producto_id)).ToListAsync();
+
+        async Task<bool> IDetalleOrdenDeCompraRepository.ExisteAsync(Guid id)
+            => await _context.DetallesOrdenesDeCompra.Where(x => x.detalle_orden_compra_id.Equals(id)).AnyAsync();
+
+        async Task<bool> IDetalleOrdenDeCompraRepository.ExisteProductoAsync(Guid producto_id)
+            => await _context.Productos.Where(x => x.producto_id.Equals(producto_id)).AnyAsync();
     }
 }
