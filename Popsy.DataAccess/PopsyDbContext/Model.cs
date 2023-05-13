@@ -22,6 +22,7 @@ namespace Popsy
         public DbSet<TblTipoPedidoCompraTrasladoEntity> TipoPedidoCompraTraslados { get; set; }
         public DbSet<TblTipoPedidoEntity> TiposDePedidos { get; set; }
         public DbSet<TblTipoTransaccionEntity> TiposDeTransacciones { get; set; }
+        public DbSet<TblUsuarioEntity> Usuarios { get; set; }
         #endregion
         #region Nivel1
         public DbSet<TblDistritoEntity> Distritos { get; set; }

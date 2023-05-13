@@ -16,6 +16,8 @@ namespace Popsy.Entities
 
         #region Relaciones
         public Guid usuario_id { get; set; }
+        [ForeignKey("usuario_id")]
+        public TblUsuarioEntity usuario { get; set; } = default!;
         public Guid punto_venta_id { get; set; }
         [ForeignKey("punto_venta_id")]
         public TblPuntoVentaEntity punto_de_venta { get; set; } = default!;

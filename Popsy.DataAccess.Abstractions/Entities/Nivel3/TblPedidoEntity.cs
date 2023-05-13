@@ -13,10 +13,12 @@ namespace Popsy.Entities
         public string? FechaMensajeSap { get; set; }
         public string? DocumentoUnoSap { get; set; }
         public string? DocumentoDosSap { get; set; }
-        public Guid usuario_id { get; set; }
         #endregion
 
         #region Relaciones
+        public Guid usuario_id { get; set; }
+        [ForeignKey("usuario_id")]
+        public TblUsuarioEntity usuario { get; set; } = default!;
         public Guid tipo_pedido_id { get; set; }
         [ForeignKey("tipo_pedido_id")]
         public virtual TblTipoPedidoEntity tipo_pedido { get; protected set; } = default!;
