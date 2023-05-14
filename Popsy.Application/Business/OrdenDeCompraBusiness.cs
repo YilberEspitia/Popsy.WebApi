@@ -8,12 +8,31 @@ using Popsy.Objects;
 
 namespace Popsy.Business
 {
+    /// <summary>
+    /// Implementa la lógica de negocio relacionada con el módulo de ordenes de compra.
+    /// </summary>
     public class OrdenDeCompraBusiness : ApplicationBase, IOrdenDeCompraBusiness
     {
+        /// <summary>
+        /// <see cref="IProveedorRecepcionRepository"/> repositorio.
+        /// </summary>
         private readonly IOrdenDeCompraRepository _ordenRepository;
+        /// <summary>
+        /// <see cref="IDetalleOrdenDeCompraRepository"/> repositorio.
+        /// </summary>
         private readonly IDetalleOrdenDeCompraRepository _detalleOrdenRepository;
+        /// <summary>
+        /// <see cref="IRecepcionDeCompraRepository"/> repositorio.
+        /// </summary>
         private readonly IRecepcionDeCompraRepository _recepcionRepository;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="mapper">mapper.</param>
+        /// <param name="ordenRepository"><see cref="IOrdenDeCompraRepository"/> repositorio.</param>
+        /// <param name="detalleOrdenRepository"><see cref="IDetalleOrdenDeCompraRepository"/> repositorio.</param>
+        /// <param name="recepcionRepository"><see cref="IRecepcionDeCompraRepository"/> repositorio.</param>
         public OrdenDeCompraBusiness(IMapper mapper,
             IOrdenDeCompraRepository ordenRepository,
             IDetalleOrdenDeCompraRepository detalleOrdenRepository,

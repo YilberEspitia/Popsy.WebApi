@@ -5,10 +5,20 @@ using Popsy.Interfaces;
 
 namespace Popsy.Repositories
 {
+    /// <summary>
+    /// Implementa los metodos relacionados con la entidad <see cref="TblDetalleOrdenDeCompraEntity"/>.
+    /// </summary>
     public class DetalleOrdenDeCompraRepository : IDetalleOrdenDeCompraRepository
     {
+        /// <summary>
+        /// Contexto.
+        /// </summary>
         private readonly PopsyDbContext _context;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context">Contexto.</param>
         public DetalleOrdenDeCompraRepository(PopsyDbContext context)
         {
             _context = context;
