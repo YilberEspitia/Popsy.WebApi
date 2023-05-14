@@ -29,6 +29,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc(productVersion, new OpenApiInfo { Title = $"{WebApiAssemblyName}", Version = productVersion });
     c.IncludeXmlComments(XmlCommentsFilePath);
 });
+builder.Services.AddCors();
 #endregion
 
 #region HTTP
@@ -38,6 +39,11 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint($"/swagger/{productVersion}/swagger.json", $"{WebApiAssemblyName} {productVersion}");
 });
+app.UseCors(builder =>
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+);
 app.UseRouting();
 app.UseHttpsRedirection();
 
