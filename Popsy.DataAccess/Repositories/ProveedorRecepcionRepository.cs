@@ -5,10 +5,21 @@ using Popsy.Interfaces;
 
 namespace Popsy.Repositories
 {
+    /// <summary>
+    /// Implementa los metodos relacionados con la entidad <see cref="TblProveedorRecepcionEntity"/>.
+    /// </summary>
     public class ProveedorRecepcionRepository : IProveedorRecepcionRepository
     {
+        /// <summary>
+        /// Contexto.
+        /// </summary>
         private readonly PopsyDbContext _context;
 
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context">Contexto.</param>
         public ProveedorRecepcionRepository(PopsyDbContext context)
         {
             _context = context;
@@ -39,5 +50,8 @@ namespace Popsy.Repositories
 
         async Task<IEnumerable<TblProveedorRecepcionEntity>> IProveedorRecepcionRepository.GetProveedoresRecepcionAsync()
             => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).ToListAsync();
+
+        async Task<bool> IProveedorRecepcionRepository.ExisteAsync(Guid id)
+            => await _context.ProveedoresRecepcion.Where(x => x.proveedor_recepcion_id.Equals(id)).AnyAsync();
     }
 }

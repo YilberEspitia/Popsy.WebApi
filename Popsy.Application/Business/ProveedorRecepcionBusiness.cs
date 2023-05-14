@@ -7,10 +7,21 @@ using Popsy.Objects;
 
 namespace Popsy.Business
 {
+    /// <summary>
+    /// Implementa los metodos relacionados con la entidad <see cref="TblProveedorRecepcionEntity"/>.
+    /// </summary>
     public class ProveedorRecepcionBusiness : ApplicationBase, IProveedorRecepcionBusiness
     {
+        /// <summary>
+        /// <see cref="IProveedorRecepcionRepository"/> repositorio.
+        /// </summary>
         private readonly IProveedorRecepcionRepository _repository;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="mapper">mapper.</param>
+        /// <param name="repository"><see cref="IProveedorRecepcionRepository"/> repositorio.</param>
         public ProveedorRecepcionBusiness(IMapper mapper, IProveedorRecepcionRepository repository) : base(mapper)
         {
             _repository = repository;
@@ -20,7 +31,9 @@ namespace Popsy.Business
         {
             Boolean response;
             TblProveedorRecepcionEntity proveedor = _mapper.Map<TblProveedorRecepcionEntity>(proveedorSave);
-            TblProveedorRecepcionEntity? proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
+            TblProveedorRecepcionEntity? proveedorDb = default;
+            if (proveedor.proveedor_recepcion_id != default)
+                proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
             if (proveedorDb is null)
             {
                 await _repository.CreateAsync(proveedor);

@@ -28,7 +28,8 @@ namespace Popsy
 
         public void MapOrdenDeCompra()
         {
-            CreateMap<OrdenDeCompraSave, TblOrdenDeCompraEntity>();
+            CreateMap<OrdenDeCompraSave, TblOrdenDeCompraEntity>()
+                .ForMember(m => m.detalles_ordenes_de_compra, m => m.Ignore());
             CreateMap<DetalleOrdenDeCompraSave, TblDetalleOrdenDeCompraEntity>();
             CreateMap<TblOrdenDeCompraEntity, OrdenDeCompraRead>();
             CreateMap<TblDetalleOrdenDeCompraEntity, DetalleOrdenDeCompraRead>();

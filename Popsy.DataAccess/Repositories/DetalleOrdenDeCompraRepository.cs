@@ -5,10 +5,20 @@ using Popsy.Interfaces;
 
 namespace Popsy.Repositories
 {
+    /// <summary>
+    /// Implementa los metodos relacionados con la entidad <see cref="TblDetalleOrdenDeCompraEntity"/>.
+    /// </summary>
     public class DetalleOrdenDeCompraRepository : IDetalleOrdenDeCompraRepository
     {
+        /// <summary>
+        /// Contexto.
+        /// </summary>
         private readonly PopsyDbContext _context;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context">Contexto.</param>
         public DetalleOrdenDeCompraRepository(PopsyDbContext context)
         {
             _context = context;
@@ -18,13 +28,6 @@ namespace Popsy.Repositories
         {
             detalleOrdenDeCompra.fecha_modificacion = DateTime.UtcNow;
             await _context.AddAsync(detalleOrdenDeCompra);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        async Task<bool> IDetalleOrdenDeCompraRepository.CreateManyAsync(IEnumerable<TblDetalleOrdenDeCompraEntity> detallesOrdenesDeCompra)
-        {
-            await _context.AddRangeAsync(detallesOrdenesDeCompra);
             await _context.SaveChangesAsync();
             return true;
         }
