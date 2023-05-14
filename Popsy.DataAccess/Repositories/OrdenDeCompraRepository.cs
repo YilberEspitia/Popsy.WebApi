@@ -25,12 +25,12 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        async Task<bool> IOrdenDeCompraRepository.CreateAsync(TblOrdenDeCompraEntity ordenDeCompra)
+        async Task<Guid> IOrdenDeCompraRepository.CreateAsync(TblOrdenDeCompraEntity ordenDeCompra)
         {
             ordenDeCompra.fecha_modificacion = DateTime.UtcNow;
             await _context.AddAsync(ordenDeCompra);
             await _context.SaveChangesAsync();
-            return true;
+            return ordenDeCompra.orden_compra_id;
         }
 
         async Task<bool> IOrdenDeCompraRepository.UpdateAsync(TblOrdenDeCompraEntity ordenDeCompra)

@@ -52,18 +52,29 @@ namespace Popsy.Business
             if (!await _ordenRepository.ExistePuntoDeVentaAsync(ordenDeCompraSave.punto_venta_id))
                 throw new PopsyException(ErrorType.PuntoDeVentaNoEncontrado);
             TblOrdenDeCompraEntity ordenDeCompra = _mapper.Map<TblOrdenDeCompraEntity>(ordenDeCompraSave);
+            Guid orden_id = ordenDeCompra.orden_compra_id;
             TblOrdenDeCompraEntity? ordenDeCompraDb = default;
             if (ordenDeCompra.orden_compra_id != default)
                 ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraAsync(ordenDeCompra.orden_compra_id);
             if (ordenDeCompraDb is null)
             {
-                await _ordenRepository.CreateAsync(ordenDeCompra);
+                orden_id = await _ordenRepository.CreateAsync(ordenDeCompra);
                 response = true;
             }
             else
             {
+                orden_id = ordenDeCompra.orden_compra_id;
                 await _ordenRepository.UpdateAsync(ordenDeCompra);
                 response = false;
+            }
+            if (ordenDeCompraSave.detalles_ordenes_de_compra.Any())
+            {
+                IEnumerable<TblDetalleOrdenDeCompraEntity> detalles = _mapper.Map<IEnumerable<TblDetalleOrdenDeCompraEntity>>(ordenDeCompraSave.detalles_ordenes_de_compra);
+                foreach (TblDetalleOrdenDeCompraEntity detalle in detalles)
+                {
+                    detalle.orden_compra_id = orden_id;
+                    await this.CrearDetalleAsync(detalle);
+                }
             }
             return response;
         }

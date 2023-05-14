@@ -12,7 +12,7 @@ namespace Popsy.Interfaces
         /// </summary>
         /// <param name="ordenDeCompra">Objeto de <see cref="TblOrdenDeCompraEntity"/></param>
         /// <returns>Verdadero si se guarda.</returns>
-        Task<bool> CreateAsync(TblOrdenDeCompraEntity ordenDeCompra);
+        Task<Guid> CreateAsync(TblOrdenDeCompraEntity ordenDeCompra);
         /// <summary>
         /// Actualiza un registro existente de <see cref="TblOrdenDeCompraEntity"/>.
         /// </summary>
