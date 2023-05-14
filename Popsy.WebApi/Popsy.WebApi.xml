@@ -85,5 +85,163 @@
             Corresponde al guardado del inventario, envía correo y crea un consecutivo de inventario.
             </remarks>
         </member>
+        <member name="T:WebApiIntegracion.Controllers.OrdenDeCompraController">
+            <summary>
+            Controlador de ordenes de compra.
+            </summary>
+        </member>
+        <member name="F:WebApiIntegracion.Controllers.OrdenDeCompraController._proveedor">
+            <summary>
+            <see cref="T:Popsy.Interfaces.IProveedorRecepcionBusiness"/> negocio.
+            </summary>
+        </member>
+        <member name="F:WebApiIntegracion.Controllers.OrdenDeCompraController._ordenDeCompra">
+            <summary>
+            <see cref="T:Popsy.Interfaces.IOrdenDeCompraBusiness"/> negocio.
+            </summary>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.#ctor(Popsy.Interfaces.IProveedorRecepcionBusiness,Popsy.Interfaces.IOrdenDeCompraBusiness)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="proveedor"><see cref="T:Popsy.Interfaces.IProveedorRecepcionBusiness"/> negocio.</param>
+            <param name="ordenDeCompra"><see cref="T:Popsy.Interfaces.IOrdenDeCompraBusiness"/> negocio.</param>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.ProveedorRecepcionObject)">
+            <summary>
+            Guarda o actualiza registro de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/>.
+            </summary>
+            <param name="proveedorSave">Objeto de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></param>
+            <returns>Verdadero si se guarda, falso si actualiza.</returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.Guid)">
+            <summary>
+            Devuelve un registro por id.
+            </summary>
+            <param name="id"><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/> id.</param>
+            <returns><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.String)">
+            <summary>
+            Devuelve un registro por codigo sap.
+            </summary>
+            <param name="codigoSap"><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/> codigo sap.</param>
+            <returns><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedoresRecepcionAsync">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/>.
+            </summary>
+            <returns>Registros de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.OrdenDeCompraSave)">
+            <summary>
+            Guarda o actualiza un registro de <see cref="T:Popsy.Objects.OrdenDeCompraSave"/>.
+            </summary>
+            <param name="ordenDeCompra">Objeto de <see cref="T:Popsy.Objects.OrdenDeCompraSave"/></param>
+            <returns>Verdadero si se guarda, falso si actualiza.</returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenDeCompraAsync(System.Guid)">
+            <summary>
+            Devuelve un registro por id.
+            </summary>
+            <param name="id"><see cref="T:Popsy.Objects.OrdenDeCompraRead"/> id.</param>
+            <returns><see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraAsync">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/>.
+            </summary>
+            <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorProveedorAsync(System.Guid)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/> por proveedor.
+            </summary>
+            <param name="proveedor_recepcion_id">Id de proveedor.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorPuntoAsync(System.Guid)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/> por punto de venta.
+            </summary>
+            <param name="punto_venta_id">Id de punto de venta.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.DetalleOrdenDeCompraSave)">
+            <summary>
+            Guarda o actualiza registro de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/>.
+            </summary>
+            <param name="detalleOrdenDeCompra">Objeto de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/></param>
+            <returns>Verdadero si se guarda, falso si actualiza.</returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateManyAsync(System.Collections.Generic.IEnumerable{Popsy.Objects.DetalleOrdenDeCompraSave})">
+            <summary>
+            Guarda o actualiza varios registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/>.
+            </summary>
+            <param name="detallesOrdenDeCompra">Objeto de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/></param>
+            <returns>Verdadero si se guarda o actualiza.</returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetalleOrdenDeCompraAsync(System.Guid)">
+            <summary>
+            Devuelve un registro por id.
+            </summary>
+            <param name="id"><see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> id.</param>
+            <returns><see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraAsync">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/>.
+            </summary>
+            <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorProductoAsync(System.Guid)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> por producto.
+            </summary>
+            <param name="producto_id">Id de producto.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorOrdenAsync(System.Guid)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> por orden de compra.
+            </summary>
+            <param name="orden_compra_id">Id de orden de compra.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.RecepcionDeCompraSave)">
+            <summary>
+            Guarda o actualiza registro de <see cref="T:Popsy.Objects.RecepcionDeCompraSave"/>.
+            </summary>
+            <param name="recepcionDeCompra">Objeto de <see cref="T:Popsy.Objects.RecepcionDeCompraSave"/></param>
+            <returns>Verdadero si se guarda, falso si actualiza.</returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionDeCompraAsync(System.Guid)">
+            <summary>
+            Devuelve un registro por id.
+            </summary>
+            <param name="id"><see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> id.</param>
+            <returns><see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasAsync">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/>.
+            </summary>
+            <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorDetalleAsync(System.Guid)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> por detalle de orden de compra.
+            </summary>
+            <param name="detalle_orden_compra_id">Id de detalle de orden de compra.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
+        </member>
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorCodigoAsync(System.String)">
+            <summary>
+            Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> por codigo de recepción.
+            </summary>
+            <param name="codigo">Codigo de recepcion.</param>
+            <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
+        </member>
     </members>
 </doc>
