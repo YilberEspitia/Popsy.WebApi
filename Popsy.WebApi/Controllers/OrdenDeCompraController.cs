@@ -220,13 +220,13 @@ namespace WebApiIntegracion.Controllers
 
         #region Test
         [HttpGet("TestSapOrden")]
-        public async Task<ActionResult<ResponseOrdenDeCompra>> TestSapOrden()
+        public async Task<ActionResult<ResponseSAP<ResultOrdenDeCompra>>> TestSapOrden()
             => await _sap.SyncOrdenesDeCompra("A005");
         [HttpGet("TestSapOrdenVacio")]
-        public async Task<ActionResult<ResponseOrdenDeCompra>> TestSapOrdenVacio()
+        public async Task<ActionResult<ResponseSAP<ResultOrdenDeCompra>>> TestSapOrdenVacio()
             => await _sap.SyncOrdenesDeCompra("0");
         [HttpGet("TestSapProv")]
-        public async Task<ActionResult<ResponseProveedorRecepcion>> TestSapProv()
+        public async Task<ActionResult<ResponseSAP<ResultProveedorRecepcion>>> TestSapProv()
             => await _sap.SyncProveedoresRecepcion();
         #endregion
     }

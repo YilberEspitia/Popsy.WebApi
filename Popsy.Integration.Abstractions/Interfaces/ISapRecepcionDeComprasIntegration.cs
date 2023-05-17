@@ -4,8 +4,8 @@ namespace Popsy.Interfaces
 {
     public interface ISapRecepcionDeComprasIntegration
     {
-        Task<ResponseOrdenDeCompra> SyncOrdenesDeCompra(string codigo_almacen);
-        Task<ResponseProveedorRecepcion> SyncProveedoresRecepcion();
+        Task<ResponseSAP<ResultOrdenDeCompra>> SyncOrdenesDeCompra(string codigo_almacen);
+        Task<ResponseSAP<ResultProveedorRecepcion>> SyncProveedoresRecepcion();
         Task<string> EnviaRecepcionDeCompra();
     }
 }
