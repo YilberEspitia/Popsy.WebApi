@@ -20,16 +20,18 @@ namespace WebApiIntegracion.Controllers
         /// <see cref="IOrdenDeCompraBusiness"/> negocio.
         /// </summary>
         private readonly IOrdenDeCompraBusiness _ordenDeCompra;
+        private readonly ISapRecepcionDeComprasIntegration _sap;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="proveedor"><see cref="IProveedorRecepcionBusiness"/> negocio.</param>
         /// <param name="ordenDeCompra"><see cref="IOrdenDeCompraBusiness"/> negocio.</param>
-        public OrdenDeCompraController(IProveedorRecepcionBusiness proveedor, IOrdenDeCompraBusiness ordenDeCompra)
+        public OrdenDeCompraController(IProveedorRecepcionBusiness proveedor, IOrdenDeCompraBusiness ordenDeCompra, ISapRecepcionDeComprasIntegration sap)
         {
             _proveedor = proveedor;
             _ordenDeCompra = ordenDeCompra;
+            _sap = sap;
         }
 
         #region Proveedor
@@ -214,6 +216,18 @@ namespace WebApiIntegracion.Controllers
         [HttpGet("GetRecepcionesDeCompraPorCodigo/{codigo}")]
         public async Task<IEnumerable<RecepcionDeCompraSave>> GetRecepcionesDeComprasPorCodigoAsync(string codigo)
             => await _ordenDeCompra.GetRecepcionesDeComprasPorCodigoAsync(codigo);
+        #endregion
+
+        #region Test
+        [HttpGet("TestSapOrden")]
+        public async Task<ActionResult<ResponseOrdenDeCompra>> TestSapOrden()
+            => await _sap.SyncOrdenesDeCompra("A005");
+        [HttpGet("TestSapOrdenVacio")]
+        public async Task<ActionResult<ResponseOrdenDeCompra>> TestSapOrdenVacio()
+            => await _sap.SyncOrdenesDeCompra("0");
+        [HttpGet("TestSapProv")]
+        public async Task<ActionResult<ResponseProveedorRecepcion>> TestSapProv()
+            => await _sap.SyncProveedoresRecepcion();
         #endregion
     }
 }

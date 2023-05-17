@@ -100,7 +100,7 @@
             <see cref="T:Popsy.Interfaces.IOrdenDeCompraBusiness"/> negocio.
             </summary>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.#ctor(Popsy.Interfaces.IProveedorRecepcionBusiness,Popsy.Interfaces.IOrdenDeCompraBusiness)">
+        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.#ctor(Popsy.Interfaces.IProveedorRecepcionBusiness,Popsy.Interfaces.IOrdenDeCompraBusiness,Popsy.Interfaces.ISapRecepcionDeComprasIntegration)">
             <summary>
             Constructor.
             </summary>

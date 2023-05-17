@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Popsy;
 
@@ -11,9 +12,11 @@ using Popsy;
 namespace Popsy.DataAccess.Migrations
 {
     [DbContext(typeof(PopsyDbContext))]
-    partial class PopsyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230517014219_PosicionProducto")]
+    partial class PosicionProducto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

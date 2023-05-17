@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 
 using Popsy;
 using Popsy.Common;
+using Popsy.Settings;
 
 #region Variables
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ String WebApiAssemblyName = typeof(Program).Assembly.GetName().Name!;
 String XmlCommentsFilePath = Path.Combine(PopsyConstants.BasePath, $"{WebApiAssemblyName}.xml");
 ConfigurationManager configuration = builder.Configuration;
 String productVersion = configuration.GetSection("ProductVersion").Value!;
+IntegracionPopsySettings popsySettings = new();
+configuration.GetSection("Integraciones:HeladosPopsy").Bind(popsySettings);
 #endregion
 
 #region Services
@@ -20,7 +23,7 @@ builder.Services.AddDbContext<PopsyDbContext>(
     .AddAutoMapper(typeof(ApplicationServiceExtensions))
     .AddPopsyApplication()
     .AddPopsyRepositories()
-    .AddPopsyIntegrations();
+    .AddPopsyIntegrations(popsySettings);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
