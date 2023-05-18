@@ -16,14 +16,14 @@ namespace Popsy.Integrations
             _settings = settings;
         }
 
-        async Task<ResponseSAP<ResultOrdenDeCompra>> ISapRecepcionDeComprasIntegration.SyncOrdenesDeCompra(string codigo_almacen)
+        async Task<ResponseSAP<ResultOrdenDeCompra>?> ISapRecepcionDeComprasIntegration.SyncOrdenesDeCompra(string codigo_almacen)
         {
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(_settings.Username + ":" + _settings.Password));
             string url = String.Concat(String.Format(_settings.EndPoint, _settings.Ambiente), String.Format(_settings.ApiOrdenDeCompra, codigo_almacen, _settings.SapClient));
             return await base.GetObjectResponse<ResponseSAP<ResultOrdenDeCompra>>(url, new AuthenticationHeaderValue(_settings.AuthenticationType, credentials));
         }
 
-        async Task<ResponseSAP<ResultProveedorRecepcion>> ISapRecepcionDeComprasIntegration.SyncProveedoresRecepcion()
+        async Task<ResponseSAP<ResultProveedorRecepcion>?> ISapRecepcionDeComprasIntegration.SyncProveedoresRecepcion()
         {
             string credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(_settings.Username + ":" + _settings.Password));
             string url = String.Concat(String.Format(_settings.EndPoint, _settings.Ambiente), String.Format(_settings.ApiProveedorRecepcion, _settings.SapClient));

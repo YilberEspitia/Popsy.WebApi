@@ -31,5 +31,6 @@ namespace Popsy.Interfaces
         /// </summary>
         /// <returns>Registros de <see cref="ProveedorRecepcionObject"/></returns>
         Task<IEnumerable<ProveedorRecepcionObject>> GetProveedoresRecepcionAsync();
+        Task<IEnumerable<ResponsePopsySAP>> SyncSAPAsync();
     }
 }

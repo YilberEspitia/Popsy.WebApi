@@ -32,6 +32,12 @@ namespace Popsy.Interfaces
         /// <returns><see cref="TblProveedorRecepcionEntity"/></returns>
         Task<TblProveedorRecepcionEntity?> GetProveedorRecepcionAsync(Guid id);
         /// <summary>
+        /// Devuelve un registro por id.
+        /// </summary>
+        /// <param name="codigo_sap">Código SAP del proveedor.</param>
+        /// <returns><see cref="TblProveedorRecepcionEntity"/></returns>
+        Task<TblProveedorRecepcionEntity?> GetProveedorRecepcionPorSapAsync(string codigo_sap);
+        /// <summary>
         /// Devuelve todos los registros de <see cref="TblProveedorRecepcionEntity"/>.
         /// </summary>
         /// <returns>Registros de <see cref="TblProveedorRecepcionEntity"/></returns>
