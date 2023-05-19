@@ -8,6 +8,7 @@ namespace Popsy.Objects
         public Guid orden_compra_id { get; set; }
         public String orden_compra { get; set; } = default!;
         public DateTime fecha_orden_compra { get; set; }
+        public int posicion_producto { get; set; }
         #endregion
 
         #region Relaciones

@@ -115,5 +115,8 @@ namespace Popsy.Interfaces
         /// <returns>Registros de <see cref="RecepcionDeCompraRead"/></returns>
         Task<IEnumerable<RecepcionDeCompraRead>> GetRecepcionesDeComprasPorCodigoAsync(string codigo);
         #endregion
+        #region Integraciones
+        Task<IEnumerable<ResponseOrdenesPopsySAP>> SyncSAPAsync();
+        #endregion
     }
 }

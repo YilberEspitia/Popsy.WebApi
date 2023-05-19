@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Text.RegularExpressions;
+
+using AutoMapper;
 
 using Popsy.Common;
 using Popsy.Entities;
@@ -25,6 +28,10 @@ namespace Popsy.Business
         /// <see cref="IRecepcionDeCompraRepository"/> repositorio.
         /// </summary>
         private readonly IRecepcionDeCompraRepository _recepcionRepository;
+        /// <summary>
+        /// <see cref="ISapRecepcionDeComprasIntegration"/> repositorio.
+        /// </summary>
+        private readonly ISapRecepcionDeComprasIntegration _sapIntegration;
 
         /// <summary>
         /// Constructor.
@@ -36,11 +43,13 @@ namespace Popsy.Business
         public OrdenDeCompraBusiness(IMapper mapper,
             IOrdenDeCompraRepository ordenRepository,
             IDetalleOrdenDeCompraRepository detalleOrdenRepository,
-            IRecepcionDeCompraRepository recepcionRepository) : base(mapper)
+            IRecepcionDeCompraRepository recepcionRepository,
+            ISapRecepcionDeComprasIntegration sapIntegration) : base(mapper)
         {
             _ordenRepository = ordenRepository;
             _detalleOrdenRepository = detalleOrdenRepository;
             _recepcionRepository = recepcionRepository;
+            _sapIntegration = sapIntegration;
         }
 
         #region OrdenDeCompra
@@ -63,6 +72,7 @@ namespace Popsy.Business
             }
             else
             {
+                ordenDeCompra.orden_compra_id = ordenDeCompraDb.orden_compra_id;
                 orden_id = ordenDeCompra.orden_compra_id;
                 await _ordenRepository.UpdateAsync(ordenDeCompra);
                 response = false;
@@ -126,6 +136,7 @@ namespace Popsy.Business
             }
             else
             {
+                detalleOrdenDeCompra.detalle_orden_compra_id = detalleOrdenDeCompraDb.detalle_orden_compra_id;
                 await _detalleOrdenRepository.UpdateAsync(detalleOrdenDeCompra);
                 response = false;
             }
@@ -205,7 +216,102 @@ namespace Popsy.Business
             => _mapper.Map<IEnumerable<RecepcionDeCompraRead>>(await _recepcionRepository.GetRecepcionesDeComprasPorCodigoAsync(codigo));
         #endregion
 
+        #region Integraciones
+        async Task<IEnumerable<ResponseOrdenesPopsySAP>> IOrdenDeCompraBusiness.SyncSAPAsync()
+        {
+            ISet<ResponseOrdenesPopsySAP> responsePopsy = new HashSet<ResponseOrdenesPopsySAP>();
+            IEnumerable<PuntoDeVentaBasicRead> puntosDeVenta = await _ordenRepository.GetAllPuntosDeVentaAsync();
+            foreach (PuntoDeVentaBasicRead puntoDeVenta in puntosDeVenta)
+            {
+                ResponseSAP<ResultOrdenDeCompra>? response = await _sapIntegration.SyncOrdenesDeCompra(puntoDeVenta.codigo);
+                if (response is not null && response.d.results.Any())
+                {
+                    ISet<ResponsePopsySAP> ordenesResponse = new HashSet<ResponsePopsySAP>();
+                    foreach (ResultOrdenDeCompra ordenDeCompra in response.d.results)
+                    {
+                        try
+                        {
+                            int posicion_producto = 0;
+                            int.TryParse(ordenDeCompra.PositionDoc, out posicion_producto);
+                            DateTime fecha_orden_compra = this.ConvertirFecha(ordenDeCompra.Date_Solped);
+                            AccionesBD accion = await this.CrearOrdenesAsync(new OrdenDeCompraSave()
+                            {
+                                orden_compra = ordenDeCompra.DocOC,
+                                posicion_producto = posicion_producto,
+                                punto_venta_id = puntoDeVenta.punto_venta_id,
+                                fecha_orden_compra = fecha_orden_compra,
+                            }, ordenDeCompra.Proveedor);
+                            ordenesResponse.Add(new ResponsePopsySAP()
+                            {
+                                Codigo = ordenDeCompra.DocOC,
+                                Accion = accion,
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            ordenesResponse.Add(new ResponsePopsySAP()
+                            {
+                                Codigo = ordenDeCompra.DocOC,
+                                Accion = AccionesBD.NoCreado,
+                                Error = ex.Message
+                            });
+                        }
+                    }
+                    responsePopsy.Add(new ResponseOrdenesPopsySAP()
+                    {
+                        Punto_venta_id = puntoDeVenta.punto_venta_id,
+                        Codigo = puntoDeVenta.codigo,
+                        Ordenes = ordenesResponse
+                    });
+                }
+            }
+            return responsePopsy;
+        }
+        #endregion
+
         #region Private
+        private async Task<AccionesBD> CrearOrdenesAsync(OrdenDeCompraSave ordenDeCompraSave, string proveedor)
+        {
+            AccionesBD response = AccionesBD.NoCreado;
+            if (string.IsNullOrEmpty(proveedor) || !await _ordenRepository.ExisteProveedorRecepcionPorCodigoAsync(proveedor))
+                throw new PopsyException(ErrorType.ProveedorNoEncontrado);
+            if (!await _ordenRepository.ExistePuntoDeVentaAsync(ordenDeCompraSave.punto_venta_id))
+                throw new PopsyException(ErrorType.PuntoDeVentaNoEncontrado);
+            Guid ordenId;
+            ordenDeCompraSave.proveedor_recepcion_id = await _ordenRepository.GetIdProveedorRecepcionPorCodigoAsync(proveedor);
+            TblOrdenDeCompraEntity ordenDeCompra = _mapper.Map<TblOrdenDeCompraEntity>(ordenDeCompraSave);
+            TblOrdenDeCompraEntity? ordenDeCompraDb = default;
+            if (ordenDeCompra.orden_compra != default)
+                ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraPorCodigoAsync(ordenDeCompra.orden_compra);
+            if (ordenDeCompraDb == default && ordenDeCompra.orden_compra_id != default)
+                ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraAsync(ordenDeCompra.orden_compra_id);
+            if (ordenDeCompraDb is null)
+            {
+                ordenId = await _ordenRepository.CreateAsync(ordenDeCompra);
+                response = AccionesBD.Creado;
+            }
+            else
+            {
+                ordenDeCompra.orden_compra_id = ordenDeCompraDb.orden_compra_id;
+                ordenId = ordenDeCompra.orden_compra_id;
+                if (this.TieneCambios(ordenDeCompraDb, ordenDeCompra))
+                {
+                    await _ordenRepository.UpdateAsync(ordenDeCompra);
+                    response = AccionesBD.Actualizado;
+                }
+                else
+                    response = AccionesBD.NoActualizado;
+            }
+            return response;
+        }
+
+        private bool TieneCambios(TblOrdenDeCompraEntity ordenDeCompra, TblOrdenDeCompraEntity ordenDeCompraDb)
+            => ordenDeCompra.orden_compra != ordenDeCompraDb.orden_compra ||
+            ordenDeCompra.posicion_producto != ordenDeCompraDb.posicion_producto ||
+            ordenDeCompra.punto_venta_id != ordenDeCompraDb.punto_venta_id ||
+            ordenDeCompra.fecha_orden_compra != ordenDeCompraDb.fecha_orden_compra ||
+            ordenDeCompra.proveedor_recepcion_id != ordenDeCompraDb.proveedor_recepcion_id;
+
         private string GetConsecutivo(int constante)
         {
             DateTime fechaActual = DateTime.Now;
@@ -217,6 +323,23 @@ namespace Popsy.Business
             string numeroFormateado = (constante + 1).ToString("D6");
 
             return $"{PopsyConstants.AbrevOrdenDeCompra}-{año}{mes}{dia}{numeroFormateado}"; ;
+        }
+
+        public DateTime ConvertirFecha(string fecha)
+        {
+            DateTime fechaConvertida = default;
+            Regex regex = new Regex(@"\d+");
+            Match match = regex.Match(fecha);
+            if (match.Success)
+            {
+                long milisegundos;
+                if (long.TryParse(match.Value, out milisegundos))
+                {
+                    DateTimeOffset fechaOffset = DateTimeOffset.FromUnixTimeMilliseconds(milisegundos);
+                    fechaConvertida = fechaOffset.DateTime;
+                }
+            }
+            return fechaConvertida;
         }
 
         private async Task CrearDetalleAsync(TblDetalleOrdenDeCompraEntity detalle)

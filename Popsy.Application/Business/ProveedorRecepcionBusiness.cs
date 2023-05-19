@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+
+using AutoMapper;
 
 using Popsy.Entities;
 using Popsy.Enums;
@@ -33,7 +35,7 @@ namespace Popsy.Business
             _sapIntegration = sapIntegration;
         }
 
-        async Task<bool> IProveedorRecepcionBusiness.CreateAsync(ProveedorRecepcionObject proveedorSave)
+        async Task<AccionesBD> IProveedorRecepcionBusiness.CreateAsync(ProveedorRecepcionObject proveedorSave)
             => await this.CrearProveedorAsync(proveedorSave);
 
         async Task<IEnumerable<ProveedorRecepcionObject>> IProveedorRecepcionBusiness.GetProveedoresRecepcionAsync()
@@ -68,25 +70,23 @@ namespace Popsy.Business
                 {
                     try
                     {
-                        Boolean creado = await this.CrearProveedorAsync(new ProveedorRecepcionObject()
+                        AccionesBD accion = await this.CrearProveedorAsync(new ProveedorRecepcionObject()
                         {
                             codigo_sap_proveedor = proveedor.Lifnr,
                             nombre = proveedor.Name1,
                         });
                         responsePopsy.Add(new ResponsePopsySAP()
                         {
-                            Codigo_sap = proveedor.Lifnr,
-                            Creado = creado,
-                            Actualizado = !creado,
+                            Codigo = proveedor.Lifnr,
+                            Accion = accion,
                         });
                     }
                     catch (Exception ex)
                     {
                         responsePopsy.Add(new ResponsePopsySAP()
                         {
-                            Codigo_sap = proveedor.Lifnr,
-                            Creado = false,
-                            Actualizado = false,
+                            Codigo = proveedor.Lifnr,
+                            Accion = AccionesBD.NoCreado,
                             Error = ex.Message
                         });
                     }
@@ -97,27 +97,37 @@ namespace Popsy.Business
         #endregion
 
         #region Metodos privados
-        private async Task<bool> CrearProveedorAsync(ProveedorRecepcionObject proveedorSave)
+        private async Task<AccionesBD> CrearProveedorAsync(ProveedorRecepcionObject proveedorSave)
         {
-            Boolean response;
+            AccionesBD response = AccionesBD.NoCreado;
             TblProveedorRecepcionEntity proveedor = _mapper.Map<TblProveedorRecepcionEntity>(proveedorSave);
             TblProveedorRecepcionEntity? proveedorDb = default;
-            if (proveedor.proveedor_recepcion_id != default)
-                proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
             if (proveedor.codigo_sap_proveedor != default)
                 proveedorDb = await _repository.GetProveedorRecepcionPorSapAsync(proveedor.codigo_sap_proveedor);
+            if (proveedorDb == default && proveedor.proveedor_recepcion_id != default)
+                proveedorDb = await _repository.GetProveedorRecepcionAsync(proveedor.proveedor_recepcion_id);
             if (proveedorDb is null)
             {
                 await _repository.CreateAsync(proveedor);
-                response = true;
+                response = AccionesBD.Creado;
             }
             else
             {
-                await _repository.UpdateAsync(proveedor);
-                response = false;
+                proveedor.proveedor_recepcion_id = proveedorDb.proveedor_recepcion_id;
+                if (this.TieneCambios(proveedorDb, proveedor))
+                {
+                    await _repository.UpdateAsync(proveedor);
+                    response = AccionesBD.Actualizado;
+                }
+                else
+                    response = AccionesBD.NoActualizado;
             }
             return response;
         }
+
+        private bool TieneCambios(TblProveedorRecepcionEntity proveedorDb, TblProveedorRecepcionEntity proveedor)
+            => proveedor.nombre != proveedorDb.nombre ||
+            proveedor.codigo_sap_proveedor != proveedorDb.codigo_sap_proveedor;
         #endregion
     }
 }

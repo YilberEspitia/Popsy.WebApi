@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+using Popsy.Enums;
 using Popsy.Interfaces;
 using Popsy.Objects;
 
@@ -41,7 +42,7 @@ namespace WebApiIntegracion.Controllers
         /// <param name="proveedorSave">Objeto de <see cref="ProveedorRecepcionObject"/></param>
         /// <returns>Verdadero si se guarda, falso si actualiza.</returns>
         [HttpPost("CrearProveedor")]
-        public async Task<ActionResult<bool>> CreateAsync([FromBody] ProveedorRecepcionObject proveedorSave)
+        public async Task<ActionResult<AccionesBD>> CreateAsync([FromBody] ProveedorRecepcionObject proveedorSave)
             => await _proveedor.CreateAsync(proveedorSave);
 
         /// <summary>
@@ -216,6 +217,15 @@ namespace WebApiIntegracion.Controllers
         [HttpGet("GetRecepcionesDeCompraPorCodigo/{codigo}")]
         public async Task<IEnumerable<RecepcionDeCompraSave>> GetRecepcionesDeComprasPorCodigoAsync(string codigo)
             => await _ordenDeCompra.GetRecepcionesDeComprasPorCodigoAsync(codigo);
+        #endregion
+
+        #region Integraciones
+        [HttpGet("SyncProveedor")]
+        public async Task<IEnumerable<ResponsePopsySAP>> SyncSAPAsync()
+            => await _proveedor.SyncSAPAsync();
+        [HttpGet("SyncOrdenes")]
+        public async Task<IEnumerable<ResponseOrdenesPopsySAP>> SyncSAPOrdenes()
+            => await _ordenDeCompra.SyncSAPAsync();
         #endregion
 
         #region Test

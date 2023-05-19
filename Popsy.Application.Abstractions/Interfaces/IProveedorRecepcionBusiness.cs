@@ -1,4 +1,5 @@
 ﻿using Popsy.Entities;
+using Popsy.Enums;
 using Popsy.Objects;
 
 namespace Popsy.Interfaces
@@ -13,7 +14,7 @@ namespace Popsy.Interfaces
         /// </summary>
         /// <param name="proveedor">Objeto de <see cref="ProveedorRecepcionObject"/></param>
         /// <returns>Verdadero si se guarda, falso si actualiza.</returns>
-        Task<bool> CreateAsync(ProveedorRecepcionObject proveedor);
+        Task<AccionesBD> CreateAsync(ProveedorRecepcionObject proveedor);
         /// <summary>
         /// Devuelve un registro por codigo sap.
         /// </summary>
