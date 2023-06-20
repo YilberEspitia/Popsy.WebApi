@@ -14,9 +14,9 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        async Task<TblProductoPuntoVentaEntity> IProductosPuntosVentaRepository.GetProductoPuntoVentaId(Guid producto_id, Guid punto_venta_id)
+        async Task<TblProductoPuntoVentaEntity?> IProductosPuntosVentaRepository.GetProductoPuntoVentaId(Guid producto_id, Guid punto_venta_id)
         {
-            TblProductoPuntoVentaEntity vista = await _context.ProductosPuntoDeVenta.FirstOrDefaultAsync(l => l.producto_id == producto_id && l.punto_venta_id == punto_venta_id);
+            TblProductoPuntoVentaEntity? vista = await _context.ProductosPuntoDeVenta.FirstOrDefaultAsync(l => l.producto_id == producto_id && l.punto_venta_id == punto_venta_id);
             return vista;
         }
     }

@@ -6,6 +6,7 @@ namespace Popsy.Repositories
     {
         private readonly PopsyDbContext _context;
 
+
         public InventarioDetalleRepository(PopsyDbContext context)
         {
             _context = context;

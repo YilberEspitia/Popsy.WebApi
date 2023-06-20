@@ -91,6 +91,10 @@ namespace Popsy
         /// </summary>
         public DbSet<TblDistritoEntity> Distritos { get; set; }
         /// <summary>
+        /// Unidades de inventarios dos.
+        /// </summary>
+        public DbSet<TblUnidadInventarioDos> UnidadesDeInventariosDos { get; set; }
+        /// <summary>
         /// Tabla de factores de conversión por producto.
         /// </summary>
         public DbSet<TblProductoFactorConversionEntity> FactoresDeConversionProducto { get; set; }
@@ -115,6 +119,10 @@ namespace Popsy
         /// </summary>
         public DbSet<TblInventarioEntity> Inventarios { get; set; }
         /// <summary>
+        /// Tabla de inventarios2.
+        /// </summary>
+        public DbSet<TblInventario2Entity> Inventarios2 { get; set; }
+        /// <summary>
         /// Tabla de ordenes de compra.
         /// </summary>
         public DbSet<TblOrdenDeCompraEntity> OrdenesDeCompra { get; set; }
@@ -123,9 +131,17 @@ namespace Popsy
         /// </summary>
         public DbSet<TblPedidoEntity> Pedidos { get; set; }
         /// <summary>
+        /// Tabla de stock a fecha.
+        /// </summary>
+        public DbSet<TblStockAFechaEntity> StocksFecha { get; set; }
+        /// <summary>
         /// Tabla de productos por punto de venta.
         /// </summary>
         public DbSet<TblProductoPuntoVentaEntity> ProductosPuntoDeVenta { get; set; }
+        /// <summary>
+        /// Tabla de stock teorico de inventario.
+        /// </summary>
+        public DbSet<TblStockTeoricoInventariosDos> StockTeoricoInventariosDos { get; set; }
         /// <summary>
         /// Tabla de tipos de pedido por almacen.
         /// </summary>
@@ -145,13 +161,25 @@ namespace Popsy
         /// </summary>
         public DbSet<TblInventarioDetalleEntity> InventarioDetalles { get; set; }
         /// <summary>
+        /// Tabla de detalles de inventarios2.
+        /// </summary>
+        public DbSet<TblInventarioDetalle2Entity> InventarioDetalless2 { get; set; }
+        /// <summary>
         /// Tabla de productos por pedido.
         /// </summary>
         public DbSet<TblProductoPedidoEntity> PropuctosPorPedido { get; set; }
         /// <summary>
+        /// Tabla de respuestas de envios de pedidos a SAP.
+        /// </summary>
+        public DbSet<TblResponsePedidoEntity> PedidosResponse { get; set; }
+        /// <summary>
         /// Tabla de transacciones.
         /// </summary>
         public DbSet<TblTransaccionEntity> Transacciones { get; set; }
+        /// <summary>
+        /// Tabla de recepciones de compra.
+        /// </summary>
+        public DbSet<TblRecepcionDeCompraEntity> RecepcionesDeCompra { get; set; }
         #endregion
         #region Nivel5
         /// <summary>
@@ -159,9 +187,21 @@ namespace Popsy
         /// </summary>
         public DbSet<TblErrorTransaccionEntity> ErroresTransaccion { get; set; }
         /// <summary>
-        /// Tabla de recepciones de compra.
+        /// Tabla de detalles de detalles de recepciones de compra.
         /// </summary>
-        public DbSet<TblRecepcionDeCompraEntity> RecepcionesDeCompra { get; set; }
+        public DbSet<TblRecepcionDeCompraDetalleEntity> RecepcionesDeCompraDetalles { get; set; }
+        /// <summary>
+        /// Tabla de historial de envios de recepciones de compra.
+        /// </summary>
+        public DbSet<TblHistorialEnvioRecepcionDeCompraEntity> HistorialEnviosRecepcionDeCompra { get; set; }
+        /// <summary>
+        /// Tabla de detalles de respuestas de recepciones de compra.
+        /// </summary>
+        public DbSet<TblResponseRecepcionDeCompraEntity> RespuestasRecepcionDeCompras { get; set; }
+        /// <summary>
+        /// Tabla que contiene los conteos de los inventarios.
+        /// </summary>
+        public DbSet<TblInventarioConteo2Entity> ConteosInventarios { get; set; }
         #endregion
         #region Vistas
         /// <summary>
@@ -196,6 +236,16 @@ namespace Popsy
         /// Vista de productos por factores de conversión.
         /// </summary>
         public DbSet<VistaProductoFactoresConversionEntity> VistaProductoFactoresConversion { get; set; }
+        #endregion
+        #region Procedimientos almacenados
+        /// <summary>
+        /// Tabla de seguimientos PDV.
+        /// </summary>
+        public DbSet<TblSeguimientoPDVEntity> SeguimientosPDV { get; set; }
+        /// <summary>
+        /// Tabla de seguimientos PDV tracker.
+        /// </summary>
+        public DbSet<TblSeguimientoPDVTrackerEntity> SeguimientosPDVTracker { get; set; }
         #endregion
     }
 }

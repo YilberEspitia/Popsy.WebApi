@@ -34,8 +34,8 @@ namespace Popsy.Integrations
 
             foreach (TblProductoPedidoEntity productosPedidoFila in productosPedido)
             {
-                TblDeterminarCompraTrasladoEntity validarDeterminar = determinarComprasTraslados.FirstOrDefault(l => l.producto_id == productosPedidoFila.producto_id);
-                if (validarDeterminar == null)
+                TblDeterminarCompraTrasladoEntity? validarDeterminar = determinarComprasTraslados.FirstOrDefault(l => l.producto_id == productosPedidoFila.producto_id);
+                if (validarDeterminar is null)
                 {
                     productosOrdenTraslado.Add(productosPedidoFila);
                 }

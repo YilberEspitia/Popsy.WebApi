@@ -24,5 +24,8 @@ namespace Popsy.Integrations
             HttpResponseMessage response = await httpClient.GetAsync(url);
             return JsonSerializer.Deserialize<T>(await response.Content.ReadAsStringAsync());
         }
+        protected T? GetObjectFromString<T>(string objectString)
+            where T : class
+            => JsonSerializer.Deserialize<T>(objectString);
     }
 }

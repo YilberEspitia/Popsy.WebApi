@@ -71,5 +71,11 @@ namespace Popsy.Interfaces
         /// <param name="punto_venta_id"><see cref="TblPuntoVentaEntity"/> id.</param>
         /// <returns>Verdadero si existe, si no retorna falso.</returns>
         Task<bool> ExistePuntoDeVentaAsync(Guid punto_venta_id);
+        /// <summary>
+        /// Actualiza el estado de la orden de compra.
+        /// </summary>
+        /// <param name="orden_compra_id">Id de orden de compra.</param>
+        /// <param name="recibida">Nuevo valor de recibido.</param>
+        Task ActualizarRecepcionDeOrden(Guid orden_compra_id, bool recibida);
     }
 }

@@ -13,10 +13,10 @@ namespace Popsy.Entities
         #region Relaciones
         public Guid bodegas_id { get; set; }
         [ForeignKey("bodegas_id")]
-        public TblBodegaEntity bodega { get; set; } = default!;
+        public virtual TblBodegaEntity bodega { get; protected set; } = default!;
         public Guid punto_venta_id { get; set; }
         [ForeignKey("punto_venta_id")]
-        public TblPuntoVentaEntity punto_de_venta { get; set; } = default!;
+        public virtual TblPuntoVentaEntity punto_de_venta { get; protected set; } = default!;
         #endregion
 
     }

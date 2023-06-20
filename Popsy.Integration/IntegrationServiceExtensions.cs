@@ -17,14 +17,17 @@ namespace Popsy
         /// </summary>
         /// <param name="services">Referencia de <see cref="IServiceCollection"/>.</param>
         /// <param name="settings">Referencia de <see cref="IntegracionPopsySettings"/>.</param>
+        /// <param name="smtpSettings">Referencia de <see cref="SMTPSettings"/>.</param>
         /// <returns>Referencia de <see cref="IServiceCollection"/> después de la inyección de dependencias.</returns>
-        public static IServiceCollection AddPopsyIntegrations(this IServiceCollection services, IntegracionPopsySettings settings)
+        public static IServiceCollection AddPopsyIntegrations(this IServiceCollection services, IntegracionPopsySettings settings, SMTPSettings smtpSettings)
             => services
             .AddSingleton(settings)
+            .AddSingleton(smtpSettings)
             .AddScoped<XMLEnvioPedidoSAP>()
             .AddScoped<IIntegraciones, Integraciones>()
             .AddScoped<ISapClientesIntegration, SapClientesIntegration>()
             .AddScoped<ISapMaterialesIntegration, SapMaterialesIntegration>()
-            .AddSingleton<ISapRecepcionDeComprasIntegration, SapRecepcionDeComprasIntegration>();
+            .AddSingleton<ISapSyncIntegration, SapSyncIntegration>()
+            .AddSingleton<IEmailService, EmailService>();
     }
 }

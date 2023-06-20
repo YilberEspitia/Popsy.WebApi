@@ -1,16 +1,26 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Popsy.Interfaces;
 using Popsy.Objects;
 
-namespace WebApiIntegracion.Controllers
+namespace Popsy.Controllers
 {
-
+    /// <summary>
+    /// Controlador de integración.
+    /// </summary>
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "UserSIPOP")]
     [Route("api/[controller]")]
     public class IntegracionController : ControllerBase
     {
         private readonly IIntegraciones _repoIntegraciones;
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="repoIntegraciones"><see cref="IIntegraciones"/> instancia.</param>
         public IntegracionController(IIntegraciones repoIntegraciones)
         {
             _repoIntegraciones = repoIntegraciones;

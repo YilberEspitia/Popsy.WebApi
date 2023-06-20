@@ -25,6 +25,7 @@ namespace Popsy
                 .ValueGeneratedOnAdd()
                 .HasAnnotation("SqlServer:Identity:Seed", "1");
 
+            #region Guid
             #region Auth
             modelBuilder.Entity<TblUsuarioEntity>().Property(x => x.usuario_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblPermisoEntity>().Property(x => x.permiso_id).HasDefaultValueSql("NEWSEQUENTIALID()");
@@ -48,6 +49,7 @@ namespace Popsy
             modelBuilder.Entity<TblTipoTransaccionEntity>().Property(x => x.tipo_transaccion_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             #endregion
             #region Nivel1
+            modelBuilder.Entity<TblUnidadInventarioDos>().Property(x => x.unidad_inventario_dos_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblDistritoEntity>().Property(x => x.distrito_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblProductoFactorConversionEntity>().Property(x => x.producto_factor_conversion_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             #endregion
@@ -58,21 +60,154 @@ namespace Popsy
             modelBuilder.Entity<TblBodegaPuntoVentaEntity>().Property(x => x.bodega_punto_venta_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblDeterminarCompraTrasladoEntity>().Property(x => x.determinar_compra_traslado_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblInventarioEntity>().Property(x => x.inventario_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblInventario2Entity>().Property(x => x.inventario_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblOrdenDeCompraEntity>().Property(x => x.orden_compra_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblPedidoEntity>().Property(x => x.pedido_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblStockAFechaEntity>().Property(x => x.stock_fecha_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblProductoPuntoVentaEntity>().Property(x => x.producto_punto_venta_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblStockTeoricoInventariosDos>().Property(x => x.stock_teorico_inventarios_dos_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblTipoPedidoPorAlmacenEntity>().Property(x => x.tipo_pedido_por_almacen_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblUsuarioPuntoVentaEntity>().Property(x => x.usuario_punto_venta_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             #endregion
             #region Nivel4
             modelBuilder.Entity<TblDetalleOrdenDeCompraEntity>().Property(x => x.detalle_orden_compra_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblInventarioDetalleEntity>().Property(x => x.inventario_detalle_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblInventarioDetalle2Entity>().Property(x => x.inventario_detalle_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblProductoPedidoEntity>().Property(x => x.producto_pedido_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblResponsePedidoEntity>().Property(x => x.respuesta_pedido_sap_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             modelBuilder.Entity<TblTransaccionEntity>().Property(x => x.transaccion_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblRecepcionDeCompraEntity>().Property(x => x.recepcion_compra_id).HasDefaultValueSql("NEWSEQUENTIALID()");
             #endregion
             #region Nivel5
             modelBuilder.Entity<TblErrorTransaccionEntity>().Property(x => x.error_transaccion_id).HasDefaultValueSql("NEWSEQUENTIALID()");
-            modelBuilder.Entity<TblRecepcionDeCompraEntity>().Property(x => x.recepcion_compra_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblRecepcionDeCompraDetalleEntity>().Property(x => x.recepcion_compra_detalle_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblHistorialEnvioRecepcionDeCompraEntity>().Property(x => x.historial_envio_recepciones_compras_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblInventarioConteo2Entity>().Property(x => x.inventario_conteo_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            modelBuilder.Entity<TblResponseRecepcionDeCompraEntity>().Property(x => x.recepcion_compra_respuesta_id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            #endregion
+            #endregion
+
+            #region FechaCreacion
+            #region Auth
+            //modelBuilder.Entity<TblUsuarioEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblPermisoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblRolEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblHistorialUsuarioEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblRolPermisoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblUsuarioRolEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel0
+            modelBuilder.Entity<TblBodegaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblCentroLogisticoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblEstadoPedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblFactorConversionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblOrganizacionVentaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoProveedorEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProveedorRecepcionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblTipoInventarioEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoCompraTrasladoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoTransaccionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel1
+            modelBuilder.Entity<TblUnidadInventarioDos>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblDistritoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoFactorConversionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel2
+            modelBuilder.Entity<TblPuntoVentaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel3
+            modelBuilder.Entity<TblBodegaPuntoVentaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblDeterminarCompraTrasladoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventario2Entity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblOrdenDeCompraEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblPedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblStockAFechaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoPuntoVentaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblStockTeoricoInventariosDos>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoPorAlmacenEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblUsuarioPuntoVentaEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel4
+            modelBuilder.Entity<TblDetalleOrdenDeCompraEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblInventarioDetalleEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventarioDetalle2Entity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoPedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblResponsePedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTransaccionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblRecepcionDeCompraEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel5
+            modelBuilder.Entity<TblErrorTransaccionEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblRecepcionDeCompraDetalleEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblHistorialEnvioRecepcionDeCompraEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventarioConteo2Entity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblResponseRecepcionDeCompraEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #endregion
+
+            #region FechaModificacion
+            #region Auth
+            //modelBuilder.Entity<TblUsuarioEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblPermisoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblRolEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblHistorialUsuarioEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblRolPermisoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblUsuarioRolEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel0
+            modelBuilder.Entity<TblBodegaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblCentroLogisticoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblEstadoPedidoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblFactorConversionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblOrganizacionVentaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoProveedorEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProveedorRecepcionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblTipoInventarioEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoCompraTrasladoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoTransaccionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel1
+            modelBuilder.Entity<TblUnidadInventarioDos>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblDistritoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoFactorConversionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel2
+            modelBuilder.Entity<TblPuntoVentaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel3
+            modelBuilder.Entity<TblBodegaPuntoVentaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblDeterminarCompraTrasladoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblInventarioEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventario2Entity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblOrdenDeCompraEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblPedidoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblStockAFechaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoPuntoVentaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblStockTeoricoInventariosDos>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTipoPedidoPorAlmacenEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblUsuarioPuntoVentaEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel4
+            modelBuilder.Entity<TblDetalleOrdenDeCompraEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<TblInventarioDetalleEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventarioDetalle2Entity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblResponsePedidoEntity>().Property(x => x.fecha_creacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblProductoPedidoEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblTransaccionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblRecepcionDeCompraEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
+            #region Nivel5
+            modelBuilder.Entity<TblErrorTransaccionEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblRecepcionDeCompraDetalleEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblHistorialEnvioRecepcionDeCompraEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblInventarioConteo2Entity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<TblResponseRecepcionDeCompraEntity>().Property(x => x.fecha_modificacion).HasDefaultValueSql("GETDATE()");
+            #endregion
             #endregion
 
             modelBuilder.Entity<VistaCategoriasProductosEntity>(entity =>
@@ -114,6 +249,15 @@ namespace Popsy
             {
                 entity.HasNoKey();
                 entity.ToView("vistaresumeninventario", "SIPOP");
+            });
+            modelBuilder.Entity<TblSeguimientoPDVTrackerEntity>(entity =>
+            {
+                entity.HasNoKey();
+            });
+            modelBuilder.Entity<TblSeguimientoPDVEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("SeguimientoPDV");
             });
             base.OnModelCreating(modelBuilder);
         }

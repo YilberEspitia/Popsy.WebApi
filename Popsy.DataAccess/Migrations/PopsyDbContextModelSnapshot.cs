@@ -35,10 +35,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre_bodega")
                         .IsRequired()
@@ -61,10 +65,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
@@ -91,10 +99,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre_cedi_sap")
                         .IsRequired()
@@ -113,17 +125,27 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
+                    b.Property<bool>("activo")
+                        .HasColumnType("bit");
+
                     b.Property<int>("cantidad_solicitada")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("orden_compra_id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("posicion_producto")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
@@ -150,10 +172,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
@@ -185,10 +211,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -220,10 +250,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("transaccion_id")
                         .HasColumnType("uniqueidentifier");
@@ -251,10 +285,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -280,10 +318,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("unidad_base")
                         .IsRequired()
@@ -296,6 +338,36 @@ namespace Popsy.DataAccess.Migrations
                     b.HasKey("factor_conversion_id");
 
                     b.ToTable("factores_conversion");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblHistorialEnvioRecepcionDeCompraEntity", b =>
+                {
+                    b.Property<Guid>("historial_envio_recepciones_compras_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<string>("XML")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("recepcion_compra_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("historial_envio_recepciones_compras_id");
+
+                    b.HasIndex("recepcion_compra_id");
+
+                    b.ToTable("historial_envio_recepciones_compras");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblHistorialUsuarioEntity", b =>
@@ -325,6 +397,149 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("historial_usuarios");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblInventario2Entity", b =>
+                {
+                    b.Property<Guid>("inventario_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<string>("codigo_inventario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("estado")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("tipo_inventario_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("usuario_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("inventario_id");
+
+                    b.HasIndex("punto_venta_id");
+
+                    b.HasIndex("tipo_inventario_id");
+
+                    b.HasIndex("usuario_id");
+
+                    b.ToTable("inventarios2");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventarioConteo2Entity", b =>
+                {
+                    b.Property<Guid>("inventario_conteo_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<double>("cantidad")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<bool>("final")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("inicial")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("inventario_detalle_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("inventario_conteo_id");
+
+                    b.HasIndex("inventario_detalle_id");
+
+                    b.ToTable("inventario_conteo");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventarioDetalle2Entity", b =>
+                {
+                    b.Property<Guid>("inventario_detalle_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<Guid>("bodega_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("cantidad")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("inventario_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("producto_punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("requiere_conteo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("unidad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("unidad_consumo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("unidad_consumo_total")
+                        .HasColumnType("float");
+
+                    b.Property<string>("unidad_conteo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("unidad_conteo_total")
+                        .HasColumnType("float");
+
+                    b.Property<string>("unidad_despacho")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("unidad_despacho_total")
+                        .HasColumnType("float");
+
+                    b.HasKey("inventario_detalle_id");
+
+                    b.HasIndex("bodega_id");
+
+                    b.HasIndex("inventario_id");
+
+                    b.ToTable("inventariodetalle2");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblInventarioDetalleEntity", b =>
                 {
                     b.Property<Guid>("inventario_detalle_id")
@@ -335,8 +550,8 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<Guid>("bodega_id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("cantidad")
-                        .HasColumnType("int");
+                    b.Property<double>("cantidad")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("inventario_id")
                         .HasColumnType("uniqueidentifier");
@@ -402,10 +617,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_orden_compra")
                         .HasColumnType("datetime2");
@@ -415,14 +634,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("posicion_producto")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("proveedor_recepcion_id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("recibida")
+                        .HasColumnType("bit");
 
                     b.HasKey("orden_compra_id");
 
@@ -445,10 +664,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -475,14 +698,25 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<string>("FechaMensajeSap")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("codigo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("estado")
+                        .HasColumnType("smallint");
+
                     b.Property<Guid>("estado_pedido_id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("mensajeReciboSap")
                         .HasColumnType("nvarchar(max)");
@@ -495,6 +729,9 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Property<Guid>("usuario_id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("xml_sap")
+                        .HasColumnType("binary(7000)");
 
                     b.HasKey("pedido_id");
 
@@ -568,10 +805,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int?>("habilitado_inventario")
                         .HasColumnType("int");
@@ -607,10 +848,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
@@ -635,10 +880,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("justificacion")
                         .HasColumnType("nvarchar(max)");
@@ -683,10 +932,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("productos_proveedores_id");
 
@@ -704,10 +957,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("producto_id")
                         .HasColumnType("uniqueidentifier");
@@ -747,10 +1004,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -870,10 +1131,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -886,20 +1151,52 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("puntos_ventas");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraDetalleEntity", b =>
+                {
+                    b.Property<Guid>("recepcion_compra_detalle_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<int>("cantidad_recibida")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("producto_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("recepcion_compra_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("unidad_presentacion_recibida")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("recepcion_compra_detalle_id");
+
+                    b.HasIndex("producto_id");
+
+                    b.HasIndex("recepcion_compra_id");
+
+                    b.ToTable("recepciones_compras_detalle");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraEntity", b =>
                 {
                     b.Property<Guid>("recepcion_compra_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<string>("Unidad_presentacion_recibida")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("cantidad_recibida")
-                        .HasColumnType("int");
 
                     b.Property<string>("codigo_recepcion_compra")
                         .IsRequired()
@@ -912,25 +1209,164 @@ namespace Popsy.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("constante"));
 
-                    b.Property<Guid>("detalle_orden_compra_id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<short>("estado")
+                        .HasColumnType("smallint");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("numero_factura")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid>("orden_compra_id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("recepcion_compra_id");
 
-                    b.HasIndex("detalle_orden_compra_id");
+                    b.HasIndex("orden_compra_id");
 
                     b.ToTable("recepciones_compras");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblResponsePedidoEntity", b =>
+                {
+                    b.Property<Guid>("respuesta_pedido_sap_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<string>("code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("log_msg_no")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("log_no")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("message_v1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("message_v2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("message_v3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("message_v4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("pedido_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("respuesta_pedido_sap_id");
+
+                    b.HasIndex("pedido_id");
+
+                    b.ToTable("respuestas_pedidos_sap");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblResponseRecepcionDeCompraEntity", b =>
+                {
+                    b.Property<Guid>("recepcion_compra_respuesta_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Field")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LogMsgNo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LogNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageV1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageV2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageV3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageV4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Parameter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Row")
+                        .HasColumnType("int");
+
+                    b.Property<string>("System")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("recepcion_compra_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("recepcion_compra_respuesta_id");
+
+                    b.HasIndex("recepcion_compra_id");
+
+                    b.ToTable("recepciones_compras_respuesta");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblRolEntity", b =>
@@ -981,6 +1417,124 @@ namespace Popsy.DataAccess.Migrations
                     b.ToTable("roles_permisos");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblSeguimientoPDVEntity", b =>
+                {
+                    b.Property<string>("COMPAÑIA")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("PdV")
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<int>("T_EN_COLA")
+                        .HasColumnType("int");
+
+                    b.Property<int>("T_HOY")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ULTIMA_ACTUALIZACION")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ULTIMA ACTUALIZACION DEL SISTEMA");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("SeguimientoPDV", (string)null);
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblSeguimientoPDVTrackerEntity", b =>
+                {
+                    b.Property<string>("COMPAÑIA")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("PdV")
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<int>("T_TRACKER")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ULTIMA_ACTUALIZACION")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ULTIMA ACTUALIZACION DEL SISTEMA");
+
+                    b.ToTable("SeguimientoPDVTracker");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblStockAFechaEntity", b =>
+                {
+                    b.Property<Guid>("stock_fecha_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<double>("cantidad")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("producto_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("stock_fecha_id");
+
+                    b.HasIndex("producto_id");
+
+                    b.HasIndex("punto_venta_id");
+
+                    b.ToTable("stock_fecha");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblStockTeoricoInventariosDos", b =>
+                {
+                    b.Property<Guid>("stock_teorico_inventarios_dos_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("producto_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("punto_venta_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("stock_teorico")
+                        .HasColumnType("float");
+
+                    b.HasKey("stock_teorico_inventarios_dos_id");
+
+                    b.HasIndex("producto_id");
+
+                    b.HasIndex("punto_venta_id");
+
+                    b.ToTable("stock_teorico_inventarios_dos");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblTipoInventarioEntity", b =>
                 {
                     b.Property<Guid>("tipo_inventario_id")
@@ -1020,10 +1574,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre_tipo_pedido")
                         .IsRequired()
@@ -1043,10 +1601,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("nombre")
                         .IsRequired()
@@ -1072,10 +1634,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
@@ -1110,10 +1676,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.HasKey("tipo_transaccion_id");
 
@@ -1136,10 +1706,14 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("pedido_id")
                         .HasColumnType("uniqueidentifier");
@@ -1154,6 +1728,46 @@ namespace Popsy.DataAccess.Migrations
                     b.HasIndex("tipo_transaccion_id");
 
                     b.ToTable("Transacciones");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblUnidadInventarioDos", b =>
+                {
+                    b.Property<Guid>("unidad_inventario_dos_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<DateTime>("fecha_creacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("fecha_modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<Guid>("producto_id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("unidad_consumo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("unidad_conteo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("unidad_despacho")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("unidad_inventario_dos_id");
+
+                    b.HasIndex("producto_id")
+                        .IsUnique();
+
+                    b.ToTable("unidades_inventarios_dos");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblUsuarioEntity", b =>
@@ -1179,7 +1793,7 @@ namespace Popsy.DataAccess.Migrations
                     b.Property<int>("estado")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("fecha_eliminacion")
+                    b.Property<DateTime?>("fecha_eliminacion")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("nombres")
@@ -1203,13 +1817,17 @@ namespace Popsy.DataAccess.Migrations
                         .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("fecha_creacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime?>("fecha_eliminacion")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("fecha_modificacion")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("punto_venta_id")
                         .HasColumnType("uniqueidentifier");
@@ -1281,7 +1899,6 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("nombre_tipo_inventario")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("punto_venta_id")
@@ -1291,7 +1908,6 @@ namespace Popsy.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("usuario_inventario")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable((string)null);
@@ -1610,6 +2226,17 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("transaccion");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblHistorialEnvioRecepcionDeCompraEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblRecepcionDeCompraEntity", "recepcion_compra")
+                        .WithMany("historial_envios")
+                        .HasForeignKey("recepcion_compra_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recepcion_compra");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblHistorialUsuarioEntity", b =>
                 {
                     b.HasOne("Popsy.Entities.TblUsuarioEntity", "autor")
@@ -1619,6 +2246,63 @@ namespace Popsy.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("autor");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventario2Entity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblPuntoVentaEntity", "punto_de_venta")
+                        .WithMany("inventarios2")
+                        .HasForeignKey("punto_venta_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblTipoInventarioEntity", "tipo_inventario")
+                        .WithMany("inventarios2")
+                        .HasForeignKey("tipo_inventario_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblUsuarioEntity", "usuario")
+                        .WithMany("inventarios2")
+                        .HasForeignKey("usuario_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("punto_de_venta");
+
+                    b.Navigation("tipo_inventario");
+
+                    b.Navigation("usuario");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventarioConteo2Entity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblInventarioDetalle2Entity", "inventario_detalle")
+                        .WithMany("conteos")
+                        .HasForeignKey("inventario_detalle_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("inventario_detalle");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventarioDetalle2Entity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblBodegaEntity", "bodega")
+                        .WithMany("inventario_detalles2")
+                        .HasForeignKey("bodega_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblInventario2Entity", "inventario")
+                        .WithMany("detalles")
+                        .HasForeignKey("inventario_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("bodega");
+
+                    b.Navigation("inventario");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblInventarioDetalleEntity", b =>
@@ -1789,15 +2473,56 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("distrito");
                 });
 
-            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraEntity", b =>
+            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraDetalleEntity", b =>
                 {
-                    b.HasOne("Popsy.Entities.TblDetalleOrdenDeCompraEntity", "detalle_orden_de_compra")
-                        .WithMany()
-                        .HasForeignKey("detalle_orden_compra_id")
+                    b.HasOne("Popsy.Entities.TblProductoEntity", "producto")
+                        .WithMany("recepciones_compras_detalles")
+                        .HasForeignKey("producto_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("detalle_orden_de_compra");
+                    b.HasOne("Popsy.Entities.TblRecepcionDeCompraEntity", "recepcion_compra")
+                        .WithMany("recepciones_compras_detalles")
+                        .HasForeignKey("recepcion_compra_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
+
+                    b.Navigation("recepcion_compra");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblOrdenDeCompraEntity", "orden_de_compra")
+                        .WithMany("recepciones_de_compra")
+                        .HasForeignKey("orden_compra_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("orden_de_compra");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblResponsePedidoEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblPedidoEntity", "pedido")
+                        .WithMany("respuestas")
+                        .HasForeignKey("pedido_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("pedido");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblResponseRecepcionDeCompraEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblRecepcionDeCompraEntity", "recepcion_compra")
+                        .WithMany("respuestas")
+                        .HasForeignKey("recepcion_compra_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("recepcion_compra");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblRolPermisoEntity", b =>
@@ -1817,6 +2542,44 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("permiso");
 
                     b.Navigation("rol");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblStockAFechaEntity", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblProductoEntity", "producto")
+                        .WithMany("stocks_a_fecha")
+                        .HasForeignKey("producto_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblPuntoVentaEntity", "punto_de_venta")
+                        .WithMany("stocks_a_fecha")
+                        .HasForeignKey("punto_venta_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
+
+                    b.Navigation("punto_de_venta");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblStockTeoricoInventariosDos", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblProductoEntity", "producto")
+                        .WithMany()
+                        .HasForeignKey("producto_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Popsy.Entities.TblPuntoVentaEntity", "punto_de_venta")
+                        .WithMany()
+                        .HasForeignKey("punto_venta_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
+
+                    b.Navigation("punto_de_venta");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblTipoPedidoPorAlmacenEntity", b =>
@@ -1865,6 +2628,17 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("tipo_de_transaccion");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblUnidadInventarioDos", b =>
+                {
+                    b.HasOne("Popsy.Entities.TblProductoEntity", "producto")
+                        .WithOne("unidad_inventario")
+                        .HasForeignKey("Popsy.Entities.TblUnidadInventarioDos", "producto_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("producto");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblUsuarioPuntoVentaEntity", b =>
                 {
                     b.HasOne("Popsy.Entities.TblPuntoVentaEntity", "punto_de_venta")
@@ -1907,6 +2681,8 @@ namespace Popsy.DataAccess.Migrations
                 {
                     b.Navigation("inventario_detalles");
 
+                    b.Navigation("inventario_detalles2");
+
                     b.Navigation("puntos_de_venta");
                 });
 
@@ -1930,6 +2706,16 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("factores_de_conversion");
                 });
 
+            modelBuilder.Entity("Popsy.Entities.TblInventario2Entity", b =>
+                {
+                    b.Navigation("detalles");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblInventarioDetalle2Entity", b =>
+                {
+                    b.Navigation("conteos");
+                });
+
             modelBuilder.Entity("Popsy.Entities.TblInventarioEntity", b =>
                 {
                     b.Navigation("detalles");
@@ -1938,6 +2724,8 @@ namespace Popsy.DataAccess.Migrations
             modelBuilder.Entity("Popsy.Entities.TblOrdenDeCompraEntity", b =>
                 {
                     b.Navigation("detalles_ordenes_de_compra");
+
+                    b.Navigation("recepciones_de_compra");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblOrganizacionVentaEntity", b =>
@@ -1948,6 +2736,8 @@ namespace Popsy.DataAccess.Migrations
             modelBuilder.Entity("Popsy.Entities.TblPedidoEntity", b =>
                 {
                     b.Navigation("pedidos");
+
+                    b.Navigation("respuestas");
 
                     b.Navigation("transacciones");
                 });
@@ -1968,6 +2758,13 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("pedidos");
 
                     b.Navigation("puntos_de_venta");
+
+                    b.Navigation("recepciones_compras_detalles");
+
+                    b.Navigation("stocks_a_fecha");
+
+                    b.Navigation("unidad_inventario")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblProveedorRecepcionEntity", b =>
@@ -1983,15 +2780,28 @@ namespace Popsy.DataAccess.Migrations
 
                     b.Navigation("inventarios");
 
+                    b.Navigation("inventarios2");
+
                     b.Navigation("ordenes_de_compra");
 
                     b.Navigation("pedidos");
 
                     b.Navigation("productos");
 
+                    b.Navigation("stocks_a_fecha");
+
                     b.Navigation("tipos_de_pedido_por_almacen");
 
                     b.Navigation("usuarios");
+                });
+
+            modelBuilder.Entity("Popsy.Entities.TblRecepcionDeCompraEntity", b =>
+                {
+                    b.Navigation("historial_envios");
+
+                    b.Navigation("recepciones_compras_detalles");
+
+                    b.Navigation("respuestas");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblRolEntity", b =>
@@ -2004,6 +2814,8 @@ namespace Popsy.DataAccess.Migrations
             modelBuilder.Entity("Popsy.Entities.TblTipoInventarioEntity", b =>
                 {
                     b.Navigation("inventarios");
+
+                    b.Navigation("inventarios2");
                 });
 
             modelBuilder.Entity("Popsy.Entities.TblTipoPedidoCompraTrasladoEntity", b =>
@@ -2031,6 +2843,8 @@ namespace Popsy.DataAccess.Migrations
                     b.Navigation("historial");
 
                     b.Navigation("inventarios");
+
+                    b.Navigation("inventarios2");
 
                     b.Navigation("pedidos");
 

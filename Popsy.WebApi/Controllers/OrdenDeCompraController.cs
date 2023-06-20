@@ -1,15 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Popsy.Enums;
 using Popsy.Interfaces;
 using Popsy.Objects;
 
-namespace WebApiIntegracion.Controllers
+namespace Popsy.Controllers
 {
     /// <summary>
     /// Controlador de ordenes de compra.
     /// </summary>
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "UserSIPOP")]
     [Route("api/[controller]")]
     public class OrdenDeCompraController : ControllerBase
     {
@@ -21,18 +25,22 @@ namespace WebApiIntegracion.Controllers
         /// <see cref="IOrdenDeCompraBusiness"/> negocio.
         /// </summary>
         private readonly IOrdenDeCompraBusiness _ordenDeCompra;
-        private readonly ISapRecepcionDeComprasIntegration _sap;
+        /// <summary>
+        /// <see cref="IRecepcionDeCompraBusiness"/> negocio.
+        /// </summary>
+        private readonly IRecepcionDeCompraBusiness _recepcionDeCompra;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="proveedor"><see cref="IProveedorRecepcionBusiness"/> negocio.</param>
         /// <param name="ordenDeCompra"><see cref="IOrdenDeCompraBusiness"/> negocio.</param>
-        public OrdenDeCompraController(IProveedorRecepcionBusiness proveedor, IOrdenDeCompraBusiness ordenDeCompra, ISapRecepcionDeComprasIntegration sap)
+        /// <param name="recepcionDeCompra"><see cref="IRecepcionDeCompraBusiness"/> negocio.</param>
+        public OrdenDeCompraController(IProveedorRecepcionBusiness proveedor, IOrdenDeCompraBusiness ordenDeCompra, IRecepcionDeCompraBusiness recepcionDeCompra)
         {
             _proveedor = proveedor;
             _ordenDeCompra = ordenDeCompra;
-            _sap = sap;
+            _recepcionDeCompra = recepcionDeCompra;
         }
 
         #region Proveedor
@@ -181,7 +189,7 @@ namespace WebApiIntegracion.Controllers
         /// <returns>Verdadero si se guarda, falso si actualiza.</returns>
         [HttpPost("CrearRecepcionDeCompra")]
         public async Task<string> CreateAsync(RecepcionDeCompraSave recepcionDeCompra)
-            => await _ordenDeCompra.CreateAsync(recepcionDeCompra);
+            => await _recepcionDeCompra.CreateAsync(recepcionDeCompra);
 
         /// <summary>
         /// Devuelve un registro por id.
@@ -190,7 +198,7 @@ namespace WebApiIntegracion.Controllers
         /// <returns><see cref="RecepcionDeCompraRead"/></returns>
         [HttpGet("GetRecepcionDeCompra/{id}")]
         public async Task<RecepcionDeCompraSave> GetRecepcionDeCompraAsync(Guid id)
-            => await _ordenDeCompra.GetRecepcionDeCompraAsync(id);
+            => await _recepcionDeCompra.GetRecepcionDeCompraAsync(id);
 
         /// <summary>
         /// Devuelve todos los registros de <see cref="RecepcionDeCompraRead"/>.
@@ -198,7 +206,7 @@ namespace WebApiIntegracion.Controllers
         /// <returns>Registros de <see cref="RecepcionDeCompraRead"/></returns>
         [HttpGet("GetRecepcionesDeCompras")]
         public async Task<IEnumerable<RecepcionDeCompraSave>> GetRecepcionesDeComprasAsync()
-            => await _ordenDeCompra.GetRecepcionesDeComprasAsync();
+            => await _recepcionDeCompra.GetRecepcionesDeComprasAsync();
 
         /// <summary>
         /// Devuelve todos los registros de <see cref="RecepcionDeCompraRead"/> por detalle de orden de compra.
@@ -207,7 +215,7 @@ namespace WebApiIntegracion.Controllers
         /// <returns>Registros de <see cref="RecepcionDeCompraRead"/></returns>
         [HttpGet("GetRecepcionesDeCompraPorDetalle/{detalle_orden_compra_id}")]
         public async Task<IEnumerable<RecepcionDeCompraSave>> GetRecepcionesDeComprasPorDetalleAsync(Guid detalle_orden_compra_id)
-            => await _ordenDeCompra.GetRecepcionesDeComprasPorDetalleAsync(detalle_orden_compra_id);
+            => await _recepcionDeCompra.GetRecepcionesDeComprasPorDetalleAsync(detalle_orden_compra_id);
 
         /// <summary>
         /// Devuelve todos los registros de <see cref="RecepcionDeCompraRead"/> por codigo de recepción.
@@ -216,28 +224,24 @@ namespace WebApiIntegracion.Controllers
         /// <returns>Registros de <see cref="RecepcionDeCompraRead"/></returns>
         [HttpGet("GetRecepcionesDeCompraPorCodigo/{codigo}")]
         public async Task<IEnumerable<RecepcionDeCompraSave>> GetRecepcionesDeComprasPorCodigoAsync(string codigo)
-            => await _ordenDeCompra.GetRecepcionesDeComprasPorCodigoAsync(codigo);
+            => await _recepcionDeCompra.GetRecepcionesDeComprasPorCodigoAsync(codigo);
         #endregion
 
         #region Integraciones
+        /// <summary>
+        /// Metodo por demanda para sincronizar proveedores.
+        /// </summary>
+        /// <returns>Sap response.</returns>
         [HttpGet("SyncProveedor")]
         public async Task<IEnumerable<ResponsePopsySAP>> SyncSAPAsync()
             => await _proveedor.SyncSAPAsync();
+        /// <summary>
+        /// Metodo por demanda para sincronizar ordenes de compra.
+        /// </summary>
+        /// <returns>Sap response.</returns>
         [HttpGet("SyncOrdenes")]
         public async Task<IEnumerable<ResponseOrdenesPopsySAP>> SyncSAPOrdenes()
             => await _ordenDeCompra.SyncSAPAsync();
-        #endregion
-
-        #region Test
-        [HttpGet("TestSapOrden")]
-        public async Task<ActionResult<ResponseSAP<ResultOrdenDeCompra>>> TestSapOrden()
-            => await _sap.SyncOrdenesDeCompra("A005");
-        [HttpGet("TestSapOrdenVacio")]
-        public async Task<ActionResult<ResponseSAP<ResultOrdenDeCompra>>> TestSapOrdenVacio()
-            => await _sap.SyncOrdenesDeCompra("0");
-        [HttpGet("TestSapProv")]
-        public async Task<ActionResult<ResponseSAP<ResultProveedorRecepcion>>> TestSapProv()
-            => await _sap.SyncProveedoresRecepcion();
         #endregion
     }
 }

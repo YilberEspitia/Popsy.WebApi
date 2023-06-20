@@ -53,7 +53,7 @@ namespace Popsy.Integrations
                     }
                 }
             }
-            return null;
+            return Array.Empty<dynamic>();
         }
     }
 }

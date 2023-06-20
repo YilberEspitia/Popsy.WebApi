@@ -12,7 +12,7 @@ namespace Popsy.Interfaces
         /// </summary>
         /// <param name="detalleOrdenDeCompra">Objeto de <see cref="TblDetalleOrdenDeCompraEntity"/></param>
         /// <returns>Verdadero si se guarda.</returns>
-        Task<bool> CreateAsync(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra);
+        Task<Guid> CreateAsync(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra);
         /// <summary>
         /// Actualiza un registro existente de <see cref="TblDetalleOrdenDeCompraEntity"/>.
         /// </summary>
@@ -54,5 +54,10 @@ namespace Popsy.Interfaces
         /// <param name="id"><see cref="TblProductoEntity"/> id.</param>
         /// <returns>Verdadero si existe, si no retorna falso.</returns>
         Task<bool> ExisteProductoAsync(Guid producto_id);
+        Task<bool> ExisteProductoAsync(string codigo);
+        Task<Guid> GetProductoPorCodigoAsync(string codigo);
+        Task UpdateEstadoDetalles(Guid orden_compra_id, bool activo);
+        Task UpdateEstadoDetalle(Guid detalle_orden_compra_id, bool activo);
+        Task<TblDetalleOrdenDeCompraEntity?> GetDetalleAsync(Guid orden_compra_id, Guid producto_id, string unidad_presentacion_solicitada);
     }
 }

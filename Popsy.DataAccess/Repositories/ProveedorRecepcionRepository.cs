@@ -27,7 +27,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IProveedorRecepcionRepository.CreateAsync(TblProveedorRecepcionEntity proveedorRecepcion)
         {
-            proveedorRecepcion.fecha_modificacion = DateTime.UtcNow;
+            proveedorRecepcion.fecha_modificacion = DateTime.Now;
             await _context.AddAsync(proveedorRecepcion);
             await _context.SaveChangesAsync();
             return true;
@@ -35,7 +35,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IProveedorRecepcionRepository.UpdateAsync(TblProveedorRecepcionEntity proveedorRecepcion)
         {
-            proveedorRecepcion.fecha_modificacion = DateTime.UtcNow;
+            proveedorRecepcion.fecha_modificacion = DateTime.Now;
             TblProveedorRecepcionEntity proveedorRecepcionDb = await this._context.ProveedoresRecepcion.SingleAsync(r => r.proveedor_recepcion_id.Equals(proveedorRecepcion.proveedor_recepcion_id));
             this._context.Entry(proveedorRecepcionDb).CurrentValues.SetValues(proveedorRecepcion);
             await this._context.SaveChangesAsync();

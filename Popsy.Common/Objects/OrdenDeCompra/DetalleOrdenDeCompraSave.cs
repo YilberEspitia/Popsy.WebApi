@@ -6,6 +6,8 @@ namespace Popsy.Objects
         public Guid detalle_orden_compra_id { get; set; }
         public int cantidad_solicitada { get; set; }
         public String unidad_presentacion_solicitada { get; set; } = default!;
+        public int posicion_producto { get; set; }
+        public String? codigo_producto { get; set; }
         #endregion
 
         #region Relaciones

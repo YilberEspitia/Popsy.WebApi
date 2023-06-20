@@ -1,6 +1,4 @@
-﻿using System;
-
-using AutoMapper;
+﻿using AutoMapper;
 
 using Popsy.Entities;
 using Popsy.Enums;
@@ -19,9 +17,9 @@ namespace Popsy.Business
         /// </summary>
         private readonly IProveedorRecepcionRepository _repository;
         /// <summary>
-        /// <see cref="ISapRecepcionDeComprasIntegration"/> repositorio.
+        /// <see cref="ISapSyncIntegration"/> repositorio.
         /// </summary>
-        private readonly ISapRecepcionDeComprasIntegration _sapIntegration;
+        private readonly ISapSyncIntegration _sapIntegration;
 
         /// <summary>
         /// Constructor.
@@ -29,7 +27,7 @@ namespace Popsy.Business
         /// <param name="mapper">mapper.</param>
         /// <param name="repository"><see cref="IProveedorRecepcionRepository"/> repositorio.</param>
         public ProveedorRecepcionBusiness(IMapper mapper, IProveedorRecepcionRepository repository,
-            ISapRecepcionDeComprasIntegration sapIntegration) : base(mapper)
+            ISapSyncIntegration sapIntegration) : base(mapper)
         {
             _repository = repository;
             _sapIntegration = sapIntegration;
@@ -63,7 +61,7 @@ namespace Popsy.Business
         async Task<IEnumerable<ResponsePopsySAP>> IProveedorRecepcionBusiness.SyncSAPAsync()
         {
             ISet<ResponsePopsySAP> responsePopsy = new HashSet<ResponsePopsySAP>();
-            ResponseSAP<ResultProveedorRecepcion>? response = await _sapIntegration.SyncProveedoresRecepcion();
+            ResponseSAP<ResultProveedorRecepcion>? response = await _sapIntegration.GetProveedoresRecepcion();
             if (response is not null)
             {
                 foreach (ResultProveedorRecepcion proveedor in response.d.results)
@@ -86,7 +84,7 @@ namespace Popsy.Business
                         responsePopsy.Add(new ResponsePopsySAP()
                         {
                             Codigo = proveedor.Lifnr,
-                            Accion = AccionesBD.NoCreado,
+                            Accion = AccionesBD.Error,
                             Error = ex.Message
                         });
                     }

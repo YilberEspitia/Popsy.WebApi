@@ -12,7 +12,7 @@ namespace Popsy.Entities
         [MaxLength(50)]
         public string orden_compra { get; set; } = default!;
         public DateTime fecha_orden_compra { get; set; }
-        public int posicion_producto { get; set; }
+        public bool recibida { get; set; } = false;
         #endregion
 
         #region Relaciones
@@ -23,6 +23,7 @@ namespace Popsy.Entities
         [ForeignKey("proveedor_recepcion_id")]
         public TblProveedorRecepcionEntity proveedor_recepcion { get; set; } = default!;
         public virtual ISet<TblDetalleOrdenDeCompraEntity> detalles_ordenes_de_compra { get; protected set; } = new HashSet<TblDetalleOrdenDeCompraEntity>();
+        public virtual ISet<TblRecepcionDeCompraEntity> recepciones_de_compra { get; protected set; } = new HashSet<TblRecepcionDeCompraEntity>();
         #endregion
     }
 }

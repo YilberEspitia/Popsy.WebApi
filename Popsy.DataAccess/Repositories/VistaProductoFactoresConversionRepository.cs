@@ -14,9 +14,9 @@ namespace Popsy.Repositories
             _context = context;
         }
 
-        public async Task<VistaProductoFactoresConversionEntity> GetProductoFactoresConversion(Guid producto_id)
+        public async Task<VistaProductoFactoresConversionEntity?> GetProductoFactoresConversion(Guid producto_id)
         {
-            VistaProductoFactoresConversionEntity vista = await _context.VistaProductoFactoresConversion.FirstOrDefaultAsync(l => l.producto_id == producto_id);
+            VistaProductoFactoresConversionEntity? vista = await _context.VistaProductoFactoresConversion.FirstOrDefaultAsync(l => l.producto_id == producto_id);
             return vista;
         }
     }

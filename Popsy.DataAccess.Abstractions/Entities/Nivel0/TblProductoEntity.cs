@@ -30,6 +30,9 @@ namespace Popsy.Entities
         public virtual ISet<TblProductoPedidoEntity> pedidos { get; protected set; } = new HashSet<TblProductoPedidoEntity>();
         public virtual ISet<TblProductoPuntoVentaEntity> puntos_de_venta { get; protected set; } = new HashSet<TblProductoPuntoVentaEntity>();
         public virtual ISet<TblDetalleOrdenDeCompraEntity> detalles_ordenes_de_compra { get; protected set; } = new HashSet<TblDetalleOrdenDeCompraEntity>();
+        public virtual ISet<TblRecepcionDeCompraDetalleEntity> recepciones_compras_detalles { get; protected set; } = new HashSet<TblRecepcionDeCompraDetalleEntity>();
+        public virtual ISet<TblStockAFechaEntity> stocks_a_fecha { get; protected set; } = new HashSet<TblStockAFechaEntity>();
+        public virtual TblUnidadInventarioDos unidad_inventario { get; protected set; } = default!;
         #endregion
     }
 }

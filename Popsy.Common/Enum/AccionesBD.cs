@@ -12,5 +12,6 @@ namespace Popsy.Enums
         Actualizado = 1,
         NoCreado = 2,
         NoActualizado = 3,
+        Error = 4,
     }
 }
