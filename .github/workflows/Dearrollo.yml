@@ -32,13 +32,13 @@ jobs:
           $appSettingsPath = "publish/appsettings.json"  # Ruta al archivo appsettings.json generado
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
-          # Leer las variables de los secretos
-          $secrets = ConvertFrom-Json ${{ secrets.APPSETTINGS_CONFIG }}
+          # Recorrer las variables de entorno y reemplazar las claves correspondientes en el appsettings.json
+          foreach ($envVar in (Get-ChildItem env:Develop)) {
+            $key = $envVar.Name
+            $value = $envVar.Value
 
-          # Reemplazar las variables en el appsettings.json
-          foreach ($key in $secrets.PSObject.Properties.Name) {
             if ($appSettings.$key) {
-              $appSettings.$key = $secrets.$key
+              $appSettings.$key = $value
             }
           }
 
