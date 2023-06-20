@@ -37,6 +37,9 @@ jobs:
           foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
             $key = $envVar.Name -replace "^${environment}_", ""
             $value = $envVar.Value
+            echo "envVar : $envVar`n"
+            echo "key : $key`n"
+            echo "value : $value`n"
 
             if ($appSettings.$key) {
               $appSettings.$key = $value
