@@ -1,0 +1,57 @@
+name: Desarrollo
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest  # Indica la plataforma adecuada para Windows Server
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v2
+
+      - name: Configurar .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0  # Cambia la versión de .NET si es necesario
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Generar publish
+        run: dotnet publish -c Release -o ./publish  # Ajusta el directorio de salida según tus necesidades
+
+      - name: Modificar appsettings
+        run: |
+          $appSettingsPath = "publish/appsettings.json"  # Ruta al archivo appsettings.json generado
+          $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
+
+          # Leer las variables de los secretos
+          $secrets = ConvertFrom-Json ${{ secrets.APPSETTINGS_CONFIG }}
+
+          # Reemplazar las variables en el appsettings.json
+          foreach ($key in $secrets.PSObject.Properties.Name) {
+            if ($appSettings.$key) {
+              $appSettings.$key = $secrets.$key
+            }
+          }
+
+          $appSettings | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath
+
+      - name: Comprimir archivos
+        run: Compress-Archive -Path ./publish -DestinationPath ./publish.zip  # Cambia el nombre del archivo comprimido si lo deseas
+
+      - name: Mostrar archivos generados
+        run: ls -R ./publish ./publish.zip  # Puedes ajustar esta línea según lo que necesites mostrar
+
+      - name: Guardar archivo comprimido como artefacto
+        uses: actions/upload-artifact@v2
+        with:
+          name: publish-artifact
+          path: ./publish.zip
