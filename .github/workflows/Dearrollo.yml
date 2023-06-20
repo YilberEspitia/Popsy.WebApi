@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest  # Indica la plataforma adecuada para Windows Server
+    
+    env:
+      ENVIRONMENT: Develop
 
     steps:
       - name: Checkout del repositorio
@@ -32,7 +35,7 @@ jobs:
           $appSettingsPath = "publish/appsettings.json"
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
-          $environment = $env:GITHUB_ENVIRONMENT
+          $environment = $env:ENVIRONMENT
           echo "Ambiente: $environment"
 
           foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
