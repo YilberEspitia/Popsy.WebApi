@@ -29,12 +29,13 @@ jobs:
 
       - name: Modificar appsettings
         run: |
-          $appSettingsPath = "publish/appsettings.json"  # Ruta al archivo appsettings.json generado
+          $appSettingsPath = "./publish/appsettings.json"  # Ruta al archivo appsettings.json generado
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
-          # Recorrer las variables de entorno y reemplazar las claves correspondientes en el appsettings.json
-          foreach ($envVar in (Get-ChildItem env)) {
-            $key = $envVar.Name
+          $environment = "Develop"  # Nombre de tu environment
+
+          foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
+            $key = $envVar.Name -replace "^${environment}_", ""
             $value = $envVar.Value
 
             if ($appSettings.$key) {
