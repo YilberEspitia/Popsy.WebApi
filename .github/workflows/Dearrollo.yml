@@ -33,18 +33,18 @@ jobs:
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
           $environment = "Develop"  # Nombre de tu environment
-          echo "Ambiente: $environment`n"
+          echo "Ambiente: $environment"
 
-          $prefix = "${environment}_"
+          $envVars = @{
+            "Integraciones_HeladosPopsy_Ambiente" = $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE
+            "HttpsPort" = $env:HTTPSPORT
+          }
 
           # Recorrer las variables de entorno y reemplazar las claves correspondientes en el appsettings.json
-          foreach ($envVar in (Get-ChildItem env:${prefix}* -ErrorAction SilentlyContinue)) {
-            $key = $envVar.Name.Substring($prefix.Length)
-            $value = $envVar.Value
-            echo "Test: $key - $value`n"
-
-            # Ignorar mayúsculas y minúsculas al comparar las claves del appsettings con las variables de entorno
-            if ($appSettings.PSObject.Properties.Name -contains $key -or $appSettings.PSObject.Properties.Name -contains $key.ToLower() -or $appSettings.PSObject.Properties.Name -contains $key.ToUpper()) {
+          foreach ($key in $envVars.Keys) {
+            echo "Key: $key`n"
+            if ($appSettings.PSObject.Properties.Name -contains $key) {
+              $value = $envVars[$key]
               echo "Variable de entorno encontrada: $key = $value"
               $appSettings.$key = $value
             }
