@@ -36,7 +36,7 @@ jobs:
           echo "Ambiente: $environment"
 
           $envVars = @{
-            "Integraciones_HeladosPopsy_Ambiente" = $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE
+            "Integraciones.HeladosPopsy.Ambiente" = $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE
             "HttpsPort" = $env:HTTPSPORT
           }
 
