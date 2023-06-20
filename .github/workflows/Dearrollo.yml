@@ -29,20 +29,23 @@ jobs:
 
       - name: Modificar appsettings
         run: |
-          $appSettingsPath = "./publish/appsettings.json"  # Ruta al archivo appsettings.json generado
+          $appSettingsPath = "./publish/appsettings.json"
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
           $environment = "Develop"  # Nombre de tu environment
-          echo "Ambiente: $environment"
+          echo "Ambiente: $environment`n"
 
-          foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
-            $key = $envVar.Name -replace "^${environment}_", ""
+          $prefix = "${environment}_"
+
+          # Recorrer las variables de entorno y reemplazar las claves correspondientes en el appsettings.json
+          foreach ($envVar in (Get-ChildItem env:${prefix}* -ErrorAction SilentlyContinue)) {
+            $key = $envVar.Name.Substring($prefix.Length)
             $value = $envVar.Value
-            echo "envVar : $envVar`n"
-            echo "key : $key`n"
-            echo "value : $value`n"
+            echo "Test: $key - $value`n"
 
-            if ($appSettings.$key) {
+            # Ignorar mayúsculas y minúsculas al comparar las claves del appsettings con las variables de entorno
+            if ($appSettings.PSObject.Properties.Name -contains $key -or $appSettings.PSObject.Properties.Name -contains $key.ToLower() -or $appSettings.PSObject.Properties.Name -contains $key.ToUpper()) {
+              echo "Variable de entorno encontrada: $key = $value"
               $appSettings.$key = $value
             }
           }
