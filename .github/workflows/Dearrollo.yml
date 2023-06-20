@@ -33,6 +33,7 @@ jobs:
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
           $environment = "Develop"  # Nombre de tu environment
+          echo "Ambiente: $environment"
 
           foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
             $key = $envVar.Name -replace "^${environment}_", ""
