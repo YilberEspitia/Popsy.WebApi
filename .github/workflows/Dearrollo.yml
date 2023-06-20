@@ -39,6 +39,9 @@ jobs:
             "Integraciones.HeladosPopsy.Ambiente" = $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE
             "HttpsPort" = $env:HTTPSPORT
           }
+          echo "Env: $env"
+          echo "Env: $env:HTTPSPORT"
+          echo "Env: $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE"
 
           # Recorrer las variables de entorno y reemplazar las claves correspondientes en el appsettings.json
           foreach ($key in $envVars.Keys) {
