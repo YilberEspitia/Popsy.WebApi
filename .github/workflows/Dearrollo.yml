@@ -13,7 +13,8 @@ jobs:
     runs-on: windows-latest  # Indica la plataforma adecuada para Windows Server
     
     env:
-      HTTPSPORT: ${{ vars.HTTPSPORT }}
+      HTTPSPORT: 2
+      INTEGRACIONES_HELADOSPOPSY_AMBIENTE: 4
 
     steps:
       - name: Checkout del repositorio
@@ -35,7 +36,6 @@ jobs:
           $appSettingsPath = "publish/appsettings.json"
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
           
-          echo "Vars: $vars"
           $appSettings.Integraciones.HeladosPopsy.Ambiente = $env:HTTPSPORT
           $appSettings.HttpsPort = $env:HTTPSPORT
 
