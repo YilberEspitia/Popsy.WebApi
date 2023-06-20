@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Popsy.Common\Popsy.Common.csproj" />
     <ProjectReference Include="..\Popsy.DataAccess.Abstractions\Popsy.DataAccess.Abstractions.csproj" />
   </ItemGroup>

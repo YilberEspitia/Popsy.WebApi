@@ -5,6 +5,6 @@ namespace Popsy.Objects
         public Guid producto_id { get; set; }
         public Guid bodega_id { get; set; }
         public string minima_unidad { get; set; }
-        public int cantidad { get; set; }
+        public double cantidad { get; set; }
     }
 }

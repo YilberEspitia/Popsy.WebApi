@@ -17,6 +17,7 @@ namespace Popsy.Entities
         #region Relaciones
         public virtual ISet<TblBodegaPuntoVentaEntity> puntos_de_venta { get; protected set; } = new HashSet<TblBodegaPuntoVentaEntity>();
         public virtual ISet<TblInventarioDetalleEntity> inventario_detalles { get; protected set; } = new HashSet<TblInventarioDetalleEntity>();
+        public virtual ISet<TblInventarioDetalle2Entity> inventario_detalles2 { get; protected set; } = new HashSet<TblInventarioDetalle2Entity>();
         #endregion
     }
 }

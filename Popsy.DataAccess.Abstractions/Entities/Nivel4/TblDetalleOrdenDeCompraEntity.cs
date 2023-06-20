@@ -12,6 +12,8 @@ namespace Popsy.Entities
         public int cantidad_solicitada { get; set; }
         [MaxLength(50)]
         public String unidad_presentacion_solicitada { get; set; } = default!;
+        public int posicion_producto { get; set; }
+        public bool activo { get; set; }
         #endregion
 
         #region Relaciones

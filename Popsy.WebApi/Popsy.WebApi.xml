@@ -4,7 +4,34 @@
         <name>Popsy.WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApiIntegracion.Controllers.IntegracionController.GetRespuestaPedidoSAPIntegracion(System.Guid)">
+        <member name="T:Popsy.Attributes.DisableAPIAttribute">
+            <summary>
+            Atributo que indica que APIS no serán accesibles en producción.
+            </summary>
+        </member>
+        <member name="M:Popsy.Attributes.DisableAPIAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Ejecución de la API.
+            </summary>
+            <param name="context"><see cref="T:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext"/> objeto.</param>
+        </member>
+        <member name="T:Popsy.Attributes.DisableSwaggerAttribute">
+            <summary>
+            Atributo que indica que controladores serán ocultados en producción.
+            </summary>
+        </member>
+        <member name="T:Popsy.Controllers.IntegracionController">
+            <summary>
+            Controlador de integración.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.IntegracionController.#ctor(Popsy.Interfaces.IIntegraciones)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="repoIntegraciones"><see cref="T:Popsy.Interfaces.IIntegraciones"/> instancia.</param>
+        </member>
+        <member name="M:Popsy.Controllers.IntegracionController.GetRespuestaPedidoSAPIntegracion(System.Guid)">
             <summary>
             Hace todos los calculos para enviar a SAP
             </summary>
@@ -13,7 +40,27 @@
             Es el encabezado del inventario 
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetVistaCategoriasProductos">
+        <member name="T:Popsy.Controllers.InventarioController">
+            <summary>
+            Controlador de inventarios.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioController.#ctor(Popsy.Interfaces.IVistaCategoriasProductosRepository,Popsy.Interfaces.IVistaProductosConStockRepository,Popsy.Interfaces.IReadInventarioBaseRepository,Popsy.Interfaces.ICreateInventarioBaseBusiness,Popsy.Interfaces.IVistaMonitorInventarioRepository,Popsy.Interfaces.IVistaResumenInventarioRepository,Popsy.Interfaces.IUsuariosRepository,Popsy.Interfaces.ITipoInventariosRepository,Popsy.Interfaces.IVistaPuntosVentaBodegasRepository,Popsy.Interfaces.IPuntosVentasRepository)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="repoVistaCategoriasProductos"></param>
+            <param name="repoVistaProductosConSotck"></param>
+            <param name="repoReadInventarioBase"></param>
+            <param name="repoCreateInventarioBase"></param>
+            <param name="repoReadInventarioMonitor"></param>
+            <param name="repoResumenInventario"></param>
+            <param name="repoUsuariosPuntosVentas"></param>
+            <param name="repoTipoInventarios"></param>
+            <param name="repoPuntosVentaBodegas"></param>
+            <param name="repoPuntosVenta"></param>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioController.GetVistaCategoriasProductos">
             <summary>
             Obtiene el listado de categorias y subcategorias - no requiere parametros
             </summary>
@@ -21,7 +68,13 @@
             Retorna el listado de Categorias categoria_id y categoria_nombre. Es el listado de categorias de la parte izquierda de la pantalla. Adicional concatenando los factores de conversion retorna las sub categorias
             </remarks>        
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetInventarioBase(System.Guid)">
+        <member name="M:Popsy.Controllers.InventarioController.GetVistaProductosConStock">
+            <summary>
+            GetVistaProductosConStock
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioController.GetInventarioBase(System.Guid)">
             <summary>
             Obtiene el listado de productos segun categoria seleccionada y usuario
             </summary>
@@ -31,7 +84,7 @@
             Es la pantalla donde el usuario digita cuanto inventario hay 
             </remarks>        
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetInventarioMonitor(System.Guid)">
+        <member name="M:Popsy.Controllers.InventarioController.GetInventarioMonitor(System.Guid)">
             <summary>
             Obtiene el listado de inventarios filtrando por el punto de venta del usuario seleccionado
             </summary>
@@ -40,7 +93,7 @@
             Es el monitor de inventarios
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetVistaResumenInventario">
+        <member name="M:Popsy.Controllers.InventarioController.GetVistaResumenInventario">
             <summary>
             Obtiene el listado de productos filtrado por el inventario_id seleccionado
             </summary>
@@ -49,7 +102,14 @@
             Es el detalle del inventario seleccionado
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetEncabezadoInventario(System.Guid)">
+        <member name="M:Popsy.Controllers.InventarioController.GetVistaResumenInventarioById(System.Guid)">
+            <summary>
+            GetVistaResumenInventarioById
+            </summary>
+            <param name="inventarios_id">Inventario id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioController.GetEncabezadoInventario(System.Guid)">
             <summary>
             Obtiene el punto de venta id, la fecha del ultimo inventario y el listado de los tipos de inventario
             </summary>
@@ -58,7 +118,7 @@
             Es el encabezado del inventario 
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetPuntoVentaDetalle(System.Guid)">
+        <member name="M:Popsy.Controllers.InventarioController.GetPuntoVentaDetalle(System.Guid)">
             <summary>
             Obtiene los puntos de venta basado en el Usuario Id junto con el detalle de las bodegas
             </summary>
@@ -67,7 +127,7 @@
             Es el encabezado del inventario 
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.GetRespuestaPedidoSAP(System.Guid)">
+        <member name="M:Popsy.Controllers.InventarioController.GetRespuestaPedidoSAP(System.Guid)">
             <summary>
             Hace todos los calculos para enviar a SAP
             </summary>
@@ -76,7 +136,7 @@
             Es el encabezado del inventario 
             </remarks>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.InventarioController.CreateInventarioBase(Popsy.Objects.CreateInventarioBaseEntity)">
+        <member name="M:Popsy.Controllers.InventarioController.CreateInventarioBase(Popsy.Objects.CreateInventarioBaseEntity)">
             <summary>
             Guarda el inventario con su respectivo detalle
             </summary>
@@ -85,163 +145,792 @@
             Corresponde al guardado del inventario, envía correo y crea un consecutivo de inventario.
             </remarks>
         </member>
-        <member name="T:WebApiIntegracion.Controllers.OrdenDeCompraController">
+        <member name="M:Popsy.Controllers.InventarioController.UpdateInventarioBase(Popsy.Objects.UpdateInventarioBaseEntity)">
+            <summary>
+            UpdateInventarioBase
+            </summary>
+            <param name="inventario_base"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Popsy.Controllers.InventarioNuevoController">
+            <summary>
+            Controlador de ordenes de inventario nuevo.
+            </summary>
+        </member>
+        <member name="F:Popsy.Controllers.InventarioNuevoController._business">
+            <summary>
+            <see cref="T:Popsy.Interfaces.IInventarioNuevoBusiness"/> negocio.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.#ctor(Popsy.Interfaces.IInventarioNuevoBusiness)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="business"><see cref="T:Popsy.Interfaces.IInventarioNuevoBusiness"/> instancia.</param>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.CreateInventarioBaseAsync(Popsy.Objects.InventarioBaseSave)">
+            <summary>
+            Crea un registro de inventario.
+            </summary>
+            <param name="inventario_base"><see cref="T:Popsy.Objects.InventarioBaseSave"/> objeto.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioResponse"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.RequiereReconteoAsync(System.Guid)">
+            <summary>
+            Verifica si el inventario requiere reconteo.
+            </summary>
+            <param name="inventario_id">Id del inventario.</param>
+            <returns>Verdadero si requiere reconteo, de otro modo falso.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetInventarioReconteoAsync(System.Guid)">
+            <summary>
+            Trae el objeto que indica que requiere reconteo.
+            </summary>
+            <param name="inventario_id">Id del inventario.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioReconteoObject"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetReconteosAsync(System.Guid)">
+            <summary>
+            Trae el historial de reconteos por historial.
+            </summary>
+            <param name="inventario_id">Inventario id.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioReconteoExportable"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.ReconteoAsync(Popsy.Objects.InventarioReconteoSave)">
+            <summary>
+            Hace un reconteo por inventario.
+            </summary>
+            <param name="inventarioReconteo"><see cref="T:Popsy.Objects.InventarioReconteoSave"/> objeto.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioReconteoRead"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.UpdateInventarioBaseAsync(Popsy.Objects.InventarioBaseUpdate)">
+            <summary>
+            Actualiza un registro de inventario.
+            </summary>
+            <param name="inventario_base"><see cref="T:Popsy.Objects.InventarioBaseUpdate"/> objeto.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioBaseUpdate"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetInventarioBase(System.Guid)">
+            <summary>
+            Método que trae el inventario base por un punto de venta.
+            </summary>
+            <param name="punto_venta_id">Puedo de venta id.</param>
+            <returns>Colección de <see cref="T:Popsy.Objects.InventarioBaseRead"/>.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetAllUnidadesInventariosPorProducto(System.Guid)">
+            <summary>
+            Método que devuelve todas las unidades de invetarios por producto.
+            </summary>
+            <param name="producto_id">Producto id.</param>
+            <returns><see cref="T:Popsy.Objects.UnidadInventarioDosRead"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetAllUnidadesInventarios">
+            <summary>
+            Método que devuelve todas las unidades de invetarios.
+            </summary>
+            <returns><see cref="T:Popsy.Objects.UnidadInventarioDosRead"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.GetEncabezadoInventarioAsync(System.Guid)">
+            <summary>
+            Método para traer el encabezado de inventario por usuario.
+            </summary>
+            <param name="usuario_id">Usuario id.</param>
+            <returns><see cref="T:Popsy.Objects.EncabezadoInventarioRead"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.SyncSAPAsync">
+            <summary>
+            Metodo por demanda para sincronizar stock de inventario teorico.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.SyncStockFechaAsync">
+            <summary>
+            Metodo por demanda para sincronizar stock de inventario teorico.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.InventarioNuevoController.SyncUnidadesDeInventariosSAPAsync">
+            <summary>
+            Metodo por demanda para sincronizar unidades de inventarios.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="T:Popsy.Controllers.LegadoController">
             <summary>
             Controlador de ordenes de compra.
             </summary>
         </member>
-        <member name="F:WebApiIntegracion.Controllers.OrdenDeCompraController._proveedor">
+        <member name="F:Popsy.Controllers.LegadoController._business">
+            <summary><see cref="T:Popsy.Interfaces.ILegadoBusiness"/> instancia.</summary>
+        </member>
+        <member name="F:Popsy.Controllers.LegadoController._procedimientos">
+            <summary><see cref="T:Popsy.Interfaces.IProcedimientoAlmacenadoBusiness"/> instancia.</summary>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.#ctor(Popsy.Interfaces.ILegadoBusiness,Popsy.Interfaces.IProcedimientoAlmacenadoBusiness)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="business"><see cref="T:Popsy.Interfaces.ILegadoBusiness"/> instancia.</param>
+            <param name="procedimientos"><see cref="T:Popsy.Interfaces.IProcedimientoAlmacenadoBusiness"/> instancia.</param>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.GetSeguimientoPDVsAsync">
+            <summary>
+            Devuelve todos los seguimientos de los puntos de venta.
+            </summary>
+            <returns>Colección de <see cref="T:Popsy.Objects.SeguimientoPDVObject"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.GetSeguimientoPDVDetalleAsync(System.Guid)">
+            <summary>
+            Devuelve los detalles de un seguimiento.
+            </summary>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <returns>Colección de <see cref="T:Popsy.Objects.DetalleSeguimientoPDVObject"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.GetSeguimientoPDVDetalleAsync(System.Guid,Popsy.Enums.SAPType)">
+            <summary>
+            Devuelve los detalles de un seguimiento.
+            </summary>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <param name="tipo">Tipo.</param>
+            <returns>Colección de <see cref="T:Popsy.Objects.DetalleSeguimientoPDVObject"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.GetSeguimientoPDVDetalleAsync(System.Guid,System.Guid,Popsy.Enums.SAPType)">
+            <summary>
+            Devuelve los detalles de un seguimiento.
+            </summary>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <param name="id">Id del tipo.</param>
+            <param name="tipo">Tipo.</param>
+            <returns><see cref="T:Popsy.Objects.DetalleSeguimientoPDVObject"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.UpdateEstadoAsync(System.Guid,Popsy.Enums.SAPType,Popsy.Enums.SAPEstado)">
+            <summary>
+            Actualiza el estado de un tipo de comunicación con SAP.
+            </summary>
+            <param name="id">Id del tipo.</param>
+            <param name="tipo">Tipo.</param>
+            <param name="nuevo_estado">Estado a actualizar.</param>
+            <returns>Verdadero si actualiza, caso contrario devuelve falso.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.EnviarRecepcionDeCompra(System.Guid,System.Guid)">
+            <summary>
+            Envia manualmente la recepción de compra a SAP.
+            </summary>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <param name="recepcion_compra_id">Recepción de compra id.</param>
+            <returns><see cref="T:Popsy.Objects.ResponseRecepcionDeCompraObject"/> response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.EnviarRecepcionesDeCompra">
+            <summary>
+            Envia manualmente las recepciones de compras a SAP.
+            </summary>
+            <returns><see cref="T:Popsy.Objects.ResponseRecepcionDeCompraXMLTotalObject"/> response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LegadoController.GestionarStockAsync(System.Guid,System.DateTime)">
+            <summary>
+            Gestiona y compara los stocks por fecha.
+            </summary>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <param name="fecha_stock">Fecha a comparar.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioGestionSAP"/> objeto.</returns>
+        </member>
+        <member name="T:Popsy.Controllers.LoginController">
+            <summary>
+            Controlador para hacer pruebas de login.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.LoginController.GenerarToken">
+            <summary>
+            Genera un token de prueba.
+            </summary>
+            <returns>Token de prueba.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LoginController.GenerarToken(System.String)">
+            <summary>
+            Genera un token de prueba.
+            </summary>
+            <returns>Token de prueba.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.LoginController.GenerarTokenInvalido">
+            <summary>
+            Genera un token invalido de prueba.
+            </summary>
+            <returns>Token de prueba.</returns>
+        </member>
+        <member name="T:Popsy.Controllers.OrdenDeCompraController">
+            <summary>
+            Controlador de ordenes de compra.
+            </summary>
+        </member>
+        <member name="F:Popsy.Controllers.OrdenDeCompraController._proveedor">
             <summary>
             <see cref="T:Popsy.Interfaces.IProveedorRecepcionBusiness"/> negocio.
             </summary>
         </member>
-        <member name="F:WebApiIntegracion.Controllers.OrdenDeCompraController._ordenDeCompra">
+        <member name="F:Popsy.Controllers.OrdenDeCompraController._ordenDeCompra">
             <summary>
             <see cref="T:Popsy.Interfaces.IOrdenDeCompraBusiness"/> negocio.
             </summary>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.#ctor(Popsy.Interfaces.IProveedorRecepcionBusiness,Popsy.Interfaces.IOrdenDeCompraBusiness)">
+        <member name="F:Popsy.Controllers.OrdenDeCompraController._recepcionDeCompra">
+            <summary>
+            <see cref="T:Popsy.Interfaces.IRecepcionDeCompraBusiness"/> negocio.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.#ctor(Popsy.Interfaces.IProveedorRecepcionBusiness,Popsy.Interfaces.IOrdenDeCompraBusiness,Popsy.Interfaces.IRecepcionDeCompraBusiness)">
             <summary>
             Constructor.
             </summary>
             <param name="proveedor"><see cref="T:Popsy.Interfaces.IProveedorRecepcionBusiness"/> negocio.</param>
             <param name="ordenDeCompra"><see cref="T:Popsy.Interfaces.IOrdenDeCompraBusiness"/> negocio.</param>
+            <param name="recepcionDeCompra"><see cref="T:Popsy.Interfaces.IRecepcionDeCompraBusiness"/> negocio.</param>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.ProveedorRecepcionObject)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.ProveedorRecepcionObject)">
             <summary>
             Guarda o actualiza registro de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/>.
             </summary>
             <param name="proveedorSave">Objeto de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></param>
             <returns>Verdadero si se guarda, falso si actualiza.</returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.Guid)">
             <summary>
             Devuelve un registro por id.
             </summary>
             <param name="id"><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/> id.</param>
             <returns><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.String)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetProveedorRecepcionAsync(System.String)">
             <summary>
             Devuelve un registro por codigo sap.
             </summary>
             <param name="codigoSap"><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/> codigo sap.</param>
             <returns><see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetProveedoresRecepcionAsync">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetProveedoresRecepcionAsync">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/>.
             </summary>
             <returns>Registros de <see cref="T:Popsy.Objects.ProveedorRecepcionObject"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.OrdenDeCompraSave)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.OrdenDeCompraSave)">
             <summary>
             Guarda o actualiza un registro de <see cref="T:Popsy.Objects.OrdenDeCompraSave"/>.
             </summary>
             <param name="ordenDeCompra">Objeto de <see cref="T:Popsy.Objects.OrdenDeCompraSave"/></param>
             <returns>Verdadero si se guarda, falso si actualiza.</returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenDeCompraAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetOrdenDeCompraAsync(System.Guid)">
             <summary>
             Devuelve un registro por id.
             </summary>
             <param name="id"><see cref="T:Popsy.Objects.OrdenDeCompraRead"/> id.</param>
             <returns><see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraAsync">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetOrdenesDeCompraAsync">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/>.
             </summary>
             <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorProveedorAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorProveedorAsync(System.Guid)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/> por proveedor.
             </summary>
             <param name="proveedor_recepcion_id">Id de proveedor.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorPuntoAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetOrdenesDeCompraPorPuntoAsync(System.Guid)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/> por punto de venta.
             </summary>
             <param name="punto_venta_id">Id de punto de venta.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.OrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.DetalleOrdenDeCompraSave)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.DetalleOrdenDeCompraSave)">
             <summary>
             Guarda o actualiza registro de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/>.
             </summary>
             <param name="detalleOrdenDeCompra">Objeto de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/></param>
             <returns>Verdadero si se guarda, falso si actualiza.</returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateManyAsync(System.Collections.Generic.IEnumerable{Popsy.Objects.DetalleOrdenDeCompraSave})">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.CreateManyAsync(System.Collections.Generic.IEnumerable{Popsy.Objects.DetalleOrdenDeCompraSave})">
             <summary>
             Guarda o actualiza varios registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/>.
             </summary>
             <param name="detallesOrdenDeCompra">Objeto de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraSave"/></param>
             <returns>Verdadero si se guarda o actualiza.</returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetalleOrdenDeCompraAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetDetalleOrdenDeCompraAsync(System.Guid)">
             <summary>
             Devuelve un registro por id.
             </summary>
             <param name="id"><see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> id.</param>
             <returns><see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraAsync">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraAsync">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/>.
             </summary>
             <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorProductoAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorProductoAsync(System.Guid)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> por producto.
             </summary>
             <param name="producto_id">Id de producto.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorOrdenAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetDetallesDeOrdenesDeCompraPorOrdenAsync(System.Guid)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/> por orden de compra.
             </summary>
             <param name="orden_compra_id">Id de orden de compra.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.DetalleOrdenDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.RecepcionDeCompraSave)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.CreateAsync(Popsy.Objects.RecepcionDeCompraSave)">
             <summary>
             Guarda o actualiza registro de <see cref="T:Popsy.Objects.RecepcionDeCompraSave"/>.
             </summary>
             <param name="recepcionDeCompra">Objeto de <see cref="T:Popsy.Objects.RecepcionDeCompraSave"/></param>
             <returns>Verdadero si se guarda, falso si actualiza.</returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionDeCompraAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetRecepcionDeCompraAsync(System.Guid)">
             <summary>
             Devuelve un registro por id.
             </summary>
             <param name="id"><see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> id.</param>
             <returns><see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasAsync">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasAsync">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/>.
             </summary>
             <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorDetalleAsync(System.Guid)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorDetalleAsync(System.Guid)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> por detalle de orden de compra.
             </summary>
             <param name="detalle_orden_compra_id">Id de detalle de orden de compra.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
         </member>
-        <member name="M:WebApiIntegracion.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorCodigoAsync(System.String)">
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.GetRecepcionesDeComprasPorCodigoAsync(System.String)">
             <summary>
             Devuelve todos los registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/> por codigo de recepción.
             </summary>
             <param name="codigo">Codigo de recepcion.</param>
             <returns>Registros de <see cref="T:Popsy.Objects.RecepcionDeCompraRead"/></returns>
+        </member>
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.SyncSAPAsync">
+            <summary>
+            Metodo por demanda para sincronizar proveedores.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.OrdenDeCompraController.SyncSAPOrdenes">
+            <summary>
+            Metodo por demanda para sincronizar ordenes de compra.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="T:Popsy.Controllers.ProcedimientosAlmacenados">
+            <summary>
+            Controlador para ejecutar procedimientos almacenados.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.ProcedimientosAlmacenados.#ctor(Popsy.Interfaces.IProcedimientoAlmacenadoBusiness)">
+            <summary>
+            Contructor.
+            </summary>
+            <param name="procedimientos">Procedimientos almacenados.</param>
+        </member>
+        <member name="M:Popsy.Controllers.ProcedimientosAlmacenados.ExecuteStoredProc(System.String)">
+            <summary>
+            Ejecuta un procedimiento almacenado.
+            </summary>
+            <param name="storedProcName">El nombre del procedimiento almacenado.</param>
+        </member>
+        <member name="M:Popsy.Controllers.ProcedimientosAlmacenados.ProcedimientoSeguimientoPDV">
+            <summary>
+            Ejecuta el procedimiento almacenado ProcedimientoSeguimientoPDV.
+            </summary>
+        </member>
+        <member name="T:Popsy.Controllers.PruebaController">
+            <summary>
+            Controlador para hacer pruebas.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.#ctor(Popsy.Interfaces.IEmailService,Popsy.Interfaces.ISapSyncIntegration)">
+            <summary>
+            Contructor.
+            </summary>
+            <param name="email">Email service.</param>
+            <param name="sap">SAP service.</param>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.SendEmail(System.String,Popsy.Enums.EmailType,System.String[])">
+            <summary>
+            Método para probar el envío de correos.
+            Inventario: Fecha -- Usuario -- Punto de Venta -- Tipo de Inventario -- Código -- Producto (Nombre) -- Bodega -- Cantidad Inventariada -- Unidad de Medida
+            Recepción de compra: Fecha -- Usuario -- Punto de Venta -- Recepción Proveedor -- Factura No -- Código -- Producto (Nombre) -- Cantidad Pedida -- Cantidad Recibida -- Unidad de Medida
+            </summary>
+            <param name="to">Destinatario.</param>
+            <param name="emailType">Tipo de correo.</param>
+            <param name="parametros">Parametros a reemplazar.</param>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.GetOrdenesDeCompra(System.String)">
+            <summary>
+            Trae las órdenes de compra por código de almacén.
+            </summary>
+            <param name="codigo_almacen">Código de almacén (A005).</param>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.GetStockTeoricoDeInventario(System.String)">
+            <summary>
+            Trae el stock del inventario teorico.
+            </summary>
+            <param name="codigo_almacen">Código de almacen (A005).</param>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.GetProveedoresRecepcion">
+            <summary>
+            Trae los proveedores.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.GetUnidadInventarioDos">
+            <summary>
+            Trae los factores de conversión para los inventarios.
+            </summary>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.GetStockDia(System.DateTime,System.String)">
+            <summary>
+            Trae el stock del día.
+            </summary>
+            <param name="date">Fecha a consultar.</param>
+            <param name="codigo_almacen">Código de almacen.</param>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.PruebaController.EnviaRecepcionDeCompra(Popsy.Objects.XMLSoMvt,System.Guid)">
+            <summary>
+            Envia las ordes de compra.
+            </summary>
+            <param name="xmlObject">Objeto.</param>
+            <param name="recepcion_compra_id">Recepción de compra id.</param>
+            <returns>Sap response.</returns>
+        </member>
+        <member name="T:Popsy.Controllers.SuperUsuarioController">
+            <summary>
+            Controlador para la gestión del super usuario.
+            </summary>
+        </member>
+        <member name="M:Popsy.Controllers.SuperUsuarioController.#ctor(Microsoft.Extensions.Hosting.IHostApplicationLifetime,Popsy.Interfaces.ISuperUsuarioBusiness)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="applicationLifetime"><see cref="T:Microsoft.Extensions.Hosting.IHostApplicationLifetime"/> instancia.</param>
+            <param name="business"><see cref="T:Popsy.Interfaces.ISuperUsuarioBusiness"/> instancia.</param>
+        </member>
+        <member name="M:Popsy.Controllers.SuperUsuarioController.CreateInventarioBaseAsync(System.Guid,Popsy.Objects.InventarioBaseSave)">
+            <summary>
+            Crea un registro de inventario.
+            </summary>
+            <param name="inventario_base"><see cref="T:Popsy.Objects.InventarioBaseSave"/> objeto.</param>
+            <param name="punto_venta_id">Punto de venta id.</param>
+            <returns><see cref="T:Popsy.Objects.InventarioResponse"/> objeto.</returns>
+        </member>
+        <member name="M:Popsy.Controllers.SuperUsuarioController.StopService">
+            <summary>
+            Detiene el servicio
+            </summary>
+        </member>
+        <member name="T:Popsy.Filters.DisableSwaggerDocumentFilter">
+            <summary>
+            Filtro para controladores que no serán mostrados en el swagger.
+            </summary>
+        </member>
+        <member name="F:Popsy.Filters.DisableSwaggerDocumentFilter._environment">
+            <summary><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostEnvironment"/> instancia.</summary>
+        </member>
+        <member name="M:Popsy.Filters.DisableSwaggerDocumentFilter.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="environment"><see cref="T:Microsoft.AspNetCore.Hosting.IWebHostEnvironment"/> instancia.</param>
+        </member>
+        <member name="M:Popsy.Filters.DisableSwaggerDocumentFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <summary>
+            Función que aplica el filtro.
+            </summary>
+            <param name="swaggerDoc"><see cref="T:Microsoft.OpenApi.Models.OpenApiDocument"/> objeto.</param>
+            <param name="context"><see cref="T:Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext"/> objeto.</param>
+        </member>
+        <member name="T:Popsy.Filters.ExtenderTokenHeaderFilter">
+            <summary>
+            Filtro de acción para extender el tiempo de vida de un token en el encabezado de la respuesta.
+            </summary>
+        </member>
+        <member name="M:Popsy.Filters.ExtenderTokenHeaderFilter.#ctor(Popsy.Settings.TokenSettings)">
+            <summary>
+            Inicializa una nueva instancia de la clase <see cref="T:Popsy.Filters.ExtenderTokenHeaderFilter"/>.
+            </summary>
+            <param name="settings">Configuración del token.</param>
+        </member>
+        <member name="M:Popsy.Filters.ExtenderTokenHeaderFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Método que se ejecuta antes de la ejecución de una acción en un controlador.
+            Extiende el tiempo de vida del token en el encabezado de la respuesta.
+            </summary>
+            <param name="context">Contexto de ejecución de la acción.</param>
+        </member>
+        <member name="M:Popsy.Filters.ExtenderTokenHeaderFilter.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            Método que se ejecuta después de la ejecución de una acción en un controlador.
+            No se realiza ninguna acción en este caso.
+            </summary>
+            <param name="context">Contexto de ejecución de la acción.</param>
+        </member>
+        <member name="T:Popsy.Settings.HostedServicesLifeTime">
+            <summary>
+            Configuración de tiempos de vida para las tareas programadas.
+            </summary>
+        </member>
+        <member name="P:Popsy.Settings.HostedServicesLifeTime.OrdenesExecutionHour">
+            <summary>
+            Hora de ejecución para la tarea programada de ordenes de compra.
+            </summary>
+        </member>
+        <member name="P:Popsy.Settings.HostedServicesLifeTime.OrdenesExecutionMinute">
+            <summary>
+            Minuto de ejecución para la tarea programada de ordenes de compra.
+            </summary>
+        </member>
+        <member name="P:Popsy.Settings.HostedServicesLifeTime.StockExecutionHour">
+            <summary>
+            Hora de ejecución para la tarea programada de sincronización de stock.
+            </summary>
+        </member>
+        <member name="P:Popsy.Settings.HostedServicesLifeTime.StockExecutionMinute">
+            <summary>
+            Minuto de ejecución para la tarea programada de sincronización de stock.
+            </summary>
+        </member>
+        <member name="P:Popsy.Settings.HostedServicesLifeTime.ReenvioSAPHour">
+            <summary>
+            Indica que se intenta reenviar a SAP cada x horas.
+            </summary>
+        </member>
+        <member name="T:Popsy.Utilities.TokenUtilities">
+            <summary>
+            Clase que maneja las utilidades de los tokens.
+            </summary>
+        </member>
+        <member name="M:Popsy.Utilities.TokenUtilities.ExtenderTokenHeader(Microsoft.AspNetCore.Mvc.ControllerBase,Popsy.Settings.TokenSettings)">
+            <summary>
+            Metodo que extiende la vida de un token.
+            </summary>
+            <param name="controller"><see cref="T:Microsoft.AspNetCore.Mvc.ControllerBase"/> instancia.</param>
+            <param name="settings"><see cref="T:Popsy.Settings.TokenSettings"/> objeto.</param>
+        </member>
+        <member name="T:ReenviarSAPTareaProgramada">
+            <summary>
+            Tarea programada de sincronización de información.
+            </summary>
+        </member>
+        <member name="F:ReenviarSAPTareaProgramada._logger">
+            <summary>
+            Logger.
+            </summary>
+        </member>
+        <member name="F:ReenviarSAPTareaProgramada._timer">
+            <summary>
+            <see cref="T:System.Threading.Timer"/> instancia.
+            </summary>
+        </member>
+        <member name="F:ReenviarSAPTareaProgramada._nextExecutionTime">
+            <summary>
+            Indica el siguiente tiempo de ejecución.
+            </summary>
+        </member>
+        <member name="F:ReenviarSAPTareaProgramada._serviceScopeFactory">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.
+            </summary>
+        </member>
+        <member name="F:ReenviarSAPTareaProgramada._servicesLifeTime">
+            <summary>
+            <see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.
+            </summary>
+        </member>
+        <member name="M:ReenviarSAPTareaProgramada.#ctor(Microsoft.Extensions.Logging.ILogger{SyncTareaProgramadaStock},Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Popsy.Settings.HostedServicesLifeTime)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="logger">Logger.</param>
+            <param name="serviceScopeFactory"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.</param>
+            <param name="servicesLifeTime"><see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.</param>
+        </member>
+        <member name="M:ReenviarSAPTareaProgramada.StartAsync(System.Threading.CancellationToken)">
+            <summary>
+            Comienzo de la tarea programada.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:ReenviarSAPTareaProgramada.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+            Tarea para detener.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:ReenviarSAPTareaProgramada.Dispose">
+            <summary>
+            Disponse.
+            </summary>
+        </member>
+        <member name="T:SyncTareaProgramadaOrdenes">
+            <summary>
+            Tarea programada de sincronización de información.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaOrdenes._logger">
+            <summary>
+            Logger.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaOrdenes._timer">
+            <summary>
+            <see cref="T:System.Threading.Timer"/> instancia.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaOrdenes._nextExecutionTime">
+            <summary>
+            Indica el siguiente tiempo de ejecución.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaOrdenes._serviceScopeFactory">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaOrdenes._servicesLifeTime">
+            <summary>
+            <see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.
+            </summary>
+        </member>
+        <member name="M:SyncTareaProgramadaOrdenes.#ctor(Microsoft.Extensions.Logging.ILogger{SyncTareaProgramadaOrdenes},Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Popsy.Settings.HostedServicesLifeTime)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="logger">Logger.</param>
+            <param name="serviceScopeFactory"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.</param>
+            <param name="servicesLifeTime"><see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.</param>
+        </member>
+        <member name="M:SyncTareaProgramadaOrdenes.StartAsync(System.Threading.CancellationToken)">
+            <summary>
+            Comienzo de la tarea programada.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:SyncTareaProgramadaOrdenes.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+            Tarea para detener.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:SyncTareaProgramadaOrdenes.Dispose">
+            <summary>
+            Disponse.
+            </summary>
+        </member>
+        <member name="T:SyncTareaProgramadaStock">
+            <summary>
+            Tarea programada de sincronización de información.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaStock._logger">
+            <summary>
+            Logger.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaStock._timer">
+            <summary>
+            <see cref="T:System.Threading.Timer"/> instancia.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaStock._nextExecutionTime">
+            <summary>
+            Indica el siguiente tiempo de ejecución.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaStock._serviceScopeFactory">
+            <summary>
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.
+            </summary>
+        </member>
+        <member name="F:SyncTareaProgramadaStock._servicesLifeTime">
+            <summary>
+            <see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.
+            </summary>
+        </member>
+        <member name="M:SyncTareaProgramadaStock.#ctor(Microsoft.Extensions.Logging.ILogger{SyncTareaProgramadaStock},Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Popsy.Settings.HostedServicesLifeTime)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="logger">Logger.</param>
+            <param name="serviceScopeFactory"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceScopeFactory"/> instancia.</param>
+            <param name="servicesLifeTime"><see cref="T:Popsy.Settings.HostedServicesLifeTime"/> instancia.</param>
+        </member>
+        <member name="M:SyncTareaProgramadaStock.StartAsync(System.Threading.CancellationToken)">
+            <summary>
+            Comienzo de la tarea programada.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:SyncTareaProgramadaStock.StopAsync(System.Threading.CancellationToken)">
+            <summary>
+            Tarea para detener.
+            </summary>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:SyncTareaProgramadaStock.Dispose">
+            <summary>
+            Disponse.
+            </summary>
+        </member>
+        <member name="T:GT.Popsy.Middleware.PopsyMiddleware">
+            <summary>
+            Middleware para manejo de excepciones.
+            </summary>
+        </member>
+        <member name="F:GT.Popsy.Middleware.PopsyMiddleware._next">
+            <summary>Deleado de <see cref="T:Microsoft.AspNetCore.Http.RequestDelegate"/></summary>
+        </member>
+        <member name="M:GT.Popsy.Middleware.PopsyMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Constructor de la clase PopsyMiddleware.
+            </summary>
+            <param name="next">Delegate para continuar el procesamiento de la solicitud Http.</param>
+        </member>
+        <member name="M:GT.Popsy.Middleware.PopsyMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Método Invoke para invocar el middleware.
+            </summary>
+            <param name="context">HttpContext actual.</param>
+        </member>
+        <member name="M:GT.Popsy.Middleware.PopsyMiddleware.ExceptionHandle(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            Manejo de excepciones.
+            </summary>
+            <param name="context">HttpContext actual.</param>
+            <param name="exception">Excepción lanzada.</param>
+            <returns>Task representando la operación asincrónica.</returns>
+        </member>
+        <member name="M:GT.Popsy.Middleware.PopsyMiddleware.GetHttpStatusCode(Popsy.PopsyException)">
+            <summary>
+            Obtiene el HttpStatusCode basado en la PopsyException.
+            </summary>
+            <param name="exception">Instancia de PopsyException.</param>
+            <returns>HttpStatusCode correspondiente.</returns>
         </member>
     </members>
 </doc>

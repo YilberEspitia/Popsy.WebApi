@@ -14,5 +14,13 @@ namespace Popsy.Enums
         OrdenDeCompraNoEncontrada = 3,
         RecepcionDeCompraNoEncontrada = 4,
         ProductoNoEncontrado = 5,
+        UnidadesDeConversionNoEncontradas = 6,
+        InventarioNoEncontrado = 7,
+        PedidoNoEncontrado = 8,
+        DetalleSeguimientoNoEncontrado = 9,
+        UsuarioNoEncontrado = 10,
+        XMLNoEncontrado = 11,
+        StockNoEncontrado = 12,
+        ReconteoNoEncontrado = 13,
     }
 }

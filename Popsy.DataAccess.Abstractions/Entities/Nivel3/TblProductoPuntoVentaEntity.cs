@@ -21,7 +21,7 @@ namespace Popsy.Entities
         public virtual TblProductoEntity producto { get; protected set; } = default!;
         public Guid punto_venta_id { get; set; }
         [ForeignKey("punto_venta_id")]
-        public TblPuntoVentaEntity punto_de_venta { get; set; } = default!;
+        public virtual TblPuntoVentaEntity punto_de_venta { get; protected set; } = default!;
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IProveedorRecepcionRepository.CreateAsync(TblProveedorRecepcionEntity proveedorRecepcion)
         {
-            proveedorRecepcion.fecha_modificacion = DateTime.UtcNow;
+            proveedorRecepcion.fecha_modificacion = DateTime.Now;
             await _context.AddAsync(proveedorRecepcion);
             await _context.SaveChangesAsync();
             return true;
@@ -35,7 +35,7 @@ namespace Popsy.Repositories
 
         async Task<bool> IProveedorRecepcionRepository.UpdateAsync(TblProveedorRecepcionEntity proveedorRecepcion)
         {
-            proveedorRecepcion.fecha_modificacion = DateTime.UtcNow;
+            proveedorRecepcion.fecha_modificacion = DateTime.Now;
             TblProveedorRecepcionEntity proveedorRecepcionDb = await this._context.ProveedoresRecepcion.SingleAsync(r => r.proveedor_recepcion_id.Equals(proveedorRecepcion.proveedor_recepcion_id));
             this._context.Entry(proveedorRecepcionDb).CurrentValues.SetValues(proveedorRecepcion);
             await this._context.SaveChangesAsync();
@@ -47,6 +47,9 @@ namespace Popsy.Repositories
 
         async Task<TblProveedorRecepcionEntity?> IProveedorRecepcionRepository.GetProveedorRecepcionAsync(Guid id)
             => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).Where(x => x.proveedor_recepcion_id.Equals(id)).FirstOrDefaultAsync();
+
+        async Task<TblProveedorRecepcionEntity?> IProveedorRecepcionRepository.GetProveedorRecepcionPorSapAsync(string codigo_sap)
+            => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).Where(x => x.codigo_sap_proveedor.Equals(codigo_sap)).FirstOrDefaultAsync();
 
         async Task<IEnumerable<TblProveedorRecepcionEntity>> IProveedorRecepcionRepository.GetProveedoresRecepcionAsync()
             => await _context.ProveedoresRecepcion.Include(x => x.ordenes_de_compra).ToListAsync();

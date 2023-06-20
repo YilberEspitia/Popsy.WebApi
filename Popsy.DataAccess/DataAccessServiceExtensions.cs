@@ -26,7 +26,7 @@ namespace Popsy
             .AddScoped<IPuntosVentasRepository, PuntosVentasRepository>()
             .AddScoped<IReadInventarioBaseRepository, ReadInventarioBaseRepository>()
             .AddScoped<ITipoInventariosRepository, TipoInventariosRepository>()
-            .AddScoped<IUsuariosPuntosVentasRepository, UsuariosPuntosVentasRepository>()
+            .AddScoped<IUsuariosRepository, UsuariosRepository>()
             .AddScoped<IVistaCategoriasProductosRepository, VistaCategoriasProductosRepository>()
             .AddScoped<IVistaMonitorInventarioRepository, VistaMonitorInventarioRepository>()
             .AddScoped<IVistaPedidosPuntoVentaRepository, VistaPedidosPuntoVentaRepository>()
@@ -38,6 +38,11 @@ namespace Popsy
             .AddScoped<IProveedorRecepcionRepository, ProveedorRecepcionRepository>()
             .AddScoped<IOrdenDeCompraRepository, OrdenDeCompraRepository>()
             .AddScoped<IDetalleOrdenDeCompraRepository, DetalleOrdenDeCompraRepository>()
-            .AddScoped<IRecepcionDeCompraRepository, RecepcionDeCompraRepository>();
+            .AddScoped<IRecepcionDeCompraRepository, RecepcionDeCompraRepository>()
+            .AddScoped<IRecepcionDeCompraDetalleRepository, RecepcionDeCompraDetalleRepository>()
+            .AddScoped<IEmailInfoRepository, EmailInfoRepository>()
+            .AddScoped<IInventarioNuevoRepository, InventarioNuevoRepository>()
+            .AddScoped<IProcedimientoAlmacenadoRepository, ProcedimientoAlmacenadoRepository>()
+            .AddScoped<IPedidoRepository, PedidoRepository>();
     }
 }

@@ -16,11 +16,12 @@ namespace Popsy.Entities
         public string correo { get; set; } = default!;
         public int estado { get; set; }
         public string password { get; set; } = default!;
-        public DateTime fecha_eliminacion { get; set; }
+        public DateTime? fecha_eliminacion { get; set; }
         #endregion
 
         #region Relaciones
         public virtual ISet<TblInventarioEntity> inventarios { get; protected set; } = new HashSet<TblInventarioEntity>();
+        public virtual ISet<TblInventario2Entity> inventarios2 { get; protected set; } = new HashSet<TblInventario2Entity>();
         public virtual ISet<TblPedidoEntity> pedidos { get; protected set; } = new HashSet<TblPedidoEntity>();
         public virtual ISet<TblUsuarioPuntoVentaEntity> puntos_de_venta { get; protected set; } = new HashSet<TblUsuarioPuntoVentaEntity>();
         public virtual ISet<TblHistorialUsuarioEntity> historial { get; protected set; } = new HashSet<TblHistorialUsuarioEntity>();

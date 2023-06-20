@@ -1,12 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Popsy.Entities;
 using Popsy.Interfaces;
 using Popsy.Objects;
 
-namespace WebApiIntegracion.Controllers
+namespace Popsy.Controllers
 {
+    /// <summary>
+    /// Controlador de inventarios.
+    /// </summary>
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Policy = "UserSIPOP")]
     [Route("api/[controller]")]
     public class InventarioController : ControllerBase
     {
@@ -17,16 +24,29 @@ namespace WebApiIntegracion.Controllers
         private readonly ICreateInventarioBaseBusiness _repoCreateInventarioBase;
         private readonly IVistaMonitorInventarioRepository _repoReadInventarioMonitor;
         private readonly IVistaResumenInventarioRepository _repoResumenInventario;
-        private readonly IUsuariosPuntosVentasRepository _repoUsuariosPuntosVentas;
+        private readonly IUsuariosRepository _repoUsuariosPuntosVentas;
         private readonly IVistaPuntosVentaBodegasRepository _repoPuntosVentaBodegas;
         private readonly IPuntosVentasRepository _repoPuntosVenta;
         private readonly ITipoInventariosRepository _repoTipoInventarios;
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="repoVistaCategoriasProductos"></param>
+        /// <param name="repoVistaProductosConSotck"></param>
+        /// <param name="repoReadInventarioBase"></param>
+        /// <param name="repoCreateInventarioBase"></param>
+        /// <param name="repoReadInventarioMonitor"></param>
+        /// <param name="repoResumenInventario"></param>
+        /// <param name="repoUsuariosPuntosVentas"></param>
+        /// <param name="repoTipoInventarios"></param>
+        /// <param name="repoPuntosVentaBodegas"></param>
+        /// <param name="repoPuntosVenta"></param>
         public InventarioController(IVistaCategoriasProductosRepository repoVistaCategoriasProductos, IVistaProductosConStockRepository repoVistaProductosConSotck
         , IReadInventarioBaseRepository repoReadInventarioBase
         , ICreateInventarioBaseBusiness repoCreateInventarioBase
         , IVistaMonitorInventarioRepository repoReadInventarioMonitor
         , IVistaResumenInventarioRepository repoResumenInventario
-        , IUsuariosPuntosVentasRepository repoUsuariosPuntosVentas
+        , IUsuariosRepository repoUsuariosPuntosVentas
         , ITipoInventariosRepository repoTipoInventarios
         , IVistaPuntosVentaBodegasRepository repoPuntosVentaBodegas
         , IPuntosVentasRepository repoPuntosVenta)
@@ -56,7 +76,10 @@ namespace WebApiIntegracion.Controllers
             var vista = await _repoVistaCategoriasProductos.GetVistaCategoriasProductos();
             return Ok(vista);
         }
-
+        /// <summary>
+        /// GetVistaProductosConStock
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetVistaProductosConStock")]
         public async Task<IActionResult> GetVistaProductosConStock()
@@ -93,13 +116,20 @@ namespace WebApiIntegracion.Controllers
         [Route("GetInventarioMonitor")]
         public async Task<IActionResult> GetInventarioMonitor(Guid usuario)
         {
-            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
-            TblUsuarioPuntoVentaEntity puntoVenta = new TblUsuarioPuntoVentaEntity();
-            if (puntoVentaList.Count() > 0)
+            Boolean superUsuario = await _repoUsuariosPuntosVentas.EsSuperUsuario(usuario);
+            IEnumerable<VistaMonitorInventarioEntity> vista = new List<VistaMonitorInventarioEntity>();
+            if (superUsuario)
+                vista = await _repoReadInventarioMonitor.GetAllInventarioMonitor();
+            else
             {
-                puntoVenta = puntoVentaList.FirstOrDefault();
+                IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
+                TblUsuarioPuntoVentaEntity puntoVenta = new TblUsuarioPuntoVentaEntity();
+                if (puntoVentaList.Count() > 0)
+                {
+                    puntoVenta = puntoVentaList.FirstOrDefault()!;
+                }
+                vista = await _repoReadInventarioMonitor.GetInventarioMonitor(puntoVenta.punto_venta_id);
             }
-            IEnumerable<VistaMonitorInventarioEntity> vista = await _repoReadInventarioMonitor.GetInventarioMonitor(puntoVenta.punto_venta_id);
             return Ok(vista);
         }
         /// <summary>
@@ -118,6 +148,11 @@ namespace WebApiIntegracion.Controllers
             return Ok(vista);
         }
 
+        /// <summary>
+        /// GetVistaResumenInventarioById
+        /// </summary>
+        /// <param name="inventarios_id">Inventario id.</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetVistaResumenInventarioById")]
         public async Task<IActionResult> GetVistaResumenInventarioById(Guid inventarios_id)
@@ -138,17 +173,14 @@ namespace WebApiIntegracion.Controllers
         [Route("GetEncabezadoInventario")]
         public async Task<IActionResult> GetEncabezadoInventario(Guid usuario)
         {
+            Boolean superUsuario = await _repoUsuariosPuntosVentas.EsSuperUsuario(usuario);
             IEnumerable<TblTipoInventarioEntity> lista = await _repoTipoInventarios.GetTipoInventario();
-            IEnumerable<TblUsuarioPuntoVentaEntity> puntoVentaList = await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario);
             List<ReadPuntoVenta> puntoVentaInfo = new List<ReadPuntoVenta>();
-            foreach (TblUsuarioPuntoVentaEntity puntoVenta in puntoVentaList)
+            IEnumerable<Guid> puntoDeVentaIds = superUsuario ? await _repoPuntosVenta.GetAllPuntosVentaAsyn() :
+                (await _repoUsuariosPuntosVentas.GetUsuariosPuntosVentas(usuario, true)).Select(x => x.punto_venta_id);
+            foreach (Guid puntoVenta in puntoDeVentaIds)
             {
-                IEnumerable<VistaPuntosVentaBodegasEntity> listaBodegas = await _repoPuntosVentaBodegas.GetVistaPuntosVentaBodegasByPuntoVenta(puntoVenta.punto_venta_id);
-                IEnumerable<VistaMonitorInventarioEntity> inventarioList = await _repoReadInventarioMonitor.GetInventarioMonitor(puntoVenta.punto_venta_id);
-                VistaMonitorInventarioEntity ultimoInventario = inventarioList.OrderByDescending(l => l.fecha_toma_fisica).FirstOrDefault();
-                DateTime? fecha = null;
-                if (ultimoInventario != null)
-                    fecha = ultimoInventario.fecha_toma_fisica;
+                IEnumerable<VistaPuntosVentaBodegasEntity> listaBodegas = await _repoPuntosVentaBodegas.GetVistaPuntosVentaBodegasByPuntoVenta(puntoVenta);
                 ReadPuntoVenta puntoVentaFila = new ReadPuntoVenta();
                 puntoVentaFila.bodegas = listaBodegas.Select(t => new VistaPuntosVentaBodegasObject()
                 {
@@ -162,7 +194,11 @@ namespace WebApiIntegracion.Controllers
                     puntoVentaFila.codigo_punto_venta = listaBodegas.Select(t => t.codigo_punto_venta).FirstOrDefault()!;
                     puntoVentaFila.punto_venta_id = listaBodegas.Select(t => t.punto_venta_id).FirstOrDefault()!;
                 }
-                puntoVentaFila.fecha_ultimo_inventario = fecha;
+                if (await _repoReadInventarioMonitor.GetUltimoInventarioAsync(puntoVenta) is TblInventarioEntity inventario)
+                {
+                    puntoVentaFila.fecha_ultimo_inventario = inventario.fecha_toma_fisica;
+                    puntoVentaFila.nombre_tipo_inventario = inventario.tipo_inventario.nombre_tipo_inventario;
+                }
                 puntoVentaInfo.Add(puntoVentaFila);
             }
 
@@ -204,7 +240,7 @@ namespace WebApiIntegracion.Controllers
                 }
                 else
                 {
-                    TblPuntoVentaEntity puntos = await _repoPuntosVenta.GetPuntoVentasId(puntoVenta.punto_venta_id);
+                    TblPuntoVentaEntity puntos = (await _repoPuntosVenta.GetPuntoVentasId(puntoVenta.punto_venta_id))!;
                     puntoVentaFila.punto_venta_nombre = puntos.nombre;
                     puntoVentaFila.punto_venta_id = puntos.punto_venta_id;
                 }
@@ -229,7 +265,7 @@ namespace WebApiIntegracion.Controllers
         /// </remarks>
         [HttpGet]
         [Route("GetRespuestaPedidoSAP")]
-        public async Task<IActionResult> GetRespuestaPedidoSAP(Guid pedido_id)
+        public IActionResult GetRespuestaPedidoSAP(Guid pedido_id)
         {
             RespuestaServicioEntity respuesta = new RespuestaServicioEntity();
             respuesta.Respuesta = "Gracias haz enviado el pedido " + pedido_id.ToString();
@@ -253,7 +289,11 @@ namespace WebApiIntegracion.Controllers
             RespuestaServicioEntity vista = await _repoCreateInventarioBase.CreateInventarioBase(inventario_base);
             return Ok(vista);
         }
-
+        /// <summary>
+        /// UpdateInventarioBase
+        /// </summary>
+        /// <param name="inventario_base"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("UpdateInventarioBase")]
         public async Task<IActionResult> UpdateInventarioBase(UpdateInventarioBaseEntity inventario_base)
@@ -261,6 +301,5 @@ namespace WebApiIntegracion.Controllers
             UpdateInventarioBaseEntity vista = await _repoCreateInventarioBase.UpdateInventarioBase(inventario_base);
             return Ok(vista);
         }
-
     }
 }

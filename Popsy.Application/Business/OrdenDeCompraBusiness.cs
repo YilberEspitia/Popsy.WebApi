@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Text.RegularExpressions;
 
-using Popsy.Common;
+using AutoMapper;
+
 using Popsy.Entities;
 using Popsy.Enums;
 using Popsy.Interfaces;
@@ -25,6 +26,10 @@ namespace Popsy.Business
         /// <see cref="IRecepcionDeCompraRepository"/> repositorio.
         /// </summary>
         private readonly IRecepcionDeCompraRepository _recepcionRepository;
+        /// <summary>
+        /// <see cref="ISapSyncIntegration"/> repositorio.
+        /// </summary>
+        private readonly ISapSyncIntegration _sapIntegration;
 
         /// <summary>
         /// Constructor.
@@ -36,11 +41,13 @@ namespace Popsy.Business
         public OrdenDeCompraBusiness(IMapper mapper,
             IOrdenDeCompraRepository ordenRepository,
             IDetalleOrdenDeCompraRepository detalleOrdenRepository,
-            IRecepcionDeCompraRepository recepcionRepository) : base(mapper)
+            IRecepcionDeCompraRepository recepcionRepository,
+            ISapSyncIntegration sapIntegration) : base(mapper)
         {
             _ordenRepository = ordenRepository;
             _detalleOrdenRepository = detalleOrdenRepository;
             _recepcionRepository = recepcionRepository;
+            _sapIntegration = sapIntegration;
         }
 
         #region OrdenDeCompra
@@ -63,6 +70,7 @@ namespace Popsy.Business
             }
             else
             {
+                ordenDeCompra.orden_compra_id = ordenDeCompraDb.orden_compra_id;
                 orden_id = ordenDeCompra.orden_compra_id;
                 await _ordenRepository.UpdateAsync(ordenDeCompra);
                 response = false;
@@ -126,6 +134,7 @@ namespace Popsy.Business
             }
             else
             {
+                detalleOrdenDeCompra.detalle_orden_compra_id = detalleOrdenDeCompraDb.detalle_orden_compra_id;
                 await _detalleOrdenRepository.UpdateAsync(detalleOrdenDeCompra);
                 response = false;
             }
@@ -163,67 +172,188 @@ namespace Popsy.Business
             => _mapper.Map<IEnumerable<DetalleOrdenDeCompraRead>>(await _detalleOrdenRepository.GetDetallesDeOrdenesDeCompraPorOrdenAsync(orden_compra_id));
         #endregion
 
-        #region RecepcionDeCompra
-        async Task<string> IOrdenDeCompraBusiness.CreateAsync(RecepcionDeCompraSave recepcionDeCompraSave)
+        #region Integraciones
+        async Task<IEnumerable<ResponseOrdenesPopsySAP>> IOrdenDeCompraBusiness.SyncSAPAsync()
         {
-            if (!await _detalleOrdenRepository.ExisteAsync(recepcionDeCompraSave.detalle_orden_compra_id))
-                throw new PopsyException(ErrorType.DetalleDeVentaNoEncontrado);
-            TblRecepcionDeCompraEntity recepcionDeCompra = _mapper.Map<TblRecepcionDeCompraEntity>(recepcionDeCompraSave);
-            TblRecepcionDeCompraEntity? recepcionDeCompraDb = default;
-            if (recepcionDeCompra.recepcion_compra_id != default)
-                recepcionDeCompraDb = await _recepcionRepository.GetRecepcionDeCompraAsync(recepcionDeCompra.recepcion_compra_id);
-            if (recepcionDeCompraDb is null)
+            ISet<ResponseOrdenesPopsySAP> responsePopsy = new HashSet<ResponseOrdenesPopsySAP>();
+            IEnumerable<PuntoDeVentaBasicRead> puntosDeVenta = await _ordenRepository.GetAllPuntosDeVentaAsync();
+            foreach (PuntoDeVentaBasicRead puntoDeVenta in puntosDeVenta)
             {
-                recepcionDeCompra.codigo_recepcion_compra = this.GetConsecutivo(await _recepcionRepository.GetConstante());
-                await _recepcionRepository.CreateAsync(recepcionDeCompra);
+                ResponseSAP<ResultOrdenDeCompra>? response = await _sapIntegration.GetOrdenesDeCompra(puntoDeVenta.codigo);
+                if (response is not null && response.d.results.Any())
+                {
+                    ISet<ResponsePopsyOrdenesSAP> ordenesResponse = new HashSet<ResponsePopsyOrdenesSAP>();
+                    foreach (ResultOrdenDeCompra ordenDeCompra in response.d.results.DistinctBy(x => x.DocOC))
+                    {
+                        try
+                        {
+                            int posicion_producto = 0;
+                            int cantidad_solicitada = 0;
+                            ordenDeCompra.Cant_Pedida = ordenDeCompra.Cant_Pedida.Replace(".", "");
+                            int.TryParse(ordenDeCompra.PositionDoc, out posicion_producto);
+                            int.TryParse(ordenDeCompra.Cant_Pedida, out cantidad_solicitada);
+                            DateTime fecha_orden_compra = this.ConvertirFecha(ordenDeCompra.Date_Solped);
+                            ResponsePopsyOrdenesSAP responseSapOrden = await this.CrearOrdenesAsync(new OrdenDeCompraSave()
+                            {
+                                orden_compra = ordenDeCompra.DocOC,
+                                punto_venta_id = puntoDeVenta.punto_venta_id,
+                                fecha_orden_compra = fecha_orden_compra,
+                            }, ordenDeCompra.Proveedor, response.d.results.Where(x => x.DocOC.Equals(ordenDeCompra.DocOC)).Select(x => new DetalleOrdenDeCompraSave()
+                            {
+                                cantidad_solicitada = cantidad_solicitada,
+                                unidad_presentacion_solicitada = ordenDeCompra.UndCompra,
+                                posicion_producto = posicion_producto,
+                                codigo_producto = ordenDeCompra.CodMaterial
+                            }));
+                            ordenesResponse.Add(responseSapOrden);
+                        }
+                        catch (Exception ex)
+                        {
+                            ordenesResponse.Add(new ResponsePopsyOrdenesSAP()
+                            {
+                                Codigo = ordenDeCompra.DocOC,
+                                Accion = AccionesBD.Error,
+                                Error = ex.Message
+                            });
+                        }
+                    }
+                    responsePopsy.Add(new ResponseOrdenesPopsySAP()
+                    {
+                        Punto_venta_id = puntoDeVenta.punto_venta_id,
+                        Codigo = puntoDeVenta.codigo,
+                        Ordenes = ordenesResponse
+                    });
+                }
             }
-            else
-            {
-                recepcionDeCompra.codigo_recepcion_compra = recepcionDeCompraDb.codigo_recepcion_compra;
-                recepcionDeCompra.constante = recepcionDeCompraDb.constante;
-                await _recepcionRepository.UpdateAsync(recepcionDeCompra);
-            }
-            return recepcionDeCompra.codigo_recepcion_compra;
+            return responsePopsy;
         }
-
-        async Task<RecepcionDeCompraRead> IOrdenDeCompraBusiness.GetRecepcionDeCompraAsync(Guid id)
-        {
-            TblRecepcionDeCompraEntity? recepcionDeCompra = await _recepcionRepository.GetRecepcionDeCompraAsync(id);
-            if (recepcionDeCompra is null)
-                throw new PopsyException(ErrorType.RecepcionDeCompraNoEncontrada);
-            else
-                return _mapper.Map<RecepcionDeCompraRead>(recepcionDeCompra);
-        }
-
-        async Task<IEnumerable<RecepcionDeCompraRead>> IOrdenDeCompraBusiness.GetRecepcionesDeComprasAsync()
-            => _mapper.Map<IEnumerable<RecepcionDeCompraRead>>(await _recepcionRepository.GetRecepcionesDeComprasAsync());
-
-        async Task<IEnumerable<RecepcionDeCompraRead>> IOrdenDeCompraBusiness.GetRecepcionesDeComprasPorDetalleAsync(Guid detalle_orden_compra_id)
-            => _mapper.Map<IEnumerable<RecepcionDeCompraRead>>(await _recepcionRepository.GetRecepcionesDeComprasPorDetalleAsync(detalle_orden_compra_id));
-
-        async Task<IEnumerable<RecepcionDeCompraRead>> IOrdenDeCompraBusiness.GetRecepcionesDeComprasPorCodigoAsync(string codigo)
-            => _mapper.Map<IEnumerable<RecepcionDeCompraRead>>(await _recepcionRepository.GetRecepcionesDeComprasPorCodigoAsync(codigo));
         #endregion
 
         #region Private
-        private string GetConsecutivo(int constante)
+        private async Task<ResponsePopsyOrdenesSAP> CrearOrdenesAsync(OrdenDeCompraSave ordenDeCompraSave, string proveedor, IEnumerable<DetalleOrdenDeCompraSave> detalles)
         {
-            DateTime fechaActual = DateTime.Now;
+            ResponsePopsyOrdenesSAP response = new ResponsePopsyOrdenesSAP()
+            {
+                Codigo = ordenDeCompraSave.orden_compra,
+                Accion = AccionesBD.NoCreado,
+                Detalles = new HashSet<ResponsePopsyOrdenesDetallesSAP>()
+            };
+            if (string.IsNullOrEmpty(proveedor) || !await _ordenRepository.ExisteProveedorRecepcionPorCodigoAsync(proveedor))
+                throw new PopsyException(ErrorType.ProveedorNoEncontrado);
+            if (!await _ordenRepository.ExistePuntoDeVentaAsync(ordenDeCompraSave.punto_venta_id))
+                throw new PopsyException(ErrorType.PuntoDeVentaNoEncontrado);
+            Guid ordenId;
+            ordenDeCompraSave.proveedor_recepcion_id = await _ordenRepository.GetIdProveedorRecepcionPorCodigoAsync(proveedor);
+            TblOrdenDeCompraEntity ordenDeCompra = _mapper.Map<TblOrdenDeCompraEntity>(ordenDeCompraSave);
+            TblOrdenDeCompraEntity? ordenDeCompraDb = default;
+            if (ordenDeCompra.orden_compra != default)
+                ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraPorCodigoAsync(ordenDeCompra.orden_compra);
+            if (ordenDeCompraDb == default && ordenDeCompra.orden_compra_id != default)
+                ordenDeCompraDb = await _ordenRepository.GetOrdenDeCompraAsync(ordenDeCompra.orden_compra_id);
+            if (ordenDeCompraDb is null)
+            {
+                ordenId = await _ordenRepository.CreateAsync(ordenDeCompra);
+                response.Accion = AccionesBD.Creado;
+            }
+            else
+            {
+                ordenDeCompra.orden_compra_id = ordenDeCompraDb.orden_compra_id;
+                ordenId = ordenDeCompra.orden_compra_id;
+                if (this.TieneCambios(ordenDeCompraDb, ordenDeCompra))
+                {
+                    await _ordenRepository.UpdateAsync(ordenDeCompra);
+                    response.Accion = AccionesBD.Actualizado;
+                }
+                else
+                    response.Accion = AccionesBD.NoActualizado;
+            }
+            await _detalleOrdenRepository.UpdateEstadoDetalles(ordenId, false);
+            foreach (DetalleOrdenDeCompraSave detalle in detalles)
+            {
+                if (!string.IsNullOrEmpty(detalle.codigo_producto) && await _detalleOrdenRepository.ExisteProductoAsync(detalle.codigo_producto))
+                {
+                    Guid detalle_id = default;
+                    try
+                    {
+                        AccionesBD accionDetalle = AccionesBD.NoCreado;
+                        detalle.orden_compra_id = ordenId;
+                        detalle.producto_id = await _detalleOrdenRepository.GetProductoPorCodigoAsync(detalle.codigo_producto);
+                        TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = _mapper.Map<TblDetalleOrdenDeCompraEntity>(detalle);
+                        detalleOrdenDeCompra.activo = true;
+                        TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleAsync(detalle.orden_compra_id, detalle.producto_id, detalle.unidad_presentacion_solicitada);
+                        if (detalleOrdenDeCompraDb is null)
+                        {
+                            detalle_id = await _detalleOrdenRepository.CreateAsync(detalleOrdenDeCompra);
+                            accionDetalle = AccionesBD.Creado;
+                        }
+                        else
+                        {
+                            detalleOrdenDeCompra.detalle_orden_compra_id = detalleOrdenDeCompraDb.detalle_orden_compra_id;
+                            detalle_id = detalleOrdenDeCompra.detalle_orden_compra_id;
+                            if (this.DetalleTieneCambios(detalleOrdenDeCompra, detalleOrdenDeCompraDb))
+                            {
+                                await _detalleOrdenRepository.UpdateAsync(detalleOrdenDeCompra);
+                                accionDetalle = AccionesBD.Actualizado;
+                            }
+                            else
+                            {
+                                await _detalleOrdenRepository.UpdateEstadoDetalle(detalleOrdenDeCompra.detalle_orden_compra_id, true);
+                                accionDetalle = AccionesBD.NoActualizado;
+                            }
+                        }
+                        response.Detalles.Add(new ResponsePopsyOrdenesDetallesSAP
+                        {
+                            detalle_orden_compra_id = detalle_id,
+                            Accion = accionDetalle
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        response.Detalles.Add(new ResponsePopsyOrdenesDetallesSAP
+                        {
+                            detalle_orden_compra_id = detalle_id,
+                            Accion = AccionesBD.Error,
+                            Error = ex.Message
+                        });
+                    }
+                }
+            }
+            return response;
+        }
 
-            string año = fechaActual.Year.ToString().Substring(2);
-            string mes = fechaActual.Month.ToString("D2");
-            string dia = fechaActual.Day.ToString("D2");
+        private bool TieneCambios(TblOrdenDeCompraEntity ordenDeCompra, TblOrdenDeCompraEntity ordenDeCompraDb)
+            => ordenDeCompra.orden_compra != ordenDeCompraDb.orden_compra ||
+            ordenDeCompra.punto_venta_id != ordenDeCompraDb.punto_venta_id ||
+            ordenDeCompra.fecha_orden_compra != ordenDeCompraDb.fecha_orden_compra ||
+            ordenDeCompra.proveedor_recepcion_id != ordenDeCompraDb.proveedor_recepcion_id;
 
-            string numeroFormateado = (constante + 1).ToString("D6");
+        private bool DetalleTieneCambios(TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra, TblDetalleOrdenDeCompraEntity detalleOrdenDeCompraDb)
+            => detalleOrdenDeCompra.cantidad_solicitada != detalleOrdenDeCompraDb.cantidad_solicitada ||
+            detalleOrdenDeCompra.unidad_presentacion_solicitada != detalleOrdenDeCompraDb.unidad_presentacion_solicitada ||
+            detalleOrdenDeCompra.posicion_producto != detalleOrdenDeCompraDb.posicion_producto;
 
-            return $"{PopsyConstants.AbrevOrdenDeCompra}-{año}{mes}{dia}{numeroFormateado}"; ;
+        public DateTime ConvertirFecha(string fecha)
+        {
+            DateTime fechaConvertida = default;
+            Regex regex = new Regex(@"\d+");
+            Match match = regex.Match(fecha);
+            if (match.Success)
+            {
+                long milisegundos;
+                if (long.TryParse(match.Value, out milisegundos))
+                {
+                    DateTimeOffset fechaOffset = DateTimeOffset.FromUnixTimeMilliseconds(milisegundos);
+                    fechaConvertida = fechaOffset.DateTime;
+                }
+            }
+            return fechaConvertida;
         }
 
         private async Task CrearDetalleAsync(TblDetalleOrdenDeCompraEntity detalle)
         {
             if (await _ordenRepository.ExisteAsync(detalle.orden_compra_id) && await _detalleOrdenRepository.ExisteProductoAsync(detalle.producto_id))
             {
-                TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = _mapper.Map<TblDetalleOrdenDeCompraEntity>(detalle);
+                TblDetalleOrdenDeCompraEntity detalleOrdenDeCompra = detalle;
                 TblDetalleOrdenDeCompraEntity? detalleOrdenDeCompraDb = default;
                 if (detalleOrdenDeCompra.detalle_orden_compra_id != default)
                     detalleOrdenDeCompraDb = await _detalleOrdenRepository.GetDetalleOrdenDeCompraAsync(detalleOrdenDeCompra.detalle_orden_compra_id);

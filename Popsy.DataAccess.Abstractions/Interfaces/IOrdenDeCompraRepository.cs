@@ -1,4 +1,5 @@
 ﻿using Popsy.Entities;
+using Popsy.Objects;
 
 namespace Popsy.Interfaces
 {
@@ -31,6 +32,8 @@ namespace Popsy.Interfaces
         /// <param name="id"><see cref="TblOrdenDeCompraEntity"/> id.</param>
         /// <returns><see cref="TblOrdenDeCompraEntity"/></returns>
         Task<TblOrdenDeCompraEntity?> GetOrdenDeCompraAsync(Guid id);
+        Task<TblOrdenDeCompraEntity?> GetOrdenDeCompraPorCodigoAsync(string codigo);
+        Task<IEnumerable<PuntoDeVentaBasicRead>> GetAllPuntosDeVentaAsync();
         /// <summary>
         /// Devuelve todos los registros de <see cref="TblOrdenDeCompraEntity"/>.
         /// </summary>
@@ -54,6 +57,8 @@ namespace Popsy.Interfaces
         /// <param name="proveedor_recepcion_id"><see cref="TblProveedorRecepcionEntity"/> id.</param>
         /// <returns>Verdadero si existe, si no retorna falso.</returns>
         Task<bool> ExisteProveedorRecepcionAsync(Guid proveedor_recepcion_id);
+        Task<bool> ExisteProveedorRecepcionPorCodigoAsync(string codigo_sap);
+        Task<Guid> GetIdProveedorRecepcionPorCodigoAsync(string codigo_sap);
         /// <summary>
         /// Verifica si existe una instancia de <see cref="TblOrdenDeCompraEntity"/> con ese id.
         /// </summary>
@@ -66,5 +71,11 @@ namespace Popsy.Interfaces
         /// <param name="punto_venta_id"><see cref="TblPuntoVentaEntity"/> id.</param>
         /// <returns>Verdadero si existe, si no retorna falso.</returns>
         Task<bool> ExistePuntoDeVentaAsync(Guid punto_venta_id);
+        /// <summary>
+        /// Actualiza el estado de la orden de compra.
+        /// </summary>
+        /// <param name="orden_compra_id">Id de orden de compra.</param>
+        /// <param name="recibida">Nuevo valor de recibido.</param>
+        Task ActualizarRecepcionDeOrden(Guid orden_compra_id, bool recibida);
     }
 }

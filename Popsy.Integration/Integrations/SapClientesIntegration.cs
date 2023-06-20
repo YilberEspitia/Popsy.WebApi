@@ -41,8 +41,6 @@ namespace Popsy.Integrations
                 {
                     foreach (dynamic d in questions)
                     {
-                        List<Dictionary<string, string>> records = new List<Dictionary<string, string>>();
-                        Dictionary<string, string> fields = new Dictionary<string, string>();
                         dynamic updates = JsonConvert.DeserializeObject(JObject.Parse(d.ToString()).SelectToken("results").ToString());
                         foreach (var update in updates)
                         {
@@ -53,7 +51,7 @@ namespace Popsy.Integrations
                     }
                 }
             }
-            return null;
+            return Array.Empty<dynamic>();
         }
     }
 }

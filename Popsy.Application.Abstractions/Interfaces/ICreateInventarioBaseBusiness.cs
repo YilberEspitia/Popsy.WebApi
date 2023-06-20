@@ -6,5 +6,6 @@ namespace Popsy.Interfaces
     {
         Task<RespuestaServicioEntity> CreateInventarioBase(CreateInventarioBaseEntity inventario_base);
         Task<UpdateInventarioBaseEntity> UpdateInventarioBase(UpdateInventarioBaseEntity inventario_base);
+        void EnviarCorreoInventario(InventarioEmailObject inventarioEmail);
     }
 }

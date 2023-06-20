@@ -18,6 +18,11 @@ namespace Popsy
         public static IServiceCollection AddPopsyApplication(this IServiceCollection services)
             => services.AddScoped<ICreateInventarioBaseBusiness, CreateInventarioBaseBusiness>()
             .AddScoped<IProveedorRecepcionBusiness, ProveedorRecepcionBusiness>()
-            .AddScoped<IOrdenDeCompraBusiness, OrdenDeCompraBusiness>();
+            .AddScoped<IOrdenDeCompraBusiness, OrdenDeCompraBusiness>()
+            .AddScoped<IRecepcionDeCompraBusiness, RecepcionDeCompraBusiness>()
+            .AddScoped<IInventarioNuevoBusiness, InventarioNuevoBusiness>()
+            .AddScoped<IProcedimientoAlmacenadoBusiness, ProcedimientoAlmacenadoBusiness>()
+            .AddScoped<ILegadoBusiness, LegadoBusiness>()
+            .AddScoped<ISuperUsuarioBusiness, SuperUsuarioBusiness>();
     }
 }

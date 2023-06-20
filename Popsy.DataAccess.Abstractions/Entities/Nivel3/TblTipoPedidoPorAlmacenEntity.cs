@@ -15,13 +15,13 @@ namespace Popsy.Entities
         #region Relaciones
         public Guid punto_venta_id { get; set; }
         [ForeignKey("punto_venta_id")]
-        public TblPuntoVentaEntity punto_de_venta { get; set; }
+        public virtual TblPuntoVentaEntity punto_de_venta { get; protected set; } = default!;
         public Guid centro_logistico_id { get; set; }
         [ForeignKey("centro_logistico_id")]
-        public TblCentroLogisticoEntity centro_logistico { get; set; }
+        public virtual TblCentroLogisticoEntity centro_logistico { get; protected set; } = default!;
         public Guid tipo_pedido_compra_traslado_id { get; set; }
         [ForeignKey("tipo_pedido_compra_traslado_id")]
-        public TblTipoPedidoCompraTrasladoEntity tipo_pedido_compra_traslado { get; set; }
+        public virtual TblTipoPedidoCompraTrasladoEntity tipo_pedido_compra_traslado { get; protected set; } = default!;
         #endregion
     }
 }
