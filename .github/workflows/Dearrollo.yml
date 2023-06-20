@@ -29,12 +29,21 @@ jobs:
 
       - name: Modificar appsettings
         run: |
-          $appSettingsPath = "publish/appsettings.json"  # Ruta al archivo appsettings.json generado
+          $appSettingsPath = "publish/appsettings.json"
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
 
-          # Reemplazar las variables en el appsettings.json utilizando las variables de entorno
-          $appSettings.Integraciones.HeladosPopsy.Ambiente = $env:INTEGRACIONES_HELADOSPOPSY_AMBIENTE
-          $appSettings.HttpsPort = $env:HTTPSPORT
+          $environment = $env:GITHUB_ENVIRONMENT
+          echo "Ambiente: $environment"
+
+          foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
+            $key = $envVar.Name -replace "^${environment}_", ""
+            $value = $envVar.Value
+
+            if ($appSettings.PSObject.Properties.Name -contains $key) {
+              echo "Variable de entorno encontrada: $key = $value"
+              $appSettings.$key = $value
+            }
+          }
 
           $appSettings | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath
 
