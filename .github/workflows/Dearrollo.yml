@@ -13,7 +13,7 @@ jobs:
     runs-on: windows-latest  # Indica la plataforma adecuada para Windows Server
     
     env:
-      ENVIRONMENT: Develop
+      HTTPSPORT: ${{ vars.HTTPSPORT }}
 
     steps:
       - name: Checkout del repositorio
@@ -34,19 +34,10 @@ jobs:
         run: |
           $appSettingsPath = "publish/appsettings.json"
           $appSettings = Get-Content $appSettingsPath | ConvertFrom-Json
-
-          $environment = $env:ENVIRONMENT
-          echo "Ambiente: $environment"
-
-          foreach ($envVar in (Get-ChildItem env:${environment}_*)) {
-            $key = $envVar.Name -replace "^${environment}_", ""
-            $value = $envVar.Value
-
-            if ($appSettings.PSObject.Properties.Name -contains $key) {
-              echo "Variable de entorno encontrada: $key = $value"
-              $appSettings.$key = $value
-            }
-          }
+          
+          echo "Vars: $vars"
+          $appSettings.Integraciones.HeladosPopsy.Ambiente = $env:HTTPSPORT
+          $appSettings.HttpsPort = $env:HTTPSPORT
 
           $appSettings | ConvertTo-Json -Depth 10 | Set-Content $appSettingsPath
 
